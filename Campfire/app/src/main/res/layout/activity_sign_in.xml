@@ -11,17 +11,6 @@
     tools:context="com.a02.team.project.csc301.campfire.SignInActivity"
     android:background="@color/colorPrimary">
 
-    <TextView
-        android:text="Campfire"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:id="@+id/appTitle"
-        android:fontFamily="serif"
-        android:textSize="36sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_login"
@@ -35,38 +24,15 @@
         android:layout_alignParentStart="true"
         android:background="@color/colorPrimaryDark" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_below="@+id/appTitle"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="60dp"
-        android:id="@+id/namEditText" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:layout_below="@+id/namEditText"
-        android:layout_alignRight="@+id/namEditText"
-        android:layout_alignEnd="@+id/namEditText"
-        android:layout_marginTop="64dp"
-        android:id="@+id/passwordEditText" />
-
     <TextView
-        android:text="Name/UTORid"
+        android:text="Campfire"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/NameLabel"
+        android:id="@+id/appTitle"
         android:fontFamily="serif"
-        android:layout_below="@+id/appTitle"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp" />
+        android:textSize="36sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:text="Password:"
@@ -74,8 +40,41 @@
         android:layout_height="wrap_content"
         android:id="@+id/PasswordLabel"
         android:fontFamily="serif"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="46dp"
         android:layout_below="@+id/namEditText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:layout_marginTop="11dp"
+        android:id="@+id/passwordEditText"
+        android:layout_below="@+id/PasswordLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Name/UTORid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/NameLabel"
+        android:fontFamily="serif"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/appTitle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:layout_marginTop="11dp"
+        android:id="@+id/namEditText"
+        android:layout_below="@+id/NameLabel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

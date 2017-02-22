@@ -13,7 +13,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         //Change transition effect
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-        setContentView(R.layout.activity_sign_in);
+        setContentView(R.layout.activity_sign_up);
 
         Intent intent = getIntent();
         this.setTitle("Sign Up");
