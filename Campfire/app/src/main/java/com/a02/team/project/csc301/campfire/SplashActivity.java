@@ -1,5 +1,6 @@
 package com.a02.team.project.csc301.campfire;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -11,11 +12,12 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
         this.setTitle(" ");
 
         final Intent promoIntent = new Intent(this, PromoActivity.class);
 
-        new CountDownTimer(3000, 1000) {
+        new CountDownTimer(1800, 1000) {
             public void onFinish() {
                 startActivity(promoIntent);
             }

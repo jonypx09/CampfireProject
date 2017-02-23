@@ -11,4 +11,165 @@
     tools:context="com.a02.team.project.csc301.campfire.SignUpActivity"
     android:background="@color/colorPrimary">
 
+    <Button
+        android:text="Upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11dp"
+        android:layout_marginStart="11dp"
+        android:id="@+id/UploadButton"
+        android:layout_alignBaseline="@+id/ScheduleTextview"
+        android:layout_alignBottom="@+id/ScheduleTextview"
+        android:layout_toRightOf="@+id/courseCodeEditText"
+        android:layout_toEndOf="@+id/courseCodeEditText"
+        android:textSize="12sp"
+        android:minWidth="78dip"
+        android:minHeight="39dp"
+        android:background="@color/colorPrimaryDark" />
+
+    <TextView
+        android:text="Name/UTORid:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/NameTextview"
+        android:fontFamily="serif"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/nameEditText"
+        android:layout_below="@+id/NameTextview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/courseCodeEditText"
+        android:layout_below="@+id/CourseCodeTextview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Course Code:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/CourseCodeTextview"
+        android:fontFamily="serif"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/GitHubEditText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Programming Languages:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/UploadButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="17dp"
+        android:id="@+id/ProgrammingLanguages"
+        android:fontFamily="serif" />
+
+    <TextView
+        android:text="Schedule/Timetable:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ScheduleTextview"
+        android:fontFamily="serif"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/courseCodeEditText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="GitHub Username:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/GithubTextview"
+        android:fontFamily="serif"
+        android:layout_below="@+id/nameEditText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/GitHubEditText"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/GithubTextview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:fitsSystemWindows="false" />
+
+    <Button
+        android:text="Create Account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/CreateAccountButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/colorPrimaryDark"
+        android:enabled="true"
+        android:onClick="toHomeScreen" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="26dp"
+        android:layout_below="@+id/ProgrammingLanguages"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/CreateAccountButton">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <CheckBox
+                android:text="Java"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/javaCheckbox" />
+
+            <CheckBox
+                android:text="C"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cCheckbox" />
+
+            <CheckBox
+                android:text="Python"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pythonCheckbox" />
+
+            <CheckBox
+                android:text="SQL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/SQLCheckbox" />
+
+            <CheckBox
+                android:text="HTML"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/htmlCheckbox" />
+        </LinearLayout>
+    </ScrollView>
+
 </RelativeLayout>

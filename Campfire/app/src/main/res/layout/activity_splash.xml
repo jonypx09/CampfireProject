@@ -16,10 +16,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/icon_large"
-        android:layout_marginTop="121dp"
         android:id="@+id/splashImage"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="An enlarged version of the app @android:string/fingerprint_icon_content_description" />
+        android:contentDescription="An enlarged version of the app @android:string/fingerprint_icon_content_description"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
