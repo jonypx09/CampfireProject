@@ -29,11 +29,11 @@
     <string name="title_activity_home">HomeActivity</string>
 
     <string-array name="nav_array">
-        <item>Home</item>
-        <item>Messages</item>
-        <item>My Campfire</item>
-        <item>Discover</item>
-        <item>FAQ and Help</item>
+        <item id="home">Home</item>
+        <item id="Messages">Messages</item>
+        <item id="Campfire">My Campfire</item>
+        <item id="Discover">Discover</item>
+        <item id="faq">FAQ and Help</item>
         <item>Settings</item>
     </string-array>
 

@@ -22,6 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".PromoActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -31,10 +32,17 @@
         <activity
             android:name=".SignUpActivity"
             android:parentActivityName=".PromoActivity" />
-        <activity android:name=".HomeActivity" />
+
+        <activity
+            android:name=".HomeActivity">
+        </activity>
+
+
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings">
+        </activity>
+
     </application>
 
 </manifest>
