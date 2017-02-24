@@ -1,4 +1,4 @@
-package com.a02.team.project.csc301.campfire;
+package com.example.jonat.campfire;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.a02.team.project.csc301.campfire", appContext.getPackageName());
+        assertEquals("com.example.jonat.campfire", appContext.getPackageName());
     }
 }
