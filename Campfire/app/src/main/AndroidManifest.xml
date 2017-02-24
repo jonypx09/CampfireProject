@@ -19,7 +19,8 @@
         <activity android:name=".PromoActivity"
             />
 
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity"
+            android:parentActivityName=".PromoActivity"/>
 
         <activity android:name=".SignUpActivity"
             android:parentActivityName=".PromoActivity"

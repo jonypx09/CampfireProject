@@ -11,13 +11,36 @@
     tools:context="com.example.jonat.campfire.SignUpActivity"
     android:background="@color/colorPrimaryDark">
 
+    <TextView
+        android:text="First Name:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/firstNamePrompt"
+        android:fontFamily="serif"
+        android:textColor="@android:color/white"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/firstNameTextField"
+        android:layout_below="@+id/surnamePrompt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/languagePrompt"
+        android:layout_alignEnd="@+id/languagePrompt" />
+
     <Button
         android:text="Create Account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/button4"
+        android:id="@+id/createAccountButton"
         android:onClick="toMainScreen"
         android:background="@color/colorAccent"
         android:textColor="@color/colorPrimaryDark"
@@ -25,13 +48,13 @@
         android:minHeight="43dp" />
 
     <TextView
-        android:text="GitHub Username:"
+        android:text="Email Address:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView15"
+        android:id="@+id/emailPrompt"
         android:fontFamily="serif"
         android:textColor="@android:color/white"
-        android:layout_below="@+id/textView16"
+        android:layout_below="@+id/surnamePrompt"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="58dp" />
@@ -41,8 +64,8 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/editText9"
-        android:layout_below="@+id/textView16"
+        android:id="@+id/emailTextField"
+        android:layout_below="@+id/emailPrompt"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -51,18 +74,8 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/editText7"
-        android:layout_below="@+id/textView15"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editText8"
-        android:layout_below="@+id/editText7"
+        android:id="@+id/courseTextField"
+        android:layout_below="@+id/emailTextField"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="34dp" />
@@ -71,24 +84,13 @@
         android:text="Course Code:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView14"
+        android:id="@+id/coursePrompt"
         android:fontFamily="serif"
         android:textColor="@android:color/white"
-        android:layout_below="@+id/editText7"
+        android:layout_below="@+id/emailTextField"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="11dp" />
-
-    <TextView
-        android:text="Name/UTORid:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView16"
-        android:fontFamily="serif"
-        android:textColor="@android:color/white"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
     <Button
         android:text="Upload"
@@ -96,23 +98,23 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="22dp"
         android:layout_marginStart="22dp"
-        android:id="@+id/button6"
+        android:id="@+id/uploadScheduleButton"
         android:textSize="12sp"
         android:minWidth="78dip"
         android:minHeight="39dp"
         android:background="@color/colorPrimary"
-        android:layout_below="@+id/editText8"
-        android:layout_toRightOf="@+id/editText8"
-        android:layout_toEndOf="@+id/editText8"
+        android:layout_below="@+id/courseTextField"
+        android:layout_toRightOf="@+id/courseTextField"
+        android:layout_toEndOf="@+id/courseTextField"
         android:textColor="@android:color/white" />
 
     <TextView
         android:text="Programming Languages:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView18"
+        android:id="@+id/languagePrompt"
         android:fontFamily="serif"
-        android:layout_below="@+id/button6"
+        android:layout_below="@+id/uploadScheduleButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textColor="@android:color/white" />
@@ -121,21 +123,21 @@
         android:text="Schedule/Timetable:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView17"
+        android:id="@+id/schedulePrompt"
         android:fontFamily="serif"
         android:textColor="@android:color/white"
-        android:layout_alignBaseline="@+id/button6"
-        android:layout_alignBottom="@+id/button6"
+        android:layout_alignBaseline="@+id/uploadScheduleButton"
+        android:layout_alignBottom="@+id/uploadScheduleButton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/textView18"
+        android:layout_below="@+id/languagePrompt"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/button4">
+        android:layout_above="@+id/createAccountButton">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -146,50 +148,74 @@
                 android:text="Java"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBox12"
+                android:id="@+id/javaCheckbox"
                 android:textColor="@android:color/white" />
 
             <CheckBox
                 android:text="C"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBox11"
+                android:id="@+id/cCheckbox"
                 android:textColor="@android:color/white" />
 
             <CheckBox
                 android:text="Python"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBox10"
+                android:id="@+id/pythonCheckbox"
                 android:textColor="@android:color/white" />
 
             <CheckBox
                 android:text="SQL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBox9"
+                android:id="@+id/sqlCheckbox"
                 android:textColor="@android:color/white" />
 
             <CheckBox
                 android:text="HTML"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBox8"
+                android:id="@+id/htmlCheckbox"
                 android:textColor="@android:color/white" />
 
             <CheckBox
                 android:text="Javascript"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBox7"
+                android:id="@+id/javascriptButton"
                 android:textColor="@android:color/white" />
 
             <CheckBox
                 android:text="PHP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBox6"
+                android:id="@+id/phpButton"
                 android:textColor="@android:color/white" />
         </LinearLayout>
     </ScrollView>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/surnameTextField"
+        android:layout_alignBaseline="@+id/firstNameTextField"
+        android:layout_alignBottom="@+id/firstNameTextField"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/firstNameTextField"
+        android:layout_toRightOf="@+id/firstNameTextField" />
+
+    <TextView
+        android:text="Surname:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/surnamePrompt"
+        android:fontFamily="serif"
+        android:textColor="@android:color/white"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/firstNameTextField"
+        android:layout_toEndOf="@+id/firstNameTextField" />
 </RelativeLayout>
