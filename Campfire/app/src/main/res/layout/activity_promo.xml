@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_promo"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.jonat.campfire.PromoActivity"
+    android:background="@color/colorPrimaryDark">
+
+    <TextView
+        android:text="Campfire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:id="@+id/textView2"
+        android:fontFamily="serif"
+        android:textSize="36sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorAccent" />
+
+    <TextView
+        android:text="Welcome to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:id="@+id/textView3"
+        android:fontFamily="cursive"
+        android:textSize="30sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorAccent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView4"
+        android:layout_marginBottom="151dp"
+        android:textSize="23sp"
+        android:textAlignment="center"
+        android:fontFamily="serif"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="A new and easy way to form groups"
+        android:textColor="@color/colorAccent" />
+
+    <Button
+        android:text="Sign Up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/button2"
+        android:layout_alignStart="@+id/button2"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/button3"
+        android:onClick="toSignUpScreen"
+        android:width="200dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/background_light" />
+
+    <Button
+        android:text="Log In"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:onClick="toLoginScreen"
+        android:width="200dp"
+        android:layout_marginBottom="24dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/background_light"
+        android:layout_above="@+id/button3"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
