@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_promo"
     android:layout_width="match_parent"
@@ -75,4 +76,5 @@
         android:textColor="@android:color/background_light"
         android:layout_above="@+id/signupButton"
         android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
