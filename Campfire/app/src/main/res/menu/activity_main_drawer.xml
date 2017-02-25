@@ -3,28 +3,32 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
             android:title="Home" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_messages"
+            android:icon="@drawable/ic_message_black"
             android:title="Messages" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_my_campfire"
+            android:icon="@drawable/ic_my_campfire"
             android:title="My Campfire" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_discover"
+            android:icon="@drawable/ic_discover"
             android:title="Discover" />
     </group>
 
     <item android:title="Miscellaneous">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_slideshow"
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_help_black"
                 android:title="FAQ and Help" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_manage"
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings_black"
                 android:title="Settings" />
         </menu>
     </item>

@@ -11,4 +11,86 @@
     tools:context="com.example.jonat.campfire.LoginActivity"
     android:background="@color/colorPrimaryDark">
 
+    <TextView
+        android:text="Campfire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:id="@+id/appSignP2"
+        android:fontFamily="serif"
+        android:textSize="36sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorAccent" />
+
+    <TextView
+        android:text="Welcome to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:id="@+id/appSignP1"
+        android:fontFamily="cursive"
+        android:textSize="30sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorAccent" />
+
+    <Button
+        android:text="Log In"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/loginButton"
+        android:onClick="authenticate"
+        android:width="200dp"
+        android:background="@android:color/holo_blue_dark"
+        android:textColor="@android:color/black"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Email Address:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/emailPrompt"
+        android:fontFamily="serif"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="45dp"
+        android:layout_below="@+id/appSignP2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Password:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/passwordPrompt"
+        android:fontFamily="serif"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="39dp"
+        android:layout_below="@+id/emailTextField"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/emailTextField"
+        android:layout_below="@+id/emailPrompt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/passwordField"
+        android:layout_below="@+id/passwordPrompt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
