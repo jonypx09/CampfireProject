@@ -4,145 +4,167 @@
     android:id="@+id/activity_sign_up"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="8dp"
+    android:paddingTop="10dp"
     tools:context="com.example.jonat.campfire.SignUpActivity"
     android:background="@color/colorPrimaryDark">
 
-    <TextView
-        android:text="First Name:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/firstNamePrompt"
-        android:fontFamily="serif"
-        android:textColor="@android:color/white"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/firstNameTextField"
-        android:layout_below="@+id/surnamePrompt"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/languagePrompt"
-        android:layout_alignEnd="@+id/languagePrompt" />
-
-    <Button
-        android:text="Create Account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/createAccountButton"
-        android:onClick="toMainScreen"
-        android:background="@color/colorAccent"
-        android:textColor="@color/colorPrimaryDark"
-        android:width="150dp"
-        android:minHeight="43dp" />
-
-    <TextView
-        android:text="Email Address:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/emailPrompt"
-        android:fontFamily="serif"
-        android:textColor="@android:color/white"
-        android:layout_below="@+id/surnamePrompt"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="58dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/emailTextField"
-        android:layout_below="@+id/emailPrompt"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/courseTextField"
-        android:layout_below="@+id/emailTextField"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="34dp" />
-
-    <TextView
-        android:text="Course Code:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/coursePrompt"
-        android:fontFamily="serif"
-        android:textColor="@android:color/white"
-        android:layout_below="@+id/emailTextField"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="11dp" />
-
-    <Button
-        android:text="Upload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="22dp"
-        android:layout_marginStart="22dp"
-        android:id="@+id/uploadScheduleButton"
-        android:textSize="12sp"
-        android:minWidth="78dip"
-        android:minHeight="39dp"
-        android:background="@color/colorPrimary"
-        android:layout_below="@+id/courseTextField"
-        android:layout_toRightOf="@+id/courseTextField"
-        android:layout_toEndOf="@+id/courseTextField"
-        android:textColor="@android:color/white" />
-
-    <TextView
-        android:text="Programming Languages:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/languagePrompt"
-        android:fontFamily="serif"
-        android:layout_below="@+id/uploadScheduleButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textColor="@android:color/white" />
-
-    <TextView
-        android:text="Schedule/Timetable:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/schedulePrompt"
-        android:fontFamily="serif"
-        android:textColor="@android:color/white"
-        android:layout_alignBaseline="@+id/uploadScheduleButton"
-        android:layout_alignBottom="@+id/uploadScheduleButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/languagePrompt"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/createAccountButton">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+
+            <TextView
+                android:text="First Name:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/firstNamePrompt"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/firstNameTextField"
+                android:maxLength="20"
+                android:textColor="@color/colorAccent"
+                android:layout_below="@+id/firstNamePrompt"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:fontFamily="serif" />
+
+            <TextView
+                android:text="Surname:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/surnamePrompt"
+                android:layout_marginTop="28dp"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white"
+                android:layout_below="@+id/firstNameTextField"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/surnameTextField"
+                android:fontFamily="serif"
+                android:textColor="@color/colorAccent"
+                android:maxLength="20"
+                android:layout_below="@+id/surnamePrompt"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignRight="@+id/firstNameTextField"
+                android:layout_alignEnd="@+id/firstNameTextField" />
+
+            <TextView
+                android:text="Email Address:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/emailPrompt"
+                android:layout_marginTop="36dp"
+                android:textColor="@android:color/white"
+                android:fontFamily="serif"
+                android:layout_below="@+id/surnameTextField"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/emailField"
+                android:fontFamily="serif"
+                android:textColor="@color/colorAccent"
+                android:layout_below="@+id/emailPrompt"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignRight="@+id/surnameTextField"
+                android:layout_alignEnd="@+id/surnameTextField" />
+
+            <TextView
+                android:text="Password:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/emailField"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="24dp"
+                android:id="@+id/passwordPrompt"
+                android:textColor="@android:color/white"
+                android:fontFamily="serif" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:layout_below="@+id/passwordPrompt"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/passwordField"
+                android:layout_alignRight="@+id/emailField"
+                android:layout_alignEnd="@+id/emailField"
+                android:fontFamily="serif"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:text="Course Code:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/passwordField"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="26dp"
+                android:id="@+id/coursePrompt"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/courseField"
+                android:layout_alignBaseline="@+id/coursePrompt"
+                android:layout_alignBottom="@+id/coursePrompt"
+                android:layout_toRightOf="@+id/emailPrompt"
+                android:layout_toEndOf="@+id/emailPrompt"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="serif" />
+
+            <TextView
+                android:text="Preferred Programming Language(s):"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/languagePrompt"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white"
+                android:paddingTop="10dp"
+                android:paddingBottom="8dp" />
+
+            <CheckBox
+                android:text="Python"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pythonCheckbox"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white" />
 
             <CheckBox
                 android:text="Java"
@@ -159,20 +181,6 @@
                 android:textColor="@android:color/white" />
 
             <CheckBox
-                android:text="Python"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/pythonCheckbox"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
-                android:text="SQL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/sqlCheckbox"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
                 android:text="HTML"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -183,39 +191,29 @@
                 android:text="Javascript"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/javascriptButton"
+                android:id="@+id/javascriptCheckbox"
                 android:textColor="@android:color/white" />
 
             <CheckBox
-                android:text="PHP"
+                android:text="SQL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/phpButton"
+                android:id="@+id/sqlCheckbox"
                 android:textColor="@android:color/white" />
+
+            <Button
+                android:text="Create Account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/createAccountButton"
+                android:onClick="toMainScreen"
+                android:background="@color/colorAccent"
+                android:textColor="@color/colorPrimaryDark"
+                android:width="150dp"
+                android:minHeight="43dp" />
         </LinearLayout>
     </ScrollView>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/surnameTextField"
-        android:layout_alignBaseline="@+id/firstNameTextField"
-        android:layout_alignBottom="@+id/firstNameTextField"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/firstNameTextField"
-        android:layout_toRightOf="@+id/firstNameTextField" />
-
-    <TextView
-        android:text="Surname:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/surnamePrompt"
-        android:fontFamily="serif"
-        android:textColor="@android:color/white"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/firstNameTextField"
-        android:layout_toEndOf="@+id/firstNameTextField" />
 </RelativeLayout>
