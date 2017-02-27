@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -21,8 +22,28 @@ public class SignUpActivity extends AppCompatActivity {
         setTitle("Sign Up");
     }
 
-    public void toMainScreen(View view){
-        Intent mainIntent = new Intent(this, MainActivity.class);
-        startActivity(mainIntent);
+    public void checkFields(){
+        EditText fNameField = (EditText) findViewById(R.id.firstNameTextField);
+        EditText sNameField = (EditText) findViewById(R.id.surnameTextField);
+        EditText emailField = (EditText) findViewById(R.id.emailField);
+        EditText passwordField = (EditText) findViewById(R.id.passwordField);
+        EditText courseField = (EditText) findViewById(R.id.courseField);
+
+        String firstName = fNameField.getText().toString();
+        String surname = sNameField.getText().toString();
+        String email = emailField.getText().toString();
+        String password = passwordField.getText().toString();
+        String course = courseField.getText().toString();
+
+        //Check each of the fields here
+    }
+
+    public void toPersonalizeScreen(View view){
+        Intent personalIntent = new Intent(this, PersonalizeActivity.class);
+        startActivity(personalIntent);
+    }
+
+    public boolean verifyEmail(){
+        return true;
     }
 }

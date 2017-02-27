@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_personalize"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.jonat.campfire.PersonalizeActivity"
+    android:background="@color/colorPrimaryDark">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:text="Choose your days of availability:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white"
+                android:paddingBottom="16dp" />
+
+            <CheckBox
+                android:text="Sunday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white" />
+
+            <CheckBox
+                android:text="Monday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox2"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white" />
+
+            <CheckBox
+                android:text="Tuesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox3"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white" />
+
+            <CheckBox
+                android:text="Wednesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox4"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white" />
+
+            <CheckBox
+                android:text="Thursday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox5"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white" />
+
+            <CheckBox
+                android:text="Friday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox6"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white" />
+
+            <CheckBox
+                android:text="Saturday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox7"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/hobbiesPrompt"
+                android:text="What do you do during your free time?"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white"
+                android:paddingTop="16dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="115dp"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/freetimeField"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="serif" />
+
+            <TextView
+                android:text="Any Hobbies?"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/hobbiesPrompt"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white"
+                android:paddingTop="16dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/hobbiesField"
+                android:fontFamily="serif"
+                android:textColor="@color/colorAccent" />
+
+            <Button
+                android:text="Start Matching!"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/startMatchingButton"
+                android:onClick="toMainScreen"
+                android:background="@color/colorAccent" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
