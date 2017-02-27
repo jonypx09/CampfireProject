@@ -1,17 +1,35 @@
 package com.example.jonat.campfire;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 /**
  * Created by jonat on 25-Feb-2017.
  */
 
 public class MessagesFragment extends Fragment{
+
+    private ListView listView;
+    private String messengers[] = {
+            "John",
+    };
+
+    private String display[] = {
+            "Hey, do you want to team up?"
+    };
+
+
+    private Integer imageid[] = {
+            R.drawable.person_icon,
+    };
 
     @Nullable
     @Override
@@ -24,6 +42,17 @@ public class MessagesFragment extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        MyCampfireList customList = new MyCampfireList(getActivity(), messengers, display, imageid);
+
+        listView = (ListView) getView().findViewById(R.id.listOfMessages);
+        listView.setAdapter(customList);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // go to conversation
+            }
+        });
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Messages");
     }
