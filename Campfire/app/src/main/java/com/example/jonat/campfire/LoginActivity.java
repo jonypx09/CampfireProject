@@ -57,5 +57,12 @@ public class LoginActivity extends AppCompatActivity {
     //Checks whether the user exists in the database; if so, check that the password is correct
     public void authenticate(String email, String password){
 
+        //Perform validation here
+
+        //Once the validation is successful, transfer this information to the main activity
+        Intent mainIntent = new Intent(this, MainActivity.class);
+        mainIntent.putExtra("userEmail", email);
+        startActivity(mainIntent);
+
     }
 }
