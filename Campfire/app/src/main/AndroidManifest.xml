@@ -42,6 +42,11 @@
             android:name=".PersonalizeActivity"
             android:parentActivityName=".SignUpActivity">
         </activity>
+
+        <activity 
+                  android:name=".MessengerActivity"
+                  android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>
