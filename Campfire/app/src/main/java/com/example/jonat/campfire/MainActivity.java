@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,10 +39,6 @@ public class MainActivity extends AppCompatActivity
 
         displaySelectedScreen(R.id.nav_home);
 
-        //setTitle("Home");
-        //Change transition effect
-//        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-//        setContentView(R.layout.activity_main);
     }
 
     @Override
@@ -50,7 +47,11 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+
+            //Pressing the back button on the Android device will log the user off
+            Toast.makeText(getApplicationContext(), "You have logged out!", Toast.LENGTH_SHORT).show();
+            Intent promoIntent = new Intent(this, PromoActivity.class);
+            startActivity(promoIntent);
         }
     }
 

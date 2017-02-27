@@ -40,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/loginButton"
-        android:onClick="authenticate"
+        android:onClick="checkFields"
         android:width="200dp"
         android:background="@android:color/holo_blue_dark"
         android:textColor="@android:color/black"
@@ -60,7 +60,9 @@
         android:layout_alignParentStart="true"
         android:id="@+id/emailField"
         android:layout_alignRight="@+id/appSignP2"
-        android:layout_alignEnd="@+id/appSignP2" />
+        android:layout_alignEnd="@+id/appSignP2"
+        android:fontFamily="serif"
+        android:textColor="@color/colorAccent" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -72,7 +74,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/emailField"
-        android:layout_alignEnd="@+id/emailField" />
+        android:layout_alignEnd="@+id/emailField"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="serif" />
 
     <TextView
         android:text="Enter your email address:"
