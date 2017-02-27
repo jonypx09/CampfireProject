@@ -34,6 +34,8 @@ public class SignUpActivity extends AppCompatActivity {
         String email = emailField.getText().toString();
         String password = passwordField.getText().toString();
         String course = courseField.getText().toString();
+
+        //Check each of the fields here
     }
 
     public void toPersonalizeScreen(View view){
