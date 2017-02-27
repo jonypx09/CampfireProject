@@ -23,6 +23,7 @@ public class SplashActivity extends AppCompatActivity {
 
             public void onTick(long millisUntilFinished) {
                 // millisUntilFinished    The amount of time until finished.
+                //No need to add any action here
             }
         }.start();
     }

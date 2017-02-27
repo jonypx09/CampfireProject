@@ -1,9 +1,17 @@
 package com.example.jonat.campfire;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+
+import static android.R.attr.duration;
+import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -15,8 +23,39 @@ public class LoginActivity extends AppCompatActivity {
         setTitle("Log In");
     }
 
-    public void authenticate(View view){
-        Intent mainIntent = new Intent(this, MainActivity.class);
-        startActivity(mainIntent);
+    public void checkFields(View view){
+
+        EditText emailField = (EditText) findViewById(R.id.emailField);
+        EditText passwordField = (EditText) findViewById(R.id.passwordField);
+        String email = emailField.getText().toString();
+        String password = passwordField.getText().toString();
+
+        if (email.equals("") || password.equals("")){
+
+            //This notifies the user that there needs to be an email in the field
+            AlertDialog missingEmailDialog = new AlertDialog.Builder(LoginActivity.this).create();
+            missingEmailDialog.setTitle("Missing Fields");
+            if (!email.equals("")){
+                missingEmailDialog.setMessage("Please enter your password");
+            }else{
+                missingEmailDialog.setMessage("Please enter your email");
+            }
+            missingEmailDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Try Again",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            missingEmailDialog.show();
+
+
+        }else{
+            authenticate(email, password);
+        }
+    }
+
+    //Checks whether the user exists in the database; if so, check that the password is correct
+    public void authenticate(String email, String password){
+
     }
 }
