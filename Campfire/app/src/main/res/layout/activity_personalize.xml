@@ -18,16 +18,71 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:text="Preferred Programming Language(s):"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/languagePrompt"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white"
+                android:paddingTop="10dp"
+                android:paddingBottom="8dp" />
+
+            <CheckBox
+                android:text="Python"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pythonCheckbox"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white" />
+
+            <CheckBox
+                android:text="Java"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/javaCheckbox"
+                android:textColor="@android:color/white" />
+
+            <CheckBox
+                android:text="C"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cCheckbox"
+                android:textColor="@android:color/white" />
+
+            <CheckBox
+                android:text="HTML"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/htmlCheckbox"
+                android:textColor="@android:color/white" />
+
+            <CheckBox
+                android:text="Javascript"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/javascriptCheckbox"
+                android:textColor="@android:color/white" />
+
+            <CheckBox
+                android:text="SQL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/sqlCheckbox"
+                android:textColor="@android:color/white" />
 
             <TextView
                 android:text="Choose your days of availability:"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/textView5"
+                android:id="@+id/schedulePrompt"
                 android:fontFamily="serif"
                 android:textColor="@android:color/white"
-                android:paddingBottom="16dp" />
+                android:paddingBottom="10dp"
+                android:paddingTop="16dp" />
 
             <CheckBox
                 android:text="Sunday"
@@ -88,38 +143,58 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/hobbiesPrompt"
-                android:text="What do you do during your free time?"
+                android:id="@+id/prevCoursePrompt"
+                android:text="Previously Completed Course::"
                 android:fontFamily="serif"
                 android:textColor="@android:color/white"
                 android:paddingTop="16dp" />
 
             <EditText
-                android:layout_width="match_parent"
-                android:layout_height="115dp"
+                android:layout_width="203dp"
+                android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:ems="10"
-                android:id="@+id/freetimeField"
+                android:id="@+id/previousField"
                 android:textColor="@color/colorAccent"
                 android:fontFamily="serif" />
 
             <TextView
-                android:text="Any Hobbies?"
+                android:text="Interesting Elective Course you have taken:"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/hobbiesPrompt"
+                android:id="@+id/electivePrompt"
                 android:fontFamily="serif"
                 android:textColor="@android:color/white"
                 android:paddingTop="16dp" />
 
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="204dp"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:ems="10"
-                android:id="@+id/hobbiesField"
+                android:id="@+id/electivesField"
                 android:fontFamily="serif"
                 android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:text="Favourite pastime activity:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/hobbiesPrompt"
+                android:fontFamily="serif"
+                android:textColor="@android:color/white"
+                android:paddingTop="16dp"
+                android:layout_marginBottom="10dp" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner"
+                android:layout_weight="0.41"
+                android:spinnerMode="dialog"
+                android:entries="@array/pastimes"
+                android:paddingBottom="10dp"
+                android:paddingTop="8dp" />
 
             <Button
                 android:text="Start Matching!"
@@ -127,7 +202,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/startMatchingButton"
                 android:onClick="toMainScreen"
-                android:background="@color/colorAccent" />
+                android:background="@color/colorAccent"
+                android:layout_marginTop="50dp" />
 
         </LinearLayout>
     </ScrollView>

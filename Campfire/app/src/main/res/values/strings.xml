@@ -7,12 +7,17 @@
 
     <string name="action_settings">Settings</string>
 
-    <string-array name="courses">
-        <item>CSC108H1</item>
-        <item>CSC148H1</item>
-        <item>CSC207H1</item>
-        <item>CSC209H1</item>
-        <item>CSC309H1</item>
+    <string-array name="pastimes">
+        <item></item>
+        <item>Arts/Content Creation</item>
+        <item>Music</item>
+        <item>Sports</item>
+        <item>Video Games</item>
+        <item>Cooking</item>
+        <item>TV/Netflix</item>
+        <item>Other</item>
     </string-array>
     <string name="title_activity_messenger">MessengerActivity</string>
+    <string name="title_activity_settings">Settings</string>
+
 </resources>
