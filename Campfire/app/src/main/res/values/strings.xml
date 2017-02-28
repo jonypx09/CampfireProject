@@ -8,6 +8,7 @@
     <string name="action_settings">Settings</string>
 
     <string-array name="pastimes">
+        <item></item>
         <item>Arts/Content Creation</item>
         <item>Music</item>
         <item>Sports</item>

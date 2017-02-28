@@ -123,6 +123,10 @@ public class MainActivity extends AppCompatActivity
                 miscIntent = new Intent(this, HelpActivity.class);
                 startActivity(miscIntent);
                 break;
+            case R.id.nav_settings:
+                miscIntent = new Intent(this, SettingsActivity.class);
+                startActivity(miscIntent);
+                break;
         }
 
         //replacing the fragment

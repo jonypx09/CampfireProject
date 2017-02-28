@@ -33,20 +33,19 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".HelpActivity"
-            android:parentActivityName=".MainActivity">
-        </activity>
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".PersonalizeActivity"
             android:parentActivityName=".SignUpActivity"
-            android:windowSoftInputMode="adjustNothing">
-        </activity>
-
+            android:windowSoftInputMode="adjustNothing"></activity>
         <activity
             android:name=".MessengerActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"></activity>
+
+        <activity android:name=".SettingsActivity"
+                  android:parentActivityName=".MainActivity">
         </activity>
     </application>
 
