@@ -2,8 +2,6 @@ package com.example.jonat.campfire;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -15,12 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    static final String STATE_EMAIL = "email";
+    private String uEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +30,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        Intent intent = getIntent();
-//        String userEmail = intent.getExtras().getString("userEmail");
-
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            uEmail = savedInstanceState.getString(STATE_EMAIL);
+        } else {
+            // Probably initialize members with default values for a new instance
+            Intent intent = getIntent();
+            uEmail = intent.getExtras().getString("userEmail");
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -43,12 +48,19 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-//        View headerView = navigationView.getHeaderView(0);
-//        TextView emailHeader = (TextView) headerView.findViewById(R.id.emailHeader);
-//        emailHeader.setText(userEmail);
+        View headerView = navigationView.getHeaderView(0);
+        TextView emailHeader = (TextView) headerView.findViewById(R.id.emailHeader);
+        emailHeader.setText(uEmail);
 
         displaySelectedScreen(R.id.nav_home);
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(STATE_EMAIL, uEmail);
+        // Always call the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -103,7 +115,7 @@ public class MainActivity extends AppCompatActivity
 
         //creating fragment object
         Fragment fragment = null;
-        Intent miscIntent = null;
+        Intent miscIntent;
 
         //initializing the fragment object which is selected
         switch (itemId) {
