@@ -1,6 +1,8 @@
 package com.example.jonat.campfire;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,7 +24,7 @@ public class SignUpActivity extends AppCompatActivity {
         setTitle("Sign Up");
     }
 
-    public void checkFields(){
+    public void checkFields(View view){
         EditText fNameField = (EditText) findViewById(R.id.firstNameTextField);
         EditText sNameField = (EditText) findViewById(R.id.surnameTextField);
         EditText emailField = (EditText) findViewById(R.id.emailField);
@@ -35,15 +37,66 @@ public class SignUpActivity extends AppCompatActivity {
         String password = passwordField.getText().toString();
         String course = courseField.getText().toString();
 
+        boolean validFirstName;
+        boolean validSurname;
+        boolean validEmail;
+        boolean validPassword;
+        boolean validCourse;
+
         //Check each of the fields here
+        firstName = firstName.trim();
+        surname = surname.trim();
+        email = email.trim();
+        course = course.trim();
+
+        validEmail = verifyEmail(email);
+        validPassword = verifyPassword(password);
+
+        if (firstName.equals("") || surname.equals("") || email.equals("") || password.equals("")
+                || course.equals("") || (!(validEmail)) || (!(validPassword))){
+
+            //This notifies the user that there needs to be an email in the field
+            AlertDialog missingInfoDialog = new AlertDialog.Builder(SignUpActivity.this).create();
+            missingInfoDialog.setTitle("Missing Fields");
+
+            if (!(validEmail)){
+                missingInfoDialog.setMessage("Invalid Email Address");
+            }else if (!(validPassword)){
+                missingInfoDialog.setMessage("Password must be at least 8 characters");
+            }else{
+                missingInfoDialog.setMessage("You are missing one or more fields");
+            }
+            missingInfoDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Try Again",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            missingInfoDialog.show();
+
+
+        }else{
+
+            //Send information to database
+
+            Intent personalIntent = new Intent(this, PersonalizeActivity.class);
+            startActivity(personalIntent);
+        }
     }
 
-    public void toPersonalizeScreen(View view){
-        Intent personalIntent = new Intent(this, PersonalizeActivity.class);
-        startActivity(personalIntent);
+    public boolean verifyEmail(String email){
+        if (email.contains("@")){
+            return true;
+        }else{
+            return false;
+        }
     }
 
-    public boolean verifyEmail(){
-        return true;
+    public boolean verifyPassword(String password){
+        if (password.length() >= 8){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

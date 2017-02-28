@@ -155,7 +155,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/createAccountButton"
-                android:onClick="toPersonalizeScreen"
+                android:onClick="checkFields"
                 android:background="@color/colorAccent"
                 android:textColor="@color/colorPrimaryDark"
                 android:width="100dp"
