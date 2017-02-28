@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/surnamePrompt"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="serif"
                 android:textColor="@android:color/white"
                 android:layout_below="@+id/firstNameTextField"
@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/emailPrompt"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="26dp"
                 android:textColor="@android:color/white"
                 android:fontFamily="serif"
                 android:layout_below="@+id/surnameTextField"
@@ -148,59 +148,6 @@
                 android:textColor="@color/colorAccent"
                 android:fontFamily="serif" />
 
-            <TextView
-                android:text="Preferred Programming Language(s):"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/languagePrompt"
-                android:fontFamily="serif"
-                android:textColor="@android:color/white"
-                android:paddingTop="10dp"
-                android:paddingBottom="8dp" />
-
-            <CheckBox
-                android:text="Python"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/pythonCheckbox"
-                android:fontFamily="serif"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
-                android:text="Java"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/javaCheckbox"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
-                android:text="C"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/cCheckbox"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
-                android:text="HTML"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/htmlCheckbox"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
-                android:text="Javascript"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/javascriptCheckbox"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
-                android:text="SQL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/sqlCheckbox"
-                android:textColor="@android:color/white" />
-
             <Button
                 android:text="Create Account"
                 android:layout_width="match_parent"
@@ -211,8 +158,10 @@
                 android:onClick="toPersonalizeScreen"
                 android:background="@color/colorAccent"
                 android:textColor="@color/colorPrimaryDark"
-                android:width="150dp"
-                android:minHeight="43dp" />
+                android:width="100dp"
+                android:minHeight="43dp"
+                android:layout_marginTop="20dp"
+                android:minWidth="86dip" />
         </LinearLayout>
     </ScrollView>
 
