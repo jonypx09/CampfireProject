@@ -28,8 +28,7 @@ public class PromoActivity extends AppCompatActivity {
     }
 
     public void toSignUpScreen(View view){
-        Intent signInIntent = new Intent();
-
+        Intent signInIntent = new Intent(this, SignUpActivity.class);
         startActivity(signInIntent);
     }
 
