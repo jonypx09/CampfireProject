@@ -30,14 +30,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (savedInstanceState != null) {
-            // Restore value of members from saved state
-            uEmail = savedInstanceState.getString(STATE_EMAIL);
-        } else {
-            // Probably initialize members with default values for a new instance
-            Intent intent = getIntent();
-            uEmail = intent.getExtras().getString("userEmail");
-        }
+//        if (savedInstanceState != null) {
+//            // Restore value of members from saved state
+//            uEmail = savedInstanceState.getString(STATE_EMAIL);
+//        } else {
+//            // Probably initialize members with default values for a new instance
+//            Intent intent = getIntent();
+//            uEmail = intent.getExtras().getString("userEmail");
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity
 
         View headerView = navigationView.getHeaderView(0);
         TextView emailHeader = (TextView) headerView.findViewById(R.id.emailHeader);
-        emailHeader.setText(uEmail);
+//        emailHeader.setText(uEmail);
 
         displaySelectedScreen(R.id.nav_home);
 
