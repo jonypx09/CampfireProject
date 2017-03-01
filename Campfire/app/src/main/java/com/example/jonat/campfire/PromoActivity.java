@@ -9,7 +9,7 @@ import backend.database.SQLiteController;
 
 public class PromoActivity extends AppCompatActivity {
 
-    private SQLiteController sqlcon;
+    //private SQLiteController sqlcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +18,7 @@ public class PromoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_promo);
 
         //Connect to the database
-        sqlcon = new SQLiteController();
+        //sqlcon = new SQLiteController();
 
     }
 
