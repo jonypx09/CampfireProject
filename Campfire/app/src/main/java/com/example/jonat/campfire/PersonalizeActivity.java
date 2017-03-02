@@ -5,9 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import java.io.Serializable;
+import backend.algorithms.*;
+import backend.database.*;
 
 public class PersonalizeActivity extends AppCompatActivity {
+
+    private String[] newStudentID;
+    private ProgrammingLanguagesCriteria newStudentLang;
+    private CSCCoursesCriteria newStudentCourses;
+    private ElectivesCriteria newStudentElectives;
+    private HobbiesCriteria newStudentHobbies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,6 +22,9 @@ public class PersonalizeActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_personalize);
         setTitle("Personalize");
+
+        Intent intent = getIntent();
+        newStudentID = intent.getExtras().getStringArray("identity");
     }
 
     public void toMainScreen(View view){

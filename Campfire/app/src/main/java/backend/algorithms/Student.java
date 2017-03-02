@@ -19,6 +19,7 @@ public class Student {
 	private String lname;
 	private String email;
 	private String pass;
+	private String description;
 	private ArrayList<Comparable> criteria2;
 	private ArrayList<Category> criteria;
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
@@ -68,6 +69,14 @@ public class Student {
 		return matchvalues;
 	}
 	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	/*
 	 * Gets the Hashmap of students to compatibility values for Course course.
 	 * 

@@ -5,11 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import backend.database.SQLiteController;
+import backend.database.*;
 
 public class PromoActivity extends AppCompatActivity {
 
-    //private SQLiteController sqlcon;
+    DatabaseAdapter database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +18,7 @@ public class PromoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_promo);
 
         //Connect to the database
-        //sqlcon = new SQLiteController();
+        database = new DatabaseAdapter(this);
 
     }
 

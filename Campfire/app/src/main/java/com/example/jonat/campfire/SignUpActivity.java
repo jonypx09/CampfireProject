@@ -10,7 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import backend.database.*;
+import backend.algorithms.*;
+
 public class SignUpActivity extends AppCompatActivity {
+
+    DatabaseAdapter database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +25,10 @@ public class SignUpActivity extends AppCompatActivity {
         //Change transition effect
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_sign_up);
-
         setTitle("Sign Up");
+
+        //Connect to the database
+        database = new DatabaseAdapter(this);
     }
 
     public void checkFields(View view){
@@ -77,9 +84,14 @@ public class SignUpActivity extends AppCompatActivity {
 
         }else{
 
-            //Send information to database
+            //Check if this student exists in the database
+
+            //Send information to next activity
+            String[] identity = {firstName, surname, email, course};
+            Student newStudent = new Student(firstName, surname, email, course, null, null);
 
             Intent personalIntent = new Intent(this, PersonalizeActivity.class);
+            personalIntent.putExtra("identity", identity);
             startActivity(personalIntent);
         }
     }

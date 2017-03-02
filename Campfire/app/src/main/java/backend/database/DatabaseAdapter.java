@@ -1,12 +1,12 @@
-package com.example.rod.database;
+package backend.database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import algorithms.Course;
-import algorithms.Student;
+import backend.algorithms.Course;
+import backend.algorithms.Student;
 
 /**
  * Created by Rod on 28/02/2017.

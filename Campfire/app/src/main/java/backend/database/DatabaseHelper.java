@@ -1,4 +1,4 @@
-package com.example.rod.database;
+package backend.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
