@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.io.Serializable;
+
 public class PersonalizeActivity extends AppCompatActivity {
 
     @Override
