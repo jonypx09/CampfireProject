@@ -2,12 +2,15 @@ package com.example.jonat.campfire;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import backend.database.*;
@@ -16,6 +19,9 @@ import backend.algorithms.*;
 public class SignUpActivity extends AppCompatActivity {
 
     DatabaseAdapter db;
+
+    ProgressBar load;
+    Button createAccountButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +35,12 @@ public class SignUpActivity extends AppCompatActivity {
 
         //Connect to the database
         db = new DatabaseAdapter(this);
+
+        load = (ProgressBar) findViewById(R.id.signupProgress);
+        createAccountButton = (Button) findViewById(R.id.createAccountButton);
     }
 
-    public void checkFields(View view){
+    public void obtainFields(View view){
         EditText fNameField = (EditText) findViewById(R.id.firstNameTextField);
         EditText sNameField = (EditText) findViewById(R.id.surnameTextField);
         EditText emailField = (EditText) findViewById(R.id.emailField);
@@ -46,8 +55,8 @@ public class SignUpActivity extends AppCompatActivity {
 
         boolean validFirstName;
         boolean validSurname;
-        boolean validEmail;
-        boolean validPassword;
+        final boolean validEmail;
+        final boolean validPassword;
         boolean validCourse;
 
         //Check each of the fields here
@@ -59,16 +68,54 @@ public class SignUpActivity extends AppCompatActivity {
         validEmail = verifyEmail(email);
         validPassword = verifyPassword(password);
 
-        Student alreadyExists = db.getStudent(email);
+        //Check if this student exists in the database; if so, prevent user from continuing
+        final Student alreadyExists = db.getStudent(email);
+
+        load.setVisibility(View.VISIBLE);
+        createAccountButton.setText("Checking Fields...");
+        createAccountButton.setEnabled(false);
+
+        final Student alreadyExistsCopy = alreadyExists;
+        final String firstNameCopy = firstName;
+        final String surnameCopy = surname;
+        final String courseCopy = course;
+        final String emailCopy = email;
+        final String passwordCopy = password;
+        final boolean validEmailCopy = validEmail;
+        final boolean validPasswordCopy = validPassword;
+
+        new CountDownTimer(3000, 1000){
+
+            public void onFinish(){
+//                authenticate(emailCopy, passwordCopy);
+                checkFields(alreadyExistsCopy, firstNameCopy, surnameCopy,
+                        emailCopy, passwordCopy, courseCopy, validEmailCopy, validPasswordCopy);
+            }
+
+            public void onTick(long millisUntilFinished){
+
+            }
+        }.start();
+    }
+
+    public void checkFields(Student alreadyExists, String firstName, String surname, String email,
+                            String password, String course, boolean validEmail, boolean validPassword){
+
+        load.setVisibility(View.INVISIBLE);
 
         if (alreadyExists != null || firstName.equals("") || surname.equals("") || email.equals("") || password.equals("")
-                || course.equals("") || (!(validEmail)) || (!(validPassword))){
+                || course.equals("") || (!(validEmail)) || (!(validPassword)) || course.length() != 8){
 
+            createAccountButton.setText("Create Account");
+            createAccountButton.setEnabled(true);
             //This notifies the user that there needs to be an email in the field
             AlertDialog missingInfoDialog = new AlertDialog.Builder(SignUpActivity.this).create();
             if (alreadyExists != null){
                 missingInfoDialog.setTitle("User Already Exists");
                 missingInfoDialog.setMessage("There is already a user associated with this email address. Please enter a different one.");
+            }else if (course.length() != 8) {
+                missingInfoDialog.setTitle("Invalid Course Code");
+                missingInfoDialog.setMessage("Please enter a valid course code (i.e. CSC207H1)");
             }else{
                 missingInfoDialog.setTitle("Missing Fields");
 
@@ -91,14 +138,14 @@ public class SignUpActivity extends AppCompatActivity {
 
         }else{
 
-            //Check if this student exists in the database
+            createAccountButton.setText("Success!");
 
             //Send information to next activity
-            String[] identity = {firstName, surname, email, course};
+            String[] identity = {firstName, surname, email, password};
 
-            //TEMPORARY STATEMENT
-            Student newStudent = new Student(firstName, surname, email, course, null, null);
-            //TEMPORARY STATEMENT
+            //TEMPORARY STATEMENT (To be changed later)
+            Student newStudent = new Student(firstName, surname, email, password, null, null);
+            //TEMPORARY STATEMENT (To be changed later)
 
             Intent personalIntent = new Intent(this, PersonalizeActivity.class);
             personalIntent.putExtra("identity", identity);

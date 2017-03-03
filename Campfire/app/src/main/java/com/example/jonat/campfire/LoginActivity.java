@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             load.setVisibility(View.VISIBLE);
             loginButton.setText("Authenticating...");
+            loginButton.setEnabled(false);
 
             final String emailCopy = email;
             final String passwordCopy = password;
@@ -100,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             load.setVisibility(View.INVISIBLE);
             loginButton.setText("Log In");
+            loginButton.setEnabled(true);
             //This notifies the user that there needs to be an email in the field
             AlertDialog missingEmailDialog = new AlertDialog.Builder(LoginActivity.this).create();
             missingEmailDialog.setTitle("Authentication Failed");

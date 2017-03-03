@@ -141,13 +141,13 @@
                 android:textColor="@android:color/white" />
 
             <TextView
+                android:id="@+id/prevCoursePrompt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/prevCoursePrompt"
-                android:text="Previously Completed Course::"
                 android:fontFamily="serif"
-                android:textColor="@android:color/white"
-                android:paddingTop="16dp" />
+                android:paddingTop="16dp"
+                android:text="Previously Completed Course:"
+                android:textColor="@android:color/white" />
 
             <EditText
                 android:layout_width="203dp"
@@ -187,14 +187,15 @@
                 android:layout_marginBottom="10dp" />
 
             <Spinner
+                android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinner"
                 android:layout_weight="0.41"
-                android:spinnerMode="dialog"
+                android:background="@android:color/holo_blue_dark"
                 android:entries="@array/pastimes"
                 android:paddingBottom="10dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:spinnerMode="dialog" />
 
             <Button
                 android:text="Start Matching!"
