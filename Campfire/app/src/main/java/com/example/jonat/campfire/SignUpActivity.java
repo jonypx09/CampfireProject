@@ -15,7 +15,7 @@ import backend.algorithms.*;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    DatabaseAdapter database;
+    DatabaseAdapter db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class SignUpActivity extends AppCompatActivity {
         setTitle("Sign Up");
 
         //Connect to the database
-        database = new DatabaseAdapter(this);
+        db = new DatabaseAdapter(this);
     }
 
     public void checkFields(View view){
@@ -88,7 +88,10 @@ public class SignUpActivity extends AppCompatActivity {
 
             //Send information to next activity
             String[] identity = {firstName, surname, email, course};
+
+            //TEMPORARY STATEMENT
             Student newStudent = new Student(firstName, surname, email, course, null, null);
+            //TEMPORARY STATEMENT
 
             Intent personalIntent = new Intent(this, PersonalizeActivity.class);
             personalIntent.putExtra("identity", identity);

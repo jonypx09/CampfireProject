@@ -149,19 +149,18 @@
                 android:fontFamily="serif" />
 
             <Button
-                android:text="Create Account"
+                android:id="@+id/createAccountButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:id="@+id/createAccountButton"
-                android:onClick="checkFields"
-                android:background="@color/colorAccent"
-                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginTop="50dp"
                 android:width="100dp"
-                android:minHeight="43dp"
-                android:layout_marginTop="20dp"
-                android:minWidth="86dip" />
+                android:background="@color/colorAccent"
+                android:minWidth="86dip"
+                android:onClick="checkFields"
+                android:text="Create Account"
+                android:textColor="@color/colorPrimaryDark" />
         </LinearLayout>
     </ScrollView>
 

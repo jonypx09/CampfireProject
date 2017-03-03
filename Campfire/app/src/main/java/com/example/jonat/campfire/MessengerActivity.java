@@ -11,7 +11,12 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import backend.database.DatabaseAdapter;
+
 public class MessengerActivity extends AppCompatActivity {
+
+    DatabaseAdapter db;
+    private String uEmail;
 
     private EditText message;
     private ImageView addMessage;
@@ -25,6 +30,9 @@ public class MessengerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messenger);
+
+        //Connect to the database
+        db = new DatabaseAdapter(this);
 
         addMessage = (ImageView)findViewById(R.id.sendMessageButton);
         addMessage.setOnClickListener(new View.OnClickListener() {

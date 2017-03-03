@@ -10,6 +10,8 @@ import backend.database.*;
 
 public class PersonalizeActivity extends AppCompatActivity {
 
+    DatabaseAdapter db;
+
     private String[] newStudentID;
     private ProgrammingLanguagesCriteria newStudentLang;
     private CSCCoursesCriteria newStudentCourses;
@@ -23,12 +25,22 @@ public class PersonalizeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_personalize);
         setTitle("Personalize");
 
+        //Connect to the database
+        db = new DatabaseAdapter(this);
+
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
     }
 
     public void toMainScreen(View view){
+
+        Course newCourse = new Course(newStudentID[3], "Some Course Name", "Some Instructor");
+        Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], "pass", null, null);
+        db.addStudent(newStudent);
+        db.addCourse(newCourse);
+
         Intent mainIntent = new Intent(this, MainActivity.class);
+        mainIntent.putExtra("userEmail", newStudentID[2]);
         startActivity(mainIntent);
     }
 }
