@@ -59,19 +59,26 @@ public class SignUpActivity extends AppCompatActivity {
         validEmail = verifyEmail(email);
         validPassword = verifyPassword(password);
 
-        if (firstName.equals("") || surname.equals("") || email.equals("") || password.equals("")
+        Student alreadyExists = db.getStudent(email);
+
+        if (alreadyExists != null || firstName.equals("") || surname.equals("") || email.equals("") || password.equals("")
                 || course.equals("") || (!(validEmail)) || (!(validPassword))){
 
             //This notifies the user that there needs to be an email in the field
             AlertDialog missingInfoDialog = new AlertDialog.Builder(SignUpActivity.this).create();
-            missingInfoDialog.setTitle("Missing Fields");
-
-            if (!(validEmail)){
-                missingInfoDialog.setMessage("Invalid Email Address");
-            }else if (!(validPassword)){
-                missingInfoDialog.setMessage("Password must be at least 8 characters");
+            if (alreadyExists != null){
+                missingInfoDialog.setTitle("User Already Exists");
+                missingInfoDialog.setMessage("There is already a user associated with this email address. Please enter a different one.");
             }else{
-                missingInfoDialog.setMessage("You are missing one or more fields");
+                missingInfoDialog.setTitle("Missing Fields");
+
+                if (!(validEmail)){
+                    missingInfoDialog.setMessage("Invalid Email Address");
+                }else if (!(validPassword)){
+                    missingInfoDialog.setMessage("Password must be at least 8 characters");
+                }else{
+                    missingInfoDialog.setMessage("You are missing one or more fields");
+                }
             }
             missingInfoDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Try Again",
                     new DialogInterface.OnClickListener() {
