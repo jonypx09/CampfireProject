@@ -35,7 +35,7 @@ public class PersonalizeActivity extends AppCompatActivity {
     public void toMainScreen(View view){
 
         Course newCourse = new Course(newStudentID[3], "Some Course Name", "Some Instructor");
-        Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], "pass", null, null);
+        Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], null, null);
         db.addStudent(newStudent);
         db.addCourse(newCourse);
 
