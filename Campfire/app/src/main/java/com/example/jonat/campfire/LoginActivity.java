@@ -63,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
         }else{
-
             load.setVisibility(View.VISIBLE);
             loginButton.setText("Authenticating...");
 
@@ -104,8 +103,12 @@ public class LoginActivity extends AppCompatActivity {
             //This notifies the user that there needs to be an email in the field
             AlertDialog missingEmailDialog = new AlertDialog.Builder(LoginActivity.this).create();
             missingEmailDialog.setTitle("Authentication Failed");
-            if (!password.equals(foundStudent.getPass())){
-                missingEmailDialog.setMessage("Incorrect Password");
+            if (foundStudent != null){
+                if (!password.equals(foundStudent.getPass())){
+                    missingEmailDialog.setMessage("Incorrect Password");
+                }else{
+                    missingEmailDialog.setMessage("This account does not exist. Please Try Again.");
+                }
             }else{
                 missingEmailDialog.setMessage("This account does not exist. Please Try Again.");
             }
