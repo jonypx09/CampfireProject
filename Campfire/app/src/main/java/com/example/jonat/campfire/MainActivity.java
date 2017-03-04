@@ -13,14 +13,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import backend.algorithms.Student;
+import backend.database.DatabaseAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    DatabaseAdapter db;
+
     static final String STATE_EMAIL = "email";
     private String uEmail;
+    private String uName;
+    private Student uStudent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +38,13 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        if (savedInstanceState != null) {
-//            // Restore value of members from saved state
-//            uEmail = savedInstanceState.getString(STATE_EMAIL);
-//        } else {
-//            // Probably initialize members with default values for a new instance
-//            Intent intent = getIntent();
-//            uEmail = intent.getExtras().getString("userEmail");
-//        }
+        //Connect to the database
+        db = new DatabaseAdapter(this);
+
+        Intent intent = getIntent();
+        uEmail = intent.getExtras().getString("userEmail");
+        uStudent = db.getStudent(uEmail);
+        uName = uStudent.getFname() + " " + uStudent.getLname();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -50,10 +57,21 @@ public class MainActivity extends AppCompatActivity
 
         View headerView = navigationView.getHeaderView(0);
         TextView emailHeader = (TextView) headerView.findViewById(R.id.emailHeader);
-//        emailHeader.setText(uEmail);
+        TextView nameHeader = (TextView) headerView.findViewById(R.id.nameHeader);
+        emailHeader.setText(uEmail);
+        nameHeader.setText(uName);
 
         displaySelectedScreen(R.id.nav_home);
 
+        headerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myProfileIntent;
+                myProfileIntent = new Intent(MainActivity.this, MyProfileActivity.class);
+                myProfileIntent.putExtra("userEmail", uEmail);
+                startActivity(myProfileIntent);
+            }
+        });
     }
 
     @Override
@@ -133,10 +151,12 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_help:
                 miscIntent = new Intent(this, HelpActivity.class);
+                miscIntent.putExtra("userEmail", uEmail);
                 startActivity(miscIntent);
                 break;
             case R.id.nav_settings:
                 miscIntent = new Intent(this, SettingsActivity.class);
+                miscIntent.putExtra("userEmail", uEmail);
                 startActivity(miscIntent);
                 break;
         }
@@ -150,5 +170,12 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    public void myProfile(){
+        Intent miscIntent;
+        miscIntent = new Intent(this, SettingsActivity.class);
+        miscIntent.putExtra("userEmail", uEmail);
+        startActivity(miscIntent);
     }
 }

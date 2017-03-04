@@ -77,4 +77,14 @@
         android:layout_above="@+id/signupButton"
         android:layout_centerHorizontal="true" />
 
+    <ImageView
+        android:id="@+id/app_icon_type2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/appSignP1"
+        android:layout_alignStart="@+id/appSignP1"
+        android:layout_below="@+id/appSignP2"
+        android:layout_marginTop="46dp"
+        app:srcCompat="@drawable/group_icon_large" />
+
 </RelativeLayout>
