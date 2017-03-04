@@ -4,56 +4,57 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-
-import backend.database.DatabaseAdapter;
+import java.util.List;
 
 public class MessengerActivity extends AppCompatActivity {
 
-    DatabaseAdapter db;
-    private String uEmail;
-
-    private EditText message;
-    private ImageView addMessage;
-    private ListView lv;
-    ArrayList<String> list = new ArrayList<String>();
-    ArrayAdapter<String> adapter;
-
-
+    private ListView listView;
+    private ImageView btnSend;
+    private EditText editText;
+    boolean isMine = true;
+    private List<ChatMessage> chatMessages;
+    private ArrayAdapter<ChatMessage> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messenger);
 
-        //Connect to the database
-        db = new DatabaseAdapter(this);
+        chatMessages = new ArrayList<>();
 
-        addMessage = (ImageView)findViewById(R.id.sendMessageButton);
-        addMessage.setOnClickListener(new View.OnClickListener() {
+        listView = (ListView) findViewById(R.id.list_msg);
+        btnSend = (ImageView) findViewById(R.id.btn_chat_send);
+        editText = (EditText) findViewById(R.id.msg_type);
+
+        //set ListView adapter first
+        adapter = new ChatAdapter(this, R.layout.in_message_bg, chatMessages);
+        listView.setAdapter(adapter);
+
+        //event for button SEND
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                String input = message.getText().toString();
-                if(input.length() > 0)
-                {
-                    // add string to the adapter, not the listview
-                    adapter.add(input);
-                    message.setText("");
+                if (editText.getText().toString().trim().equals("")) {
+                    Toast.makeText(MessengerActivity.this, "Please input some text...", Toast.LENGTH_SHORT).show();
+                } else {
+                    //add message to list
+                    ChatMessage chatMessage = new ChatMessage(editText.getText().toString(), isMine);
+                    chatMessages.add(chatMessage);
+                    adapter.notifyDataSetChanged();
+                    editText.setText("");
+                    if (isMine) {
+                        isMine = false;
+                    } else {
+                        isMine = true;
+                    }
                 }
             }
-
         });
-
-        message = (EditText)findViewById(R.id.messageEditText);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_expandable_list_item_1, list);
-
-        lv=(ListView)findViewById(R.id.msgListView);
-        lv.setAdapter(adapter);
     }
-
-
 }

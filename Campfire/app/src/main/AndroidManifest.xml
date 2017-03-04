@@ -44,7 +44,8 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".MessengerActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity"></activity>
