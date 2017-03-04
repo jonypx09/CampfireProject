@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,15 +46,6 @@ public class MainActivity extends AppCompatActivity
         uStudent = db.getStudent(uEmail);
         uName = uStudent.getFname() + " " + uStudent.getLname();
 
-//        if (savedInstanceState != null) {
-//            // Restore value of members from saved state
-//            uEmail = savedInstanceState.getString(STATE_EMAIL);
-//        } else {
-//            // Probably initialize members with default values for a new instance
-//            Intent intent = getIntent();
-//            uEmail = intent.getExtras().getString("userEmail");
-//        }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -71,6 +63,15 @@ public class MainActivity extends AppCompatActivity
 
         displaySelectedScreen(R.id.nav_home);
 
+        headerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myProfileIntent;
+                myProfileIntent = new Intent(MainActivity.this, MyProfileActivity.class);
+                myProfileIntent.putExtra("userEmail", uEmail);
+                startActivity(myProfileIntent);
+            }
+        });
     }
 
     @Override
@@ -169,5 +170,12 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+    }
+
+    public void myProfile(){
+        Intent miscIntent;
+        miscIntent = new Intent(this, SettingsActivity.class);
+        miscIntent.putExtra("userEmail", uEmail);
+        startActivity(miscIntent);
     }
 }
