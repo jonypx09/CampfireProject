@@ -178,4 +178,8 @@ public class MainActivity extends AppCompatActivity
         miscIntent.putExtra("userEmail", uEmail);
         startActivity(miscIntent);
     }
+
+    public Student getCurrentStudent() {
+        return this.uStudent;
+    }
 }

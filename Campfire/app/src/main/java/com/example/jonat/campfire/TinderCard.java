@@ -2,10 +2,11 @@ package com.example.jonat.campfire;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import com.mindorks.placeholderview.annotations.Click;
 import com.mindorks.placeholderview.annotations.Layout;
@@ -17,6 +18,11 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeInState;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOut;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 
+import java.util.ArrayList;
+
+import backend.algorithms.Category;
+import backend.algorithms.Student;
+
 /**
  * Created by Quinn on 2/28/2017.
  */
@@ -25,25 +31,36 @@ public class TinderCard {
     @View(R.id.profileImageView)
     private ImageView profileImageView;
 
-    @View(R.id.nameAgeTxt)
-    private TextView nameAgeTxt;
+    @View(R.id.nameTxt)
+    private TextView nameTxt;
 
-    @View(R.id.locationNameTxt)
-    private TextView locationNameTxt;
+    @View(R.id.quickFactTxt)
+    private TextView quickBioTxt;
+
+    @View(R.id.userInfoListView)
+    private ListView userInfoListView;
 
     private Context mContext;
     private SwipePlaceHolderView mSwipeView;
+    private Student student;
 
-    public TinderCard(Context context, SwipePlaceHolderView swipeView) {
-        mContext = context;
-        mSwipeView = swipeView;
+    public TinderCard(Context context, SwipePlaceHolderView swipeView, Student student) {
+        this.mContext = context;
+        this.mSwipeView = swipeView;
+        this.student = student;
     }
 
     @Resolve
     private void onResolved(){
-        Glide.with(mContext).load(R.drawable.person_icon).into(profileImageView);
-        nameAgeTxt.setText("Quinn Daneyko");
-        locationNameTxt.setText("Front-End Android Dev");
+        //Glide.with(mContext).load(R.drawable.person_icon).into(profileImageView);
+        nameTxt.setText(student.getFname() + " " + student.getLname());
+        quickBioTxt.setText(student.getDescription());
+        ArrayList<String> stuInfo = new ArrayList();
+        for (Category c : student.getCriteria()) {
+            stuInfo.add(" " + c.getCategory());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.mContext, R.layout.criteria_list_item, stuInfo);
+        userInfoListView.setAdapter(adapter);
     }
 
     @Click(R.id.profileImageView)
