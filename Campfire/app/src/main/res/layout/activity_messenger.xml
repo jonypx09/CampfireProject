@@ -16,7 +16,8 @@
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
             android:divider="@null"
             android:listSelector="@android:color/transparent"
-            android:transcriptMode="alwaysScroll" />
+            android:transcriptMode="alwaysScroll"
+            android:stackFromBottom="true"/>
 
     </LinearLayout>
 
