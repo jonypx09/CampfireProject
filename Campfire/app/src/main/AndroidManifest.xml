@@ -49,12 +49,18 @@
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity" />
+
         <activity
             android:name=".MyProfileActivity"
             android:label="@string/title_activity_my_profile"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ScheduleActivity"></activity>
+
+        <activity
+            android:name=".ScheduleActivity"
+            android:parentActivityName=".PersonalizeActivity">
+        </activity>
+
     </application>
 
 </manifest>

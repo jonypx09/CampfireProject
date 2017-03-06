@@ -1,7 +1,9 @@
 package com.example.jonat.campfire;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -12,8 +14,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import backend.database.DatabaseAdapter;
+
 public class MessengerActivity extends AppCompatActivity {
 
+    DatabaseAdapter db;
+    private String uEmail;
     private ListView listView;
     private ImageView btnSend;
     private EditText editText;
@@ -25,6 +31,13 @@ public class MessengerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messenger);
+        setTitle("Messenger");
+
+        //Connect to the database
+        db = new DatabaseAdapter(this);
+
+        Intent intent = getIntent();
+        uEmail = intent.getExtras().getString("userEmail");
 
         chatMessages = new ArrayList<>();
 
@@ -56,5 +69,16 @@ public class MessengerActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if (item.getItemId() == android.R.id.home){
+            Intent mainIntent = new Intent(this, MainActivity.class);
+            mainIntent.putExtra("userEmail", uEmail);
+            startActivity(mainIntent);
+            return true;
+        }
+        return false;
     }
 }

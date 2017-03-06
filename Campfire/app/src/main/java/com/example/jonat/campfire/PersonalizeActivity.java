@@ -1,9 +1,13 @@
 package com.example.jonat.campfire;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 
 import backend.algorithms.*;
 import backend.database.*;
@@ -13,6 +17,7 @@ public class PersonalizeActivity extends AppCompatActivity {
     DatabaseAdapter db;
 
     private String[] newStudentID;
+
     private ProgrammingLanguagesCriteria newStudentLang;
     private CSCCoursesCriteria newStudentCourses;
     private ElectivesCriteria newStudentElectives;
@@ -32,15 +37,46 @@ public class PersonalizeActivity extends AppCompatActivity {
         newStudentID = intent.getExtras().getStringArray("identity");
     }
 
-    public void toMainScreen(View view){
+    public void toScheduleScreen(View view){
 
-        Course newCourse = new Course(newStudentID[3], "Some Course Name", "Some Instructor");
-        Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], null, null);
-        db.addStudent(newStudent);
-        db.addCourse(newCourse);
+//        Course newCourse = new Course(newStudentID[3], "Some Course Name", "Some Instructor");
+//        Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], null);
+//        db.addStudent(newStudent);
+//        db.addCourse(newCourse);
 
-        Intent mainIntent = new Intent(this, ScheduleActivity.class);
-        mainIntent.putExtra("userEmail", newStudentID[2]);
-        startActivity(mainIntent);
+        EditText PreviousCourseField = (EditText) findViewById(R.id.previousField);
+        EditText ElectiveCourseField = (EditText) findViewById(R.id.electivesField);
+
+        String previousCourse = PreviousCourseField.getText().toString();
+        String electiveCourse = ElectiveCourseField.getText().toString();
+
+        previousCourse = previousCourse.trim();
+        electiveCourse = electiveCourse.trim();
+
+        if (previousCourse.equals("") || electiveCourse.equals("") || previousCourse.length() != 8
+                || electiveCourse.length() != 8){
+            AlertDialog missingInfoDialog = new AlertDialog.Builder(PersonalizeActivity.this).create();
+            if (previousCourse.length() != 8){
+                missingInfoDialog.setTitle("Invalid Previous Course Code");
+                missingInfoDialog.setMessage("Please enter a valid course (i.e. CSC148H1)");
+            }else if (electiveCourse.length() != 8) {
+                missingInfoDialog.setTitle("Invalid Elective Course Code");
+                missingInfoDialog.setMessage("Please enter a valid course code (i.e. CSC207H1)");
+            }else{
+                missingInfoDialog.setTitle("Missing Fields");
+                missingInfoDialog.setMessage("You are missing one or more fields");
+            }
+            missingInfoDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Try Again",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            missingInfoDialog.show();
+        }else{
+            Intent scheduleIntent = new Intent(this, ScheduleActivity.class);
+            scheduleIntent.putExtra("identity", newStudentID);
+            startActivity(scheduleIntent);
+        }
     }
 }

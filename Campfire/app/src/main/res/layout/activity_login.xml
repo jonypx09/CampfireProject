@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
@@ -111,6 +112,26 @@
         android:layout_below="@+id/passwordField"
         android:layout_centerHorizontal="true"
         android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/successfulLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/passwordField"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/login_success" />
+
+    <ImageView
+        android:id="@+id/unsuccessfulLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/successfulLogin"
+        android:layout_alignStart="@+id/successfulLogin"
+        android:layout_alignTop="@+id/successfulLogin"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/login_error" />
 
 
 </RelativeLayout>

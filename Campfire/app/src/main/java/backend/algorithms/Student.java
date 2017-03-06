@@ -20,19 +20,17 @@ public class Student {
 	private String email;
 	private String pass;
 	private String description;
-	private ArrayList<Comparable> criteria2;
-	private ArrayList<Category> criteria;
+	private ArrayList<Comparable> criteria;
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
 	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
 	
-	public Student(String fname, String lname, String email, String pass, ArrayList<Category> criteria, ArrayList<Comparable> criteria2) {
+	public Student(String fname, String lname, String email, String pass, ArrayList<Comparable> criteria) {
 		super();
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
 		this.pass = pass;
 		this.criteria = criteria;
-		this.criteria2 = criteria2;
 	}
 	
 	public String getPass() {
@@ -57,11 +55,7 @@ public class Student {
 		return email;
 	}
 	
-	public ArrayList<Comparable> getCriteria2(){
-		return criteria2;
-	}
-	
-	public ArrayList<Category> getCriteria(){
+	public ArrayList<Comparable> getCriteria(){
 		return criteria;
 	}
 
@@ -118,24 +112,12 @@ public class Student {
 	 * 
 	 */
 	
-	//This method is used for the ArrayList<Category>
-	public Holder GenerateScore(Student s){
-		double totalScore = 0;
-		for (Category thisStudent : this.getCriteria()){
-			for(Category otherStudent : s.getCriteria()){
-				if(thisStudent.getCategory() == otherStudent.getCategory()){
-					totalScore += Math.abs(thisStudent.getIndex() - otherStudent.getIndex());
-				}
-			}
-		}
-		return new Holder(totalScore);
-	}
 	
 	//This method is used for the ArrayList<Comparable>
-	public Holder GenerateScore2(Student s){
+	public Holder GenerateScore(Student s){
 		double totalScore = 0;
-		for (Comparable thisStudent : this.getCriteria2()){
-			for(Comparable otherStudent : s.getCriteria2()){
+		for (Comparable thisStudent : this.getCriteria()){
+			for(Comparable otherStudent : s.getCriteria()){
 				if(thisStudent.getID() == otherStudent.getID()){
 					totalScore += thisStudent.Compare(otherStudent);
 				}
@@ -183,7 +165,7 @@ public class Student {
 		 * 
 		 */
 		else {
-			for (Student s : this.getAvailablematches().get(course)){
+			for (Student s : this.getAvailablematches().get(course.getName())){
 				tmp.put(s, this.GenerateScore(s));	
 			}
 			this.getMatchvalues().put(course.getName(), tmp);

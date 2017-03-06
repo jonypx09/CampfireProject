@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
@@ -40,5 +41,11 @@ public class MyProfileActivity extends AppCompatActivity {
         uEmail = intent.getExtras().getString("userEmail");
         myStudent = db.getStudent(uEmail);
         setTitle(myStudent.getFname() + " " + myStudent.getLname());
+
+        View view = findViewById(R.id.userInfo);
+        TextView userEmail = (TextView) view.findViewById(R.id.emailTextview);
+        userEmail.setText("You Email:   " + uEmail);
+
+
     }
 }

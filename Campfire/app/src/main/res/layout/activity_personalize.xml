@@ -75,72 +75,6 @@
                 android:textColor="@android:color/white" />
 
             <TextView
-                android:text="Choose your days of availability:"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/schedulePrompt"
-                android:fontFamily="serif"
-                android:textColor="@android:color/white"
-                android:paddingBottom="10dp"
-                android:paddingTop="16dp" />
-
-            <CheckBox
-                android:text="Sunday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/checkBox"
-                android:fontFamily="serif"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
-                android:text="Monday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/checkBox2"
-                android:fontFamily="serif"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
-                android:text="Tuesday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/checkBox3"
-                android:fontFamily="serif"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
-                android:text="Wednesday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/checkBox4"
-                android:fontFamily="serif"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
-                android:text="Thursday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/checkBox5"
-                android:fontFamily="serif"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
-                android:text="Friday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/checkBox6"
-                android:fontFamily="serif"
-                android:textColor="@android:color/white" />
-
-            <CheckBox
-                android:text="Saturday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/checkBox7"
-                android:fontFamily="serif"
-                android:textColor="@android:color/white" />
-
-            <TextView
                 android:id="@+id/prevCoursePrompt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -198,13 +132,13 @@
                 android:spinnerMode="dialog" />
 
             <Button
-                android:text="Fill Out Availability"
+                android:id="@+id/startMatchingButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/startMatchingButton"
-                android:onClick="toMainScreen"
+                android:layout_marginTop="50dp"
                 android:background="@color/colorAccent"
-                android:layout_marginTop="50dp" />
+                android:onClick="toScheduleScreen"
+                android:text="Fill Out Availability" />
 
         </LinearLayout>
     </ScrollView>

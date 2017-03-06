@@ -13,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import backend.database.DatabaseAdapter;
+
 import static android.R.attr.fragment;
 
 /**
@@ -21,6 +23,8 @@ import static android.R.attr.fragment;
 
 public class MessagesFragment extends Fragment{
 
+    DatabaseAdapter db;
+    private String uEmail;
     private ListView listView;
     private String messengers[] = {
             "John",
@@ -38,6 +42,9 @@ public class MessagesFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        uEmail = getArguments().getString("userEmail");
+
         //returning our layout file
         return inflater.inflate(R.layout.fragment_messages, container, false);
     }
@@ -56,9 +63,14 @@ public class MessagesFragment extends Fragment{
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), MessengerActivity.class);
                 //intent.putExtra(); for when we are passing which messages to look at
+                intent.putExtra("userEmail", uEmail);
                 startActivity(intent);
             }
         });
+
+        //Connect to the database
+        db = new DatabaseAdapter(getActivity());
+
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Messages");
     }
