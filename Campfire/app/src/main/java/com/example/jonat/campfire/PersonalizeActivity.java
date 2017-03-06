@@ -39,7 +39,7 @@ public class PersonalizeActivity extends AppCompatActivity {
         db.addStudent(newStudent);
         db.addCourse(newCourse);
 
-        Intent mainIntent = new Intent(this, MainActivity.class);
+        Intent mainIntent = new Intent(this, ScheduleActivity.class);
         mainIntent.putExtra("userEmail", newStudentID[2]);
         startActivity(mainIntent);
     }

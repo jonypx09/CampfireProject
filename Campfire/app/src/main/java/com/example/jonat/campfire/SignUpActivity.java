@@ -23,6 +23,7 @@ public class SignUpActivity extends AppCompatActivity {
     ProgressBar load;
     Button createAccountButton;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
