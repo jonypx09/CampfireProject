@@ -5,6 +5,13 @@
     android:orientation="vertical" >
 
     <Button
+        android:text="Start Matching!"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:id="@+id/submit" />
+
+    <Button
         android:text="Previous Day"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

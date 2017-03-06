@@ -1,10 +1,15 @@
 package com.example.jonat.campfire;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,14 +19,16 @@ import java.util.List;
 
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener{
 
-    Button previousButton, nextButton, submitButtom;
+    Button previousButton, nextButton, submitButton;
     Button twelveam, oneam, twoam, threeam, fouram, fiveam, sixam, sevenam, eightam, nineam, tenam,
     elevenam, twelvepm, onepm, twopm, threepm, fourpm, fivepm, sixpm, sevenpm, eightpm, ninepm,
             tenpm, elevenpm;
 
+    ScrollView scheduleScroll;
     private TextView dayOfWeek;
 
     private int daynum = 0;
+    private String uEmail;
 
     private String[] days = {"Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday", "Sunday"};
@@ -32,11 +39,18 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule);
 
+        Intent intent = getIntent();
+        uEmail = intent.getExtras().getString("userEmail");
+
+        scheduleScroll = (ScrollView) findViewById(R.id.scrollView1);
+
         previousButton = (Button) findViewById(R.id.previous);
         previousButton.setOnClickListener(this);
         nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(this);
-        // submit button
+        submitButton = (Button) findViewById(R.id.submit);
+        submitButton.setOnClickListener(this);
+        submitButton.setEnabled(false);
         twelveam = (Button) findViewById(R.id.twelveam);
         twelveam.setOnClickListener(this);
         oneam = (Button) findViewById(R.id.oneam);
@@ -97,6 +111,10 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch(v.getId())
         {
+            case R.id.submit:
+                Intent mainIntent = new Intent(this, MainActivity.class);
+                mainIntent.putExtra("userEmail", uEmail);
+                startActivity(mainIntent);
             case R.id.next:
                 if (daynum != 6) {
                     daynum++;
@@ -105,6 +123,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 }
                 dayOfWeek.setText(days[daynum]);
                 fillSchedule();
+                scheduleScroll.fullScroll(ScrollView.FOCUS_UP);
                 break;
 
             case R.id.previous:
@@ -115,6 +134,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 }
                 dayOfWeek.setText(days[daynum]);
                 fillSchedule();
+                scheduleScroll.fullScroll(ScrollView.FOCUS_UP);
                 break;
 
             case R.id.twelveam:
@@ -277,7 +297,6 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
             toChange.setBackgroundColor(Color.LTGRAY);
         } else if (schedule[daynum][value].equals("0")) {
             toChange.setBackgroundColor(Color.RED);
-
         } else if (schedule[daynum][value].equals("1")) {
             toChange.setBackgroundColor(Color.GREEN);
         }
@@ -288,10 +307,26 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         if (schedule[daynum][value] == null || schedule[daynum][value].equals("0")) {
             toChange.setBackgroundColor(Color.GREEN);
             schedule[daynum][value] = "1";
+            validate();
 
         } else if (schedule[daynum][value].equals("1")) {
             toChange.setBackgroundColor(Color.RED);
             schedule[daynum][value] = "0";
+            validate();
         }
+    }
+
+    public boolean validate() {
+        for (int i = 0; i < 7; i++) {
+            for (String s: schedule[i]) {
+                if (s == null) {
+                    return false;
+                }
+            }
+        }
+        submitButton.setEnabled(true);
+        submitButton.setBackgroundColor(Color.GREEN);
+        return true;
+
     }
 }
