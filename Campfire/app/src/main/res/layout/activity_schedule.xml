@@ -98,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:gravity="center"
-                        android:text="12:00" />
+                        android:text="12:00 - 12:59" />
 
                     <Button
                         android:id="@+id/oneam"
@@ -106,7 +106,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="45dp"
                         android:gravity="center"
-                        android:text="01:00" />
+                        android:text="01:00 - 01:59" />
 
                     <Button
                         android:id="@+id/twoam"
@@ -114,7 +114,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="85dp"
                         android:gravity="center"
-                        android:text="02:00" />
+                        android:text="02:00 - 02:59" />
 
                     <Button
                         android:id="@+id/threeam"
@@ -122,7 +122,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="125dp"
                         android:gravity="center"
-                        android:text="03:00" />
+                        android:text="03:00 - 03:59" />
 
                     <Button
                         android:id="@+id/fouram"
@@ -130,7 +130,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="165dp"
                         android:gravity="center"
-                        android:text="04:00" />
+                        android:text="04:00 - 04:59" />
 
                     <Button
                         android:id="@+id/fiveam"
@@ -138,7 +138,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="205dp"
                         android:gravity="center"
-                        android:text="05:00" />
+                        android:text="05:00 - 05:59" />
 
                     <Button
                         android:id="@+id/sixam"
@@ -146,7 +146,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="245dp"
                         android:gravity="center"
-                        android:text="06:00" />
+                        android:text="06:00 - 06:59" />
 
                     <Button
                         android:id="@+id/sevenam"
@@ -154,7 +154,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="285dp"
                         android:gravity="center"
-                        android:text="07:00" />
+                        android:text="07:00 - 07:59" />
 
                     <Button
                         android:id="@+id/eightam"
@@ -162,7 +162,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="325dp"
                         android:gravity="center"
-                        android:text="08:00" />
+                        android:text="08:00 - 08:59" />
 
                     <Button
                         android:id="@+id/nineam"
@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="365dp"
                         android:gravity="center"
-                        android:text="09:00" />
+                        android:text="09:00 - 09:59" />
 
                     <Button
                         android:id="@+id/tenam"
@@ -178,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="405dp"
                         android:gravity="center"
-                        android:text="10:00" />
+                        android:text="10:00 - 10:59" />
 
                     <Button
                         android:id="@+id/elevenam"
@@ -186,7 +186,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="445dp"
                         android:gravity="center"
-                        android:text="11:00" />
+                        android:text="11:00 - 11:59" />
 
                     <Button
                         android:id="@+id/twelvepm"
@@ -194,7 +194,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="485dp"
                         android:gravity="center"
-                        android:text="12:00" />
+                        android:text="12:00 - 12:59" />
 
                     <Button
                         android:id="@+id/onepm"
@@ -202,7 +202,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="525dp"
                         android:gravity="center"
-                        android:text="13:00" />
+                        android:text="13:00 - 13:59" />
 
                     <Button
                         android:id="@+id/twopm"
@@ -210,7 +210,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="565dp"
                         android:gravity="center"
-                        android:text="14:00" />
+                        android:text="14:00 - 14:59" />
 
                     <Button
                         android:id="@+id/threepm"
@@ -218,7 +218,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="605dp"
                         android:gravity="center"
-                        android:text="15:00" />
+                        android:text="15:00 - 15:59" />
 
                     <Button
                         android:id="@+id/fourpm"
@@ -226,7 +226,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="645dp"
                         android:gravity="center"
-                        android:text="16:00" />
+                        android:text="16:00 - 16:59" />
 
                     <Button
                         android:id="@+id/fivepm"
@@ -234,7 +234,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="685dp"
                         android:gravity="center"
-                        android:text="17:00" />
+                        android:text="17:00 - 17:59" />
 
                     <Button
                         android:id="@+id/sixpm"
@@ -242,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="725dp"
                         android:gravity="center"
-                        android:text="18:00" />
+                        android:text="18:00 - 18:59" />
 
                     <Button
                         android:id="@+id/sevenpm"
@@ -250,7 +250,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="765dp"
                         android:gravity="center"
-                        android:text="19:00" />
+                        android:text="19:00 - 19:59" />
 
                     <Button
                         android:id="@+id/eightpm"
@@ -258,7 +258,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="805dp"
                         android:gravity="center"
-                        android:text="20:00" />
+                        android:text="20:00 - 20:59" />
 
                     <Button
                         android:id="@+id/ninepm"
@@ -266,7 +266,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="845dp"
                         android:gravity="center"
-                        android:text="21:00" />
+                        android:text="21:00 - 21:59" />
 
                     <Button
                         android:id="@+id/tenpm"
@@ -274,7 +274,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="885dp"
                         android:gravity="center"
-                        android:text="22:00" />
+                        android:text="22:00 - 22:59" />
 
                     <Button
                         android:id="@+id/elevenpm"
@@ -282,7 +282,7 @@
                         android:layout_height="40dp"
                         android:layout_marginTop="925dp"
                         android:gravity="center|top"
-                        android:text="23:00" />
+                        android:text="23:00 - 23:59" />
                 </RelativeLayout>
 
                 <RelativeLayout
