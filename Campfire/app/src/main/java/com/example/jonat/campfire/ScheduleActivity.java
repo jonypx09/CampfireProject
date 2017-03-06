@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -18,6 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private String[] newStudentID;
 
     Button previousButton, nextButton, submitButton;
     Button twelveam, oneam, twoam, threeam, fouram, fiveam, sixam, sevenam, eightam, nineam, tenam,
@@ -37,10 +40,12 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_schedule);
+        setTitle("Set Availability");
 
         Intent intent = getIntent();
-        uEmail = intent.getExtras().getString("userEmail");
+        newStudentID = intent.getExtras().getStringArray("identity");
 
         scheduleScroll = (ScrollView) findViewById(R.id.scrollView1);
 
@@ -328,5 +333,16 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         submitButton.setBackgroundColor(Color.GREEN);
         return true;
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if (item.getItemId() == android.R.id.home){
+            Intent personalIntent = new Intent(this, PersonalizeActivity.class);
+            personalIntent.putExtra("identity", newStudentID);
+            startActivity(personalIntent);
+            return true;
+        }
+        return false;
     }
 }

@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "Campfire.db";
 
     /* ---------- Queries to use for to create/delete tables in this database ---------- */
@@ -33,6 +33,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String SQL_DELETE_COURSE_TABLE =
             "DROP TABLE IF EXISTS " + DatabaseContract.CourseContract.TABLE_NAME;
 
+    private static final String SQL_CREATE_TAKING_TABLE =
+            "CREATE TABLE " + DatabaseContract.TakingContract.TABLE_NAME + " (" +
+                    DatabaseContract.TakingContract.COLUMN_NAME_CODE + " TEXT," +
+                    DatabaseContract.TakingContract.COLUMN_NAME_EMAIL + " TEXT)";
+
+    private static final String SQL_DELETE_TAKING_TABLE =
+            "DROP TABLE IF EXISTS " + DatabaseContract.TakingContract.TABLE_NAME;
+
     /**
      * Creates an instance of the DatabaseHelper.
      * @param context of the activity that is creating this object
@@ -48,6 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db){
         db.execSQL(SQL_CREATE_STUDENT_TABLE);
         db.execSQL(SQL_CREATE_COURSE_TABLE);
+        db.execSQL(SQL_CREATE_TAKING_TABLE);
     }
 
 
@@ -58,6 +67,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         db.execSQL(SQL_DELETE_STUDENT_TABLE);
         db.execSQL(SQL_DELETE_COURSE_TABLE);
+        db.execSQL(SQL_DELETE_TAKING_TABLE);
         onCreate(db);
     }
 

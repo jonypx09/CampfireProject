@@ -5,13 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
+import backend.algorithms.Category;
+import backend.algorithms.Comparable;
 import backend.algorithms.Course;
 import backend.algorithms.Student;
 
 /**
- * Created by Rod on 28/02/2017.
+ * Class to manage what queries and data are being passed to and from the database.
  */
-
 public class DatabaseAdapter {
 
     private DatabaseHelper dbh;
@@ -73,7 +77,10 @@ public class DatabaseAdapter {
             String lname = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_LNAME));
             String pass = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_PASS));
             String description = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_DESCRIPTION));
-            stu = new Student(fname, lname, email, pass, null, null);
+            ArrayList<Category> categories = new ArrayList<Category>();
+            ArrayList<Comparable> comparable = new ArrayList<Comparable>();
+            stu = new Student(fname, lname, email, pass, comparable);
+            stu.setDescription(description);
         }
 
         return stu;
@@ -95,7 +102,10 @@ public class DatabaseAdapter {
         // Enter this student in the table
         db.insert(DatabaseContract.CourseContract.TABLE_NAME, null, values);
 
-        // TODO insert all students as enrolled in this course
+        // Insert all the students in this course into the taking table
+        for (Student stu : course.getStudents()){
+            addToTaking(course.getCourseCode(), stu.getEmail());
+        }
     }
 
     /**
@@ -121,17 +131,73 @@ public class DatabaseAdapter {
                 null
         );
 
-        // If this user exists create the student instance
+        // If this course exists get the course instance
         Course course = null;
         if(cursor.moveToNext()){
             // Get all the students information from the database
             String name = cursor.getString(cursor.getColumnIndex(DatabaseContract.CourseContract.COLUMN_NAME_NAME));
             String instructor = cursor.getString(cursor.getColumnIndex(DatabaseContract.CourseContract.COLUMN_NAME_INSTRUCTOR));
             course = new Course(code, name, instructor);
+
+            // Add all student objects in this course
+            ArrayList<Student> stuList = getStudentsInCourse(code);
+            for (Student stu : stuList){
+                course.addStudent(stu);
+            }
         }
 
-        // TODO get all the students enrolled in this course and attach to this object
-
         return course;
+    }
+
+    /**
+     * Add student email as taking course with identifier as code.
+     * @param code of the course student is in
+     * @param email of the student that is taking the course
+     */
+    public void addToTaking(String code, String email){
+        // Get the database to write in
+        SQLiteDatabase db = this.dbh.getWritableDatabase();
+        // Fill in the attributes of the taking table
+        ContentValues values = new ContentValues();
+        values.put(DatabaseContract.TakingContract.COLUMN_NAME_CODE, code);
+        values.put(DatabaseContract.TakingContract.COLUMN_NAME_EMAIL, email);
+        // Enter this entry to the table
+        db.insert(DatabaseContract.TakingContract.TABLE_NAME, null, values);
+    }
+
+    public ArrayList<Student> getStudentsInCourse(String code){
+        // Get read only database
+        SQLiteDatabase db = this.dbh.getReadableDatabase();
+        // Create the where clause of the query
+        String selection = DatabaseContract.TakingContract.COLUMN_NAME_CODE + " = ?";
+        String[] selection_args = {code};
+        // Run query to get entries with the code given
+        Cursor cursor = db.query(
+                DatabaseContract.TakingContract.TABLE_NAME,
+                null,
+                selection,
+                selection_args,
+                null,
+                null,
+                null
+        );
+        ArrayList<Student> stuList = new ArrayList<Student>();
+        // Create all the student objects from the database and them to the array list
+        while(cursor.moveToNext()){
+            Student stu = getStudent(cursor.getString(cursor.getColumnIndex(DatabaseContract.TakingContract.COLUMN_NAME_EMAIL)));
+            stuList.add(stu);
+        }
+        return stuList;
+    }
+
+    /**
+     * Clear the entire database of all its data.
+     */
+    public void wipe(){
+        SQLiteDatabase db = dbh.getWritableDatabase();
+        dbh.getWritableDatabase();
+        db.delete(DatabaseContract.StudentContract.TABLE_NAME, null, null);
+        db.delete(DatabaseContract.CourseContract.TABLE_NAME, null, null);
+        db.delete(DatabaseContract.TakingContract.TABLE_NAME, null, null);
     }
 }

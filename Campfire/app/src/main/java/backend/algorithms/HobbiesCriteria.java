@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 public class HobbiesCriteria extends ArrayCriteria {
 	
+	/**
+	 * ID was matched
+	 */
+	private static final long serialVersionUID = 1952358793540268673L;
 	public final String ID = "Hobbies";
 
 	public HobbiesCriteria(ArrayList<String> checks) {

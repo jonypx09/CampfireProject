@@ -3,10 +3,6 @@ package backend.database;
 import android.provider.BaseColumns;
 
 /**
- * Created by Rod on 28/02/2017.
- */
-
-/**
  * Contract class that stores String constants to be accessed by the database.
  */
 public final class DatabaseContract {
@@ -34,5 +30,14 @@ public final class DatabaseContract {
         public static final String COLUMN_NAME_CODE = "code";
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_INSTRUCTOR = "instructor";
+    }
+
+    /**
+     * Fields for the taken table in the database.
+     */
+    public static class TakingContract implements BaseColumns{
+        public static final String TABLE_NAME = "taking";
+        public static final String COLUMN_NAME_CODE = CourseContract.COLUMN_NAME_CODE;
+        public static final String COLUMN_NAME_EMAIL = StudentContract.COLUMN_NAME_EMAIL;
     }
 }

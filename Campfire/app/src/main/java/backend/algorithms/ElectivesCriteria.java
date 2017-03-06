@@ -3,7 +3,11 @@ package backend.algorithms;
 import java.util.ArrayList;
 
 public class ElectivesCriteria extends ArrayCriteria {
-	
+
+	/**
+	 * ID was matched
+	 */
+	private static final long serialVersionUID = 1952358793540268673L;
 	private final String ID = "Electives";
 
 	public ElectivesCriteria(ArrayList<String> checks) {

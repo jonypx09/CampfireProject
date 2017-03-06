@@ -131,6 +131,9 @@ public class MainActivity extends AppCompatActivity
 
     private void displaySelectedScreen(int itemId) {
 
+        Bundle bundle = new Bundle();
+        bundle.putString("userEmail", uEmail);
+
         //creating fragment object
         Fragment fragment = null;
         Intent miscIntent;
@@ -139,6 +142,7 @@ public class MainActivity extends AppCompatActivity
         switch (itemId) {
             case R.id.nav_messages:
                 fragment = new MessagesFragment();
+                fragment.setArguments(bundle);
                 break;
             case R.id.nav_my_campfire:
                 fragment = new MyCampfireFragment();
@@ -165,6 +169,7 @@ public class MainActivity extends AppCompatActivity
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
+
             ft.commit();
         }
 

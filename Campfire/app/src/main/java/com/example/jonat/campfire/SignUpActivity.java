@@ -142,10 +142,10 @@ public class SignUpActivity extends AppCompatActivity {
             createAccountButton.setText("Success!");
 
             //Send information to next activity
-            String[] identity = {firstName, surname, email, password};
+            String[] identity = {firstName, surname, email, password, course};
 
             //TEMPORARY STATEMENT (To be changed later)
-            Student newStudent = new Student(firstName, surname, email, password, null, null);
+//            Student newStudent = new Student(firstName, surname, email, password, null);
             //TEMPORARY STATEMENT (To be changed later)
 
             Intent personalIntent = new Intent(this, PersonalizeActivity.class);

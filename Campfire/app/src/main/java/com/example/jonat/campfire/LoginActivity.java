@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import backend.algorithms.Student;
@@ -20,6 +21,8 @@ public class LoginActivity extends AppCompatActivity {
 
     ProgressBar load;
     Button loginButton;
+    ImageView correctLogin;
+    ImageView incorrectLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
 
         load = (ProgressBar) findViewById(R.id.loginProgress);
         loginButton = (Button) findViewById(R.id.loginButton);
+        correctLogin = (ImageView) findViewById(R.id.successfulLogin);
+        incorrectLogin = (ImageView) findViewById(R.id.unsuccessfulLogin);
     }
 
     public void checkFields(View view){
@@ -93,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
         if ((foundStudent != null) && (password.equals(foundStudent.getPass()))){
             load.setVisibility(View.INVISIBLE);
             loginButton.setText("Success!");
+            correctLogin.setVisibility(View.VISIBLE);
             Intent mainIntent = new Intent(this, MainActivity.class);
             mainIntent.putExtra("userEmail", email);
             startActivity(mainIntent);
@@ -101,6 +107,8 @@ public class LoginActivity extends AppCompatActivity {
         }else{
             load.setVisibility(View.INVISIBLE);
             loginButton.setText("Log In");
+
+            incorrectLogin.setVisibility(View.VISIBLE);
             loginButton.setEnabled(true);
             //This notifies the user that there needs to be an email in the field
             AlertDialog missingEmailDialog = new AlertDialog.Builder(LoginActivity.this).create();
@@ -117,6 +125,8 @@ public class LoginActivity extends AppCompatActivity {
             missingEmailDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Try Again",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            correctLogin.setVisibility(View.INVISIBLE);
+                            incorrectLogin.setVisibility(View.INVISIBLE);
                             dialog.dismiss();
                         }
                     });

@@ -8,10 +8,182 @@
     tools:context="com.example.jonat.campfire.MyProfileActivity"
     tools:showIn="@layout/activity_my_profile">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/userInfo"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="@string/profile_details" />
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/aboutYourselfTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingBottom="30dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:text="About Yourself:"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/emailTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingBottom="10dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
+            android:text="Your Email:"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/availabilityTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingBottom="30dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="30dp"
+            android:text="Your Availability Schedule:"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/sundayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:text="Sunday"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/mondayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:text="Monday"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/tuesdayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:text="Tuesday"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/wednesdayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:text="Wednesday"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/thursdayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:text="Thursday"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/fridayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:text="Friday"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/saturdayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:text="Saturday"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/programmingLanguages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingBottom="30dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="30dp"
+            android:text="Your Preferred Programming Languages:"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/pythonCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:text="Python"
+            android:textColor="@android:color/white" />
+
+        <CheckBox
+            android:id="@+id/javaCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Java"
+            android:textColor="@android:color/white" />
+
+        <CheckBox
+            android:id="@+id/cCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="C"
+            android:textColor="@android:color/white" />
+
+        <CheckBox
+            android:id="@+id/htmlCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="HTML"
+            android:textColor="@android:color/white" />
+
+        <CheckBox
+            android:id="@+id/javascriptCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Javascript"
+            android:textColor="@android:color/white" />
+
+        <CheckBox
+            android:id="@+id/sqlCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="SQL"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/hobbiesTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingBottom="30dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="30dp"
+            android:text="Your Hobbies:"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
