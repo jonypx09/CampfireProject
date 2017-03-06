@@ -45,15 +45,16 @@
         <activity
             android:name=".MessengerActivity"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MyProfileActivity"
             android:label="@string/title_activity_my_profile"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ScheduleActivity"></activity>
     </application>
 
 </manifest>

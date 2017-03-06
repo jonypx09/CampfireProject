@@ -4,6 +4,20 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
+    <Button
+        android:text="Previous Day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:id="@+id/previous" />
+
+    <Button
+        android:text="Next Day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:id="@+id/next" />
+
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
@@ -55,30 +69,6 @@
             android:layout_height="wrap_content"
             android:padding="0dp" >
 
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="20dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="60dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="100dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="140dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="180dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="220dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="260dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="300dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="340dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="380dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="420dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="460dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="500dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="540dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="580dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="620dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="660dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="700dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="740dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="780dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="820dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="860dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="900dp"/>
-            <View android:background="#777" android:layout_width = "fill_parent" android:layout_height="1dp" android:layout_marginTop="940dp"/>
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
@@ -88,14 +78,14 @@
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout2"
-                    android:layout_width="20dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:padding="0dp" >
 
                     <View android:background="#aaa" android:layout_width = "1dp" android:layout_height="fill_parent" android:layout_alignParentRight="true"/>
 
-                    <TextView
+                    <Button
                         android:id="@+id/twelveam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -103,7 +93,7 @@
                         android:gravity="center"
                         android:text="12:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/oneam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -111,7 +101,7 @@
                         android:gravity="center"
                         android:text="01:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/twoam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -119,7 +109,7 @@
                         android:gravity="center"
                         android:text="02:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/threeam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -127,7 +117,7 @@
                         android:gravity="center"
                         android:text="03:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/fouram"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -135,7 +125,7 @@
                         android:gravity="center"
                         android:text="04:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/fiveam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -143,7 +133,7 @@
                         android:gravity="center"
                         android:text="05:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/sixam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -151,7 +141,7 @@
                         android:gravity="center"
                         android:text="06:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/sevenam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -159,7 +149,7 @@
                         android:gravity="center"
                         android:text="07:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/eightam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -167,7 +157,7 @@
                         android:gravity="center"
                         android:text="08:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/nineam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -175,7 +165,7 @@
                         android:gravity="center"
                         android:text="09:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/tenam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -183,7 +173,7 @@
                         android:gravity="center"
                         android:text="10:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/elevenam"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -191,7 +181,7 @@
                         android:gravity="center"
                         android:text="11:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/twelvepm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -199,7 +189,7 @@
                         android:gravity="center"
                         android:text="12:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/onepm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -207,7 +197,7 @@
                         android:gravity="center"
                         android:text="13:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/twopm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -215,7 +205,7 @@
                         android:gravity="center"
                         android:text="14:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/threepm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -223,7 +213,7 @@
                         android:gravity="center"
                         android:text="15:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/fourpm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -231,7 +221,7 @@
                         android:gravity="center"
                         android:text="16:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/fivepm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -239,7 +229,7 @@
                         android:gravity="center"
                         android:text="17:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/sixpm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -247,7 +237,7 @@
                         android:gravity="center"
                         android:text="18:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/sevenpm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -255,7 +245,7 @@
                         android:gravity="center"
                         android:text="19:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/eightpm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -263,7 +253,7 @@
                         android:gravity="center"
                         android:text="20:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/ninepm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -271,7 +261,7 @@
                         android:gravity="center"
                         android:text="21:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/tenpm"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -279,7 +269,7 @@
                         android:gravity="center"
                         android:text="22:00" />
 
-                    <TextView
+                    <Button
                         android:id="@+id/elevenpm"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
@@ -294,6 +284,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="14"
                     android:padding="0dp" >
+
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
