@@ -33,6 +33,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_schedule);
 
         previousButton = (Button) findViewById(R.id.previous);
+        previousButton.setOnClickListener(this);
         nextButton = (Button) findViewById(R.id.next);
         nextButton.setOnClickListener(this);
         // submit button
@@ -104,6 +105,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 }
                 dayOfWeek.setText(days[daynum]);
                 fillSchedule();
+                break;
 
             case R.id.previous:
                 if (daynum != 0) {
@@ -113,279 +115,183 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 }
                 dayOfWeek.setText(days[daynum]);
                 fillSchedule();
+                break;
 
             case R.id.twelveam:
-                if (schedule[daynum][0] == null || schedule[daynum][0].equals("0")) {
-                    twelveam.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][0] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    twelveam.setBackgroundColor(Color.RED);
-                    schedule[daynum][0] = "0";
-                }
-
+                changeScheduleButton(0, twelveam);
                 break;
 
             case R.id.oneam:
-                if (schedule[daynum][1] == null || schedule[daynum][1].equals("0")) {
-                    oneam.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][1] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    oneam.setBackgroundColor(Color.RED);
-                    schedule[daynum][1] = "0";
-                }
+                changeScheduleButton(1, oneam);
                 break;
 
             case R.id.twoam:
-                if (schedule[daynum][2] == null || schedule[daynum][2].equals("0")) {
-                    twoam.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][2] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    twoam.setBackgroundColor(Color.RED);
-                    schedule[daynum][2] = "0";
-                }
+                changeScheduleButton(2, twoam);
                 break;
 
             case R.id.threeam:
-                if (schedule[daynum][3] == null || schedule[daynum][3].equals("0")) {
-                    threeam.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][3] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    threeam.setBackgroundColor(Color.RED);
-                    schedule[daynum][3] = "0";
-                }
-
+                changeScheduleButton(3, threeam);
                 break;
             case R.id.fouram:
-                if (schedule[daynum][4] == null || schedule[daynum][4].equals("0")) {
-                    fouram.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][4] = "1";
-
-                } else if (schedule[daynum][4].equals("1")) {
-                    fouram.setBackgroundColor(Color.RED);
-                    schedule[daynum][4] = "0";
-                }
+                changeScheduleButton(4, fouram);
                 break;
 
             case R.id.fiveam:
-                if (schedule[daynum][5] == null || schedule[daynum][5].equals("0")) {
-                    fiveam.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][5] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    fiveam.setBackgroundColor(Color.RED);
-                    schedule[daynum][5] = "0";
-                }
+                changeScheduleButton(5, fiveam);
                 break;
 
             case R.id.sixam:
-                if (schedule[daynum][6] == null || schedule[daynum][6].equals("0")) {
-                    sixam.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][6] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    sixam.setBackgroundColor(Color.RED);
-                    schedule[daynum][6] = "0";
-                }
+                changeScheduleButton(6, sixam);
                 break;
 
             case R.id.sevenam:
-                if (schedule[daynum][7] == null || schedule[daynum][7].equals("0")) {
-                    sevenam.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][7] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    sevenam.setBackgroundColor(Color.RED);
-                    schedule[daynum][7] = "0";
-                }
+                changeScheduleButton(7, sevenam);
                 break;
 
             case R.id.eightam:
-                if (schedule[daynum][8] == null || schedule[daynum][8].equals("0")) {
-                    eightam.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][8] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    eightam.setBackgroundColor(Color.RED);
-                    schedule[daynum][8] = "0";
-                }
+                changeScheduleButton(8, eightam);
                 break;
 
             case R.id.nineam:
-                if (schedule[daynum][9] == null || schedule[daynum][9].equals("0")) {
-                    nineam.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][9] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    nineam.setBackgroundColor(Color.RED);
-                    schedule[daynum][9] = "0";
-                }
+                changeScheduleButton(9, nineam);
                 break;
 
             case R.id.tenam:
-                if (schedule[daynum][10] == null || schedule[daynum][10].equals("0")) {
-                    tenam.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][10] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    tenam.setBackgroundColor(Color.RED);
-                    schedule[daynum][10] = "0";
-                }
+                changeScheduleButton(10, tenam);
                 break;
 
             case R.id.elevenam:
-                if (schedule[daynum][11] == null || schedule[daynum][11].equals("0")) {
-                    elevenam.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][11] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    elevenam.setBackgroundColor(Color.RED);
-                    schedule[daynum][11] = "0";
-                }
+                changeScheduleButton(11, elevenam);
                 break;
 
             case R.id.twelvepm:
-                if (schedule[daynum][12] == null || schedule[daynum][12].equals("0")) {
-                    twelvepm.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][12] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    twelvepm.setBackgroundColor(Color.RED);
-                    schedule[daynum][12] = "0";
-                }
-
+                changeScheduleButton(12, twelvepm);
                 break;
 
             case R.id.onepm:
-                if (schedule[daynum][13] == null || schedule[daynum][13].equals("0")) {
-                    onepm.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][13] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    onepm.setBackgroundColor(Color.RED);
-                    schedule[daynum][13] = "0";
-                }
-
+                changeScheduleButton(13, onepm);
                 break;
 
             case R.id.twopm:
-                if (schedule[daynum][14] == null || schedule[daynum][14].equals("0")) {
-                    twopm.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][14] = "1";
-
-                } else if (schedule[daynum][0].equals("1")) {
-                    twopm.setBackgroundColor(Color.RED);
-                    schedule[daynum][14] = "0";
-                }
+                changeScheduleButton(14, twopm);
                 break;
 
             case R.id.threepm:
-                if (schedule[daynum][15] == null || schedule[daynum][15].equals("0")) {
-                    threepm.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][15] = "1";
-
-                } else if (schedule[daynum][15].equals("1")) {
-                    threepm.setBackgroundColor(Color.RED);
-                    schedule[daynum][15] = "0";
-                }
+                changeScheduleButton(15, threepm);
                 break;
 
             case R.id.fourpm:
-                if (schedule[daynum][16] == null || schedule[daynum][16].equals("0")) {
-                    fourpm.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][16] = "1";
-
-                } else if (schedule[daynum][16].equals("1")) {
-                    fourpm.setBackgroundColor(Color.RED);
-                    schedule[daynum][16] = "0";
-                }
+                changeScheduleButton(16, fourpm);
                 break;
 
             case R.id.fivepm:
-                if (schedule[daynum][17] == null || schedule[daynum][17].equals("0")) {
-                    fivepm.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][17] = "1";
-
-                } else if (schedule[daynum][15].equals("1")) {
-                    fivepm.setBackgroundColor(Color.RED);
-                    schedule[daynum][17] = "0";
-                }
-                break;
+                changeScheduleButton(17, fivepm);
 
             case R.id.sixpm:
-                if (schedule[daynum][18] == null || schedule[daynum][18].equals("0")) {
-                    sixpm.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][18] = "1";
-
-                } else if (schedule[daynum][18].equals("1")) {
-                    sixpm.setBackgroundColor(Color.RED);
-                    schedule[daynum][18] = "0";
-                }
+                changeScheduleButton(18, sixpm);
                 break;
 
             case R.id.sevenpm:
-                if (schedule[daynum][19] == null || schedule[daynum][19].equals("0")) {
-                    sevenpm.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][19] = "1";
-
-                } else if (schedule[daynum][19].equals("1")) {
-                    sevenpm.setBackgroundColor(Color.RED);
-                    schedule[daynum][19] = "0";
-                }
+                changeScheduleButton(19, sevenpm);
                 break;
 
             case R.id.eightpm:
-                if (schedule[daynum][20] == null || schedule[daynum][20].equals("0")) {
-                    eightpm.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][20] = "1";
-
-                } else if (schedule[daynum][20].equals("1")) {
-                    eightpm.setBackgroundColor(Color.RED);
-                    schedule[daynum][20] = "0";
-                }
+                changeScheduleButton(20, eightpm);
                 break;
 
             case R.id.ninepm:
-                if (schedule[daynum][21] == null || schedule[daynum][21].equals("0")) {
-                    ninepm.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][21] = "1";
-
-                } else if (schedule[daynum][21].equals("1")) {
-                    ninepm.setBackgroundColor(Color.RED);
-                    schedule[daynum][21] = "0";
-                }
+                changeScheduleButton(21, ninepm);
                 break;
 
             case R.id.tenpm:
-                if (schedule[daynum][22] == null || schedule[daynum][22].equals("0")) {
-                    tenpm.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][22] = "1";
-
-                } else if (schedule[daynum][22].equals("1")) {
-                    tenpm.setBackgroundColor(Color.RED);
-                    schedule[daynum][22] = "0";
-                }
+                changeScheduleButton(22, tenpm);
                 break;
 
             case R.id.elevenpm:
-                if (schedule[daynum][23] == null || schedule[daynum][23].equals("0")) {
-                    elevenpm.setBackgroundColor(Color.GREEN);
-                    schedule[daynum][23] = "1";
-
-                } else if (schedule[daynum][23].equals("1")) {
-                    elevenpm.setBackgroundColor(Color.RED);
-                    schedule[daynum][23] = "0";
-                }
+                changeScheduleButton(23, elevenpm);
                 break;
         }
     }
 
-
-
     public void fillSchedule(){
+        int i = 0;
+        for (String s: schedule[daynum]) {
+            switch(i) {
+                case 0:
+                    setScheduleButton(i, twelveam);
+                case 1:
+                    setScheduleButton(i, oneam);
+                case 2:
+                    setScheduleButton(i, twoam);
+                case 3:
+                    setScheduleButton(i, threeam);
+                case 4:
+                    setScheduleButton(i, fouram);
+                case 5:
+                    setScheduleButton(i, fiveam);
+                case 6:
+                    setScheduleButton(i, sixam);
+                case 7:
+                    setScheduleButton(i, sevenam);
+                case 8:
+                    setScheduleButton(i, eightam);
+                case 9:
+                    setScheduleButton(i, nineam);
+                case 10:
+                    setScheduleButton(i, tenam);
+                case 11:
+                    setScheduleButton(i, elevenam);
+                case 12:
+                    setScheduleButton(i, twelvepm);
+                case 13:
+                    setScheduleButton(i, onepm);
+                case 14:
+                    setScheduleButton(i, twopm);
+                case 15:
+                    setScheduleButton(i, threepm);
+                case 16:
+                    setScheduleButton(i, fourpm);
+                case 17:
+                    setScheduleButton(i, fivepm);
+                case 18:
+                    setScheduleButton(i, sixpm);
+                case 19:
+                    setScheduleButton(i, sevenpm);
+                case 20:
+                    setScheduleButton(i, eightpm);
+                case 21:
+                    setScheduleButton(i, ninepm);
+                case 22:
+                    setScheduleButton(i, tenpm);
+                case 23:
+                    setScheduleButton(i, elevenpm);
+            }
+            i++;
+        }
 
+    }
+
+    public void setScheduleButton(int value, Button toChange) {
+
+        if (schedule[daynum][value] == null) {
+            toChange.setBackgroundColor(Color.LTGRAY);
+        } else if (schedule[daynum][value].equals("0")) {
+            toChange.setBackgroundColor(Color.RED);
+
+        } else if (schedule[daynum][value].equals("1")) {
+            toChange.setBackgroundColor(Color.GREEN);
+        }
+    }
+
+    public void changeScheduleButton(int value, Button toChange) {
+
+        if (schedule[daynum][value] == null || schedule[daynum][value].equals("0")) {
+            toChange.setBackgroundColor(Color.GREEN);
+            schedule[daynum][value] = "1";
+
+        } else if (schedule[daynum][value].equals("1")) {
+            toChange.setBackgroundColor(Color.RED);
+            schedule[daynum][value] = "0";
+        }
     }
 }
