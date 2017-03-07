@@ -20,6 +20,7 @@ import backend.database.DatabaseAdapter;
 
 public class DiscoverFragment extends Fragment {
 
+    private String[] newStudentID;
     DatabaseAdapter db;
     private String uEmail;
     private Student uStudent;
@@ -30,7 +31,8 @@ public class DiscoverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        uEmail = getArguments().getString("userEmail");
+        newStudentID = getArguments().getStringArray("identity");
+        uEmail = newStudentID[2];
 
         //returning our layout file
         return inflater.inflate(R.layout.fragment_discover, container, false);
