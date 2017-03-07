@@ -109,7 +109,21 @@ public class LoginActivity extends AppCompatActivity {
             loginButton.setText("Success!");
             correctLogin.setVisibility(View.VISIBLE);
             Intent mainIntent = new Intent(this, MainActivity.class);
-            mainIntent.putExtra("userEmail", email);
+
+            /**
+             * For devs: Details of the newStudentID package are as follows:
+             * newStudentID[0]: First name
+             * newStudentID[1]: Last name
+             * newStudentID[2]: Email Address
+             * newStudentID[3]: Password
+             * newStudentID[4]: Course
+             * newStudentID[5]: Previous Course Taken
+             * newStudentID[6]: Elective Course Taken
+             * newStudentID[7]: Favourite Pastime Activity
+             */
+            String[] newStudentID = {foundStudent.getFname(), foundStudent.getLname(),
+                                        foundStudent.getEmail(), foundStudent.getPass()};
+            mainIntent.putExtra("identity", newStudentID);
             startActivity(mainIntent);
 
 

@@ -155,7 +155,8 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 db.addCourse(newCourse);
 
                 Intent mainIntent = new Intent(this, MainActivity.class);
-                mainIntent.putExtra("userEmail", newStudentID[2]);
+                mainIntent.putExtra("identity", newStudentID);
+//                mainIntent.putExtra("userEmail", newStudentID[2]);
                 startActivity(mainIntent);
             case R.id.next:
                 if (daynum != 6) {

@@ -25,6 +25,7 @@ import backend.database.DatabaseAdapter;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private String[] newStudentID;
     DatabaseAdapter db;
 
     static final String STATE_EMAIL = "email";
@@ -47,7 +48,8 @@ public class MainActivity extends AppCompatActivity
         db = new DatabaseAdapter(this);
 
         Intent intent = getIntent();
-        uEmail = intent.getExtras().getString("userEmail");
+        newStudentID = intent.getExtras().getStringArray("identity");
+        uEmail = newStudentID[2];
         uStudent = db.getStudent(uEmail);
         uName = uStudent.getFname() + " " + uStudent.getLname();
 
@@ -137,7 +139,8 @@ public class MainActivity extends AppCompatActivity
     private void displaySelectedScreen(int itemId) {
 
         Bundle bundle = new Bundle();
-        bundle.putString("userEmail", uEmail);
+//        bundle.putString("userEmail", uEmail);
+        bundle.putStringArray("identity", newStudentID);
 
         //creating fragment object
         Fragment fragment = null;
@@ -154,18 +157,19 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_discover:
                 fragment = new DiscoverFragment();
+                fragment.setArguments(bundle);
                 break;
             case R.id.nav_home:
                 fragment = new HomeFragment();
                 break;
             case R.id.nav_help:
                 miscIntent = new Intent(this, HelpActivity.class);
-                miscIntent.putExtra("userEmail", uEmail);
+                miscIntent.putExtra("identity", newStudentID);
                 startActivity(miscIntent);
                 break;
             case R.id.nav_settings:
                 miscIntent = new Intent(this, SettingsActivity.class);
-                miscIntent.putExtra("userEmail", uEmail);
+                miscIntent.putExtra("identity", newStudentID);
                 startActivity(miscIntent);
                 break;
         }
