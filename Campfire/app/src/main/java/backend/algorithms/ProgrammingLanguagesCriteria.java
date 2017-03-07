@@ -2,7 +2,7 @@ package backend.algorithms;
 
 import java.util.ArrayList;
 
-public class ProgrammingLanguagesCriteria extends ArrayCriteria{
+public class ProgrammingLanguagesCriteria extends ArrayCriteria<String>{
 
 	/**
 	 * ID was matched
@@ -12,7 +12,6 @@ public class ProgrammingLanguagesCriteria extends ArrayCriteria{
 
 	public ProgrammingLanguagesCriteria(ArrayList<String> checks) {
 		super(checks);
-		
 	}
 
 	
@@ -20,7 +19,6 @@ public class ProgrammingLanguagesCriteria extends ArrayCriteria{
 	public String getID(){
 		return this.ID;
 	}
-	
 	
 	@Override
 	public double Compare(Comparable other){

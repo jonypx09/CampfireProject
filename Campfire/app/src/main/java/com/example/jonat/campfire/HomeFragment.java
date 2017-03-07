@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 import backend.algorithms.Category;
 import backend.algorithms.Comparable;
+import backend.algorithms.HobbiesCriteria;
+import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
@@ -32,7 +34,10 @@ public class HomeFragment extends Fragment {
     private Context mContext;
     private Student uStudent;
     private ArrayList<Student> sampleStudents;
-    private ArrayList<Category> c1;
+    private ArrayList<String> c1;
+    private ArrayList<String> c2;
+    ArrayList<Comparable> crit;
+
 
     @Nullable
     @Override
@@ -49,20 +54,35 @@ public class HomeFragment extends Fragment {
         uStudent = ((MainActivity) getActivity()).getCurrentStudent();
 
         c1 = new ArrayList<>();
-        c1.add(new Category("Hardware", 1));
-        c1.add(new Category("Kernel Programming", 2));
-        c1.add(new Category("Java", 1));
-        c1.add(new Category("Python Dev", 3));
+        c1.add("Java");
+        c1.add("HTML");
+        c1.add("CSS");
+        c1.add("JavaScript");
+
+        c2 = new ArrayList<>();
+        c2.add("Running");
+        c2.add("Video Games");
+        c2.add("Reading");
+        c2.add("Watching Sports");
+
+        ProgrammingLanguagesCriteria languages = new ProgrammingLanguagesCriteria(c1);
+        HobbiesCriteria hobbies = new HobbiesCriteria(c2);
+
+        crit = new ArrayList<>();
+        crit.add(languages);
+        crit.add(hobbies);
 
         sampleStudents = new ArrayList<>();
-        sampleStudents.add(new Student("Adam", "Capparelli", "adam@mail.com", "12345678", c1, null));
-        sampleStudents.add(new Student("Andrew", "Goupil", "andrew@mail.com", "12345678", c1, null));
-        sampleStudents.add(new Student("Fullchee", "Zhang", "fullchee@mail.com", "12345678", c1, null));
-        sampleStudents.add(new Student("Jonathan", "Pelastine", "jonathan@mail.com", "12345678", c1, null));
-        sampleStudents.add(new Student("Quinn", "Daneyko", "quinn@mail.com", "12345678", c1, null));
-        sampleStudents.add(new Student("Rod", "Mazloomi", "rod@mail.com", "12345678", c1, null));
-        sampleStudents.add(new Student("Vlad", "Chapurny", "vlad@mail.com", "12345678", c1, null));
-
+        sampleStudents.add(new Student("Adam", "Capparelli", "adam@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Andrew", "Goupil", "andrew@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Fullchee", "Zhang", "fullchee@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Jonathan", "Pelastine", "jonathan@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Quinn", "Daneyko", "quinn@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Rod", "Mazloomi", "rod@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Vlad", "Chapurny", "vlad@mail.com", "12345678", crit));
+        for (Student s : sampleStudents) {
+            s.setDescription("Sample Description");
+        }
         getActivity().setTitle("Home");
         mSwipeView = (SwipePlaceHolderView) getActivity().findViewById(R.id.swipeView);
         mContext = getActivity().getApplicationContext();

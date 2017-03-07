@@ -12,7 +12,7 @@ import android.widget.TextView;
 /**
  * Created by Quinn on 2/26/2017.
  */
-
+//TODO: Should be using ArrayLists instead of String[] probably.
 public class MyCampfireList extends ArrayAdapter<String> {
     private String[] names;
     private String[] desc;

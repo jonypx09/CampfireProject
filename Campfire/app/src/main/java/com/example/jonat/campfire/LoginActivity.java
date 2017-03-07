@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import java.util.ArrayList;
+
+import backend.algorithms.Comparable;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
@@ -33,6 +36,12 @@ public class LoginActivity extends AppCompatActivity {
 
         //Connect to the database
         db = new DatabaseAdapter(this);
+        //Test Student so we don't need to signup.
+        if (db.getStudent("test@mail.com") == null) {
+            ArrayList<Comparable> crit = new ArrayList<>();
+            db.addStudent(new Student("John", "Smith", "test@mail.com", "12345678", crit));
+        }
+        System.out.println(db.getStudent("test@mail.com"));
 
         load = (ProgressBar) findViewById(R.id.loginProgress);
         loginButton = (Button) findViewById(R.id.loginButton);

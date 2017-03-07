@@ -2,23 +2,23 @@ package backend.algorithms;
 
 import java.util.ArrayList;
 
-public abstract class ArrayCriteria implements Comparable{
+public abstract class ArrayCriteria<T> implements Comparable{
 
 	/**
 	 * ID was matched
 	 */
 	private static final long serialVersionUID = 1952358793540268673L;
-	private ArrayList<String> values;
+	private ArrayList<T> values;
 	
-	public ArrayCriteria(ArrayList<String> checks){
+	public ArrayCriteria(ArrayList<T> checks){
 		this.values = checks;
 	}
-	
+
 	@Override
 	public double Compare(Comparable other){
 		double score = 0;
-		for (String str: this.getValues()){
-			if (((ArrayCriteria) other).getValues().contains(str)){
+		for (T val: this.getItems()){
+			if (((ArrayCriteria<T>) other).getItems().contains(val)){
 				score++;
 			}
 		}
@@ -26,7 +26,8 @@ public abstract class ArrayCriteria implements Comparable{
 		
 	}
 
-	public ArrayList<String> getValues() {
+	@Override
+	public ArrayList<T> getItems() {
 		return values;
 	}
 	

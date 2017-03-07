@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import backend.database.*;
+import backend.database.DatabaseAdapter;
 
 public class PromoActivity extends AppCompatActivity {
 

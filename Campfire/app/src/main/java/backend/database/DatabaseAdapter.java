@@ -77,7 +77,6 @@ public class DatabaseAdapter {
             String lname = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_LNAME));
             String pass = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_PASS));
             String description = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_DESCRIPTION));
-            ArrayList<Category> categories = new ArrayList<Category>();
             ArrayList<Comparable> comparable = new ArrayList<Comparable>();
             stu = new Student(fname, lname, email, pass, comparable);
             stu.setDescription(description);

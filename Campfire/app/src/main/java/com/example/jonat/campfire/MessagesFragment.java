@@ -1,12 +1,9 @@
 package com.example.jonat.campfire;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ShareCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import backend.database.DatabaseAdapter;
-
-import static android.R.attr.fragment;
 
 /**
  * Created by jonat on 25-Feb-2017.
