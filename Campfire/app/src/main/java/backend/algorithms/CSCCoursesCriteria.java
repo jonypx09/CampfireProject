@@ -1,8 +1,8 @@
-package backend.algorithms;
+package algorithms;
 
 import java.util.ArrayList;
 
-public class CSCCoursesCriteria extends ArrayCriteria{
+public class CSCCoursesCriteria extends ArrayCriteria<String>{
 
 	/**
 	 * ID was matched
@@ -12,7 +12,6 @@ public class CSCCoursesCriteria extends ArrayCriteria{
 
 	public CSCCoursesCriteria(ArrayList<String> checks) {
 		super(checks);
-		
 	}
 
 	@Override
@@ -28,5 +27,4 @@ public class CSCCoursesCriteria extends ArrayCriteria{
 		}
 		return super.Compare(other);
 	}
-
 }

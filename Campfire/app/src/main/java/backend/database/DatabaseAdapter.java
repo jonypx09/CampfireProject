@@ -1,4 +1,4 @@
-package backend.database;
+package database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,10 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import backend.algorithms.Category;
-import backend.algorithms.Comparable;
-import backend.algorithms.Course;
-import backend.algorithms.Student;
+import algorithms.Category;
+import algorithms.Comparable;
+import algorithms.Course;
+import algorithms.Student;
 
 /**
  * Class to manage what queries and data are being passed to and from the database.
@@ -79,7 +79,7 @@ public class DatabaseAdapter {
             String description = cursor.getString(cursor.getColumnIndex(DatabaseContract.StudentContract.COLUMN_NAME_DESCRIPTION));
             ArrayList<Category> categories = new ArrayList<Category>();
             ArrayList<Comparable> comparable = new ArrayList<Comparable>();
-            stu = new Student(fname, lname, email, pass, comparable);
+            stu = new Student(fname, lname, email, pass, categories, comparable);
             stu.setDescription(description);
         }
 

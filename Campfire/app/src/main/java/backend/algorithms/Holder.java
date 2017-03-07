@@ -1,4 +1,4 @@
-package backend.algorithms;
+package algorithms;
 
 /*
  * A holder class for double values in a Hashmap.

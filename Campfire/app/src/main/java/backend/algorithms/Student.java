@@ -1,4 +1,4 @@
-package backend.algorithms;
+package algorithms;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,6 +81,48 @@ public class Student {
 	
 	public HashMap<String, ArrayList<Student>> getAvailablematches() {
 		return availablematches;
+	}
+	
+	public ArrayList<String> getCSCCourses(){
+		return findArrayComparable("Previous CSC Courses");
+	}
+	
+	public ArrayList<String> getElectives(){
+		return findArrayComparable("Electives");
+	}
+	
+	public ArrayList<String> getHobbies(){
+		return findArrayComparable("Hobbies");
+	}
+	
+	public ArrayList<String> getProgramming(){
+		return findArrayComparable("Programming Languages");
+	}
+	
+	public HashMap<String, ArrayList<String>> getCalendar(){
+		return (HashMap<String, ArrayList<String>>) findMapComparable("Time Schedule");
+	}
+	
+	/*
+	 * Extracts the criteria from comparable and returns it as an ArrayList 
+	 * For further information see test case - extractComparables
+	 */
+	public ArrayList<String> findArrayComparable(String search){
+		for(Comparable criteria: this.getCriteria()){
+			if(criteria.getID() == search){
+				return (ArrayList<String>) criteria.getItems();
+			}
+		}
+		return null;
+	}
+	
+	public HashMap<String, ArrayList<String>> findMapComparable(String search){
+		for(Comparable criteria: this.getCriteria()){
+			if(criteria.getID() == search){
+				return (HashMap<String, ArrayList<String>>) criteria.getItems();
+			}
+		}
+		return null;
 	}
 	
 	public void addAvailablematches(Course course, Student s) {

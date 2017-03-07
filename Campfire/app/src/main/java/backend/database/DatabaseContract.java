@@ -1,4 +1,4 @@
-package backend.database;
+package database;
 
 import android.provider.BaseColumns;
 
