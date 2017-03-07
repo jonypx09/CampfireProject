@@ -18,9 +18,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import backend.algorithms.Course;
+import backend.algorithms.Student;
+import backend.database.DatabaseAdapter;
+
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener{
 
     private String[] newStudentID;
+    DatabaseAdapter db;
 
     Button previousButton, nextButton, submitButton;
     Button twelveam, oneam, twoam, threeam, fouram, fiveam, sixam, sevenam, eightam, nineam, tenam,
@@ -44,8 +49,23 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_schedule);
         setTitle("Set Availability");
 
+        //Connect to the database
+        db = new DatabaseAdapter(this);
+
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
+
+        /**
+         * For devs: Details of the newStudentID package are as follows:
+         * newStudentID[0]: First name
+         * newStudentID[1]: Last name
+         * newStudentID[2]: Email Address
+         * newStudentID[3]: Password
+         * newStudentID[4]: Course
+         * newStudentID[5]: Previous Course Taken
+         * newStudentID[6]: Elective Course Taken
+         * newStudentID[7]: Favourite Pastime Activity
+         */
 
         scheduleScroll = (ScrollView) findViewById(R.id.scrollView1);
 
@@ -55,7 +75,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         nextButton.setOnClickListener(this);
         submitButton = (Button) findViewById(R.id.submit);
         submitButton.setOnClickListener(this);
-        submitButton.setEnabled(false);
+//        submitButton.setEnabled(false);
         twelveam = (Button) findViewById(R.id.twelveam);
         twelveam.setOnClickListener(this);
         oneam = (Button) findViewById(R.id.oneam);
@@ -117,8 +137,25 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         switch(v.getId())
         {
             case R.id.submit:
+
+                /**
+                 * 1. Create the comparables associated with the student's preferences (Refer to
+                 *    the comment above to determine which index of newStudentID to use.
+                 * 2. Create a new Student Object as well as Course Object
+                 * 2. Import into Database
+                 * 3. Perform matching in the MainActivity, not here
+                 */
+                Course newCourse = new Course(newStudentID[3], "Some Course Name", "Some Instructor");
+
+                /**
+                 * The last argument should NOT be null; it is there to keep Gradle happy :P
+                 */
+                Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], null);
+                db.addStudent(newStudent);
+                db.addCourse(newCourse);
+
                 Intent mainIntent = new Intent(this, MainActivity.class);
-                mainIntent.putExtra("userEmail", uEmail);
+                mainIntent.putExtra("userEmail", newStudentID[2]);
                 startActivity(mainIntent);
             case R.id.next:
                 if (daynum != 6) {

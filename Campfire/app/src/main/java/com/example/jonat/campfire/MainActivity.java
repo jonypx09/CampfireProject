@@ -40,7 +40,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Connect to the database
+        /**
+         * 1. Connect to the Database
+         * 2. Begin matching and display results in the form of cards
+         */
         db = new DatabaseAdapter(this);
 
         Intent intent = getIntent();
