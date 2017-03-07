@@ -6,11 +6,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 
-import backend.algorithms.*;
-import backend.database.*;
+import backend.algorithms.CSCCoursesCriteria;
+import backend.algorithms.ElectivesCriteria;
+import backend.algorithms.HobbiesCriteria;
+import backend.algorithms.ProgrammingLanguagesCriteria;
+import backend.database.DatabaseAdapter;
 
 public class PersonalizeActivity extends AppCompatActivity {
 

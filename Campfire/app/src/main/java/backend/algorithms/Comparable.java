@@ -1,4 +1,4 @@
-package algorithms;
+package backend.algorithms;
 
 import java.io.Serializable;
 import java.util.ArrayList;

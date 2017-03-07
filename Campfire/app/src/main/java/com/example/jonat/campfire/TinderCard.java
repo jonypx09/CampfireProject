@@ -19,8 +19,8 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOut;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import backend.algorithms.Category;
 import backend.algorithms.Student;
 
 /**
@@ -37,8 +37,11 @@ public class TinderCard {
     @View(R.id.quickFactTxt)
     private TextView quickBioTxt;
 
-    @View(R.id.userInfoListView)
+    @View(R.id.userPLanguagesListView)
     private ListView userInfoListView;
+
+    @View(R.id.userHobbiesListView)
+    private ListView userHobbiesListView;
 
     private Context mContext;
     private SwipePlaceHolderView mSwipeView;
@@ -55,12 +58,18 @@ public class TinderCard {
         //Glide.with(mContext).load(R.drawable.person_icon).into(profileImageView);
         nameTxt.setText(student.getFname() + " " + student.getLname());
         quickBioTxt.setText(student.getDescription());
-        ArrayList<String> stuInfo = new ArrayList();
-        for (Category c : student.getCriteria()) {
-            stuInfo.add(" " + c.getCategory());
+        ArrayList<String> stuLangs = new ArrayList();
+        ArrayList<String> stuHobbies = new ArrayList();
+        for (String s : student.getProgramming()) {
+            stuLangs.add(" " + s);
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.mContext, R.layout.criteria_list_item, stuInfo);
+        for (String s : student.getHobbies()) {
+            stuHobbies.add(" " + s);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.mContext, R.layout.criteria_list_item, stuLangs);
         userInfoListView.setAdapter(adapter);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this.mContext, R.layout.criteria_list_item, stuHobbies);
+        userHobbiesListView.setAdapter(adapter2);
     }
 
     @Click(R.id.profileImageView)

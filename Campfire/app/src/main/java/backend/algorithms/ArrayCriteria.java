@@ -1,4 +1,4 @@
-package algorithms;
+package backend.algorithms;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ public abstract class ArrayCriteria<T> implements Comparable{
 	public ArrayCriteria(ArrayList<T> checks){
 		this.values = checks;
 	}
-	
+
 	@Override
 	public double Compare(Comparable other){
 		double score = 0;

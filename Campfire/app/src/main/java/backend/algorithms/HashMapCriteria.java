@@ -1,4 +1,4 @@
-package algorithms;
+package backend.algorithms;
 
 import java.util.ArrayList;
 import java.util.HashMap;
