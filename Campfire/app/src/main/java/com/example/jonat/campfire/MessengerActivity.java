@@ -19,6 +19,7 @@ import backend.database.DatabaseAdapter;
 public class MessengerActivity extends AppCompatActivity {
 
     DatabaseAdapter db;
+    private String[] newStudentID;
     private String uEmail;
     private ListView listView;
     private ImageView btnSend;
@@ -37,7 +38,8 @@ public class MessengerActivity extends AppCompatActivity {
         db = new DatabaseAdapter(this);
 
         Intent intent = getIntent();
-        uEmail = intent.getExtras().getString("userEmail");
+        newStudentID = intent.getExtras().getStringArray("identity");
+        uEmail = newStudentID[2];
 
         chatMessages = new ArrayList<>();
 
@@ -75,7 +77,7 @@ public class MessengerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         if (item.getItemId() == android.R.id.home){
             Intent mainIntent = new Intent(this, MainActivity.class);
-            mainIntent.putExtra("userEmail", uEmail);
+            mainIntent.putExtra("identity", newStudentID);
             startActivity(mainIntent);
             return true;
         }
