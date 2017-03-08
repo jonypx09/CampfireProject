@@ -18,14 +18,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import backend.algorithms.CSCCoursesCriteria;
+import backend.algorithms.Comparable;
 import backend.algorithms.Course;
+import backend.algorithms.ElectivesCriteria;
+import backend.algorithms.HobbiesCriteria;
+import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener{
 
     private String[] newStudentID;
+    private String[] programmingLanguages;
     DatabaseAdapter db;
+
+    private ArrayList<Comparable> newStudentCriteria = new ArrayList<Comparable>();
+    private ProgrammingLanguagesCriteria newStudentLanguages;
+    private CSCCoursesCriteria newStudentPreviousCourses;
+    private ElectivesCriteria newStudentElectives;
+    private HobbiesCriteria newStudentHobbies;
 
     Button previousButton, nextButton, submitButton;
     Button twelveam, oneam, twoam, threeam, fouram, fiveam, sixam, sevenam, eightam, nineam, tenam,
@@ -54,6 +66,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
 
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
+        programmingLanguages = intent.getExtras().getStringArray("programmingLanguages");
 
         /**
          * For devs: Details of the newStudentID package are as follows:
@@ -146,17 +159,36 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                  * 3. Perform matching in the MainActivity, not here
                  */
                 Course newCourse = new Course(newStudentID[3], "Some Course Name", "Some Instructor");
+                ArrayList<String> programmingLang = new ArrayList(Arrays.asList(programmingLanguages));
+                newStudentLanguages = new ProgrammingLanguagesCriteria(programmingLang);
+
+                ArrayList<String> previousCourses = new ArrayList<String>();
+                previousCourses.add(0, newStudentID[5]);
+                newStudentPreviousCourses = new CSCCoursesCriteria(previousCourses);
+
+                ArrayList<String> electiveCourses = new ArrayList<String>();
+                electiveCourses.add(0, newStudentID[6]);
+                newStudentElectives = new ElectivesCriteria(electiveCourses);
+
+                ArrayList<String> pastime = new ArrayList<String>();
+                pastime.add(0, newStudentID[7]);
+                newStudentHobbies = new HobbiesCriteria(pastime);
+
+                newStudentCriteria.add(newStudentLanguages);
+                newStudentCriteria.add(newStudentPreviousCourses);
+                newStudentCriteria.add(newStudentElectives);
+                newStudentCriteria.add(newStudentHobbies);
+
 
                 /**
                  * The last argument should NOT be null; it is there to keep Gradle happy :P
                  */
-                Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], null);
+                Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], newStudentCriteria);
                 db.addStudent(newStudent);
                 db.addCourse(newCourse);
 
                 Intent mainIntent = new Intent(this, MainActivity.class);
                 mainIntent.putExtra("identity", newStudentID);
-//                mainIntent.putExtra("userEmail", newStudentID[2]);
                 startActivity(mainIntent);
             case R.id.next:
                 if (daynum != 6) {

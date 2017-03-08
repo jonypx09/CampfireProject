@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="serif"
                 android:paddingTop="16dp"
-                android:text="Previously Completed Course:"
+                android:text="Previously Completed CSC Course:"
                 android:textColor="@android:color/white" />
 
             <EditText
