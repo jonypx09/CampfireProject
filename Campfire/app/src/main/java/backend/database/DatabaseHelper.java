@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "Campfire.db";
 
     /* ---------- Queries to use for to create/delete tables in this database ---------- */
@@ -19,7 +19,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     DatabaseContract.StudentContract.COLUMN_NAME_FNAME + " TEXT," +
                     DatabaseContract.StudentContract.COLUMN_NAME_LNAME + " TEXT," +
                     DatabaseContract.StudentContract.COLUMN_NAME_PASS + " TEXT," +
-                    DatabaseContract.StudentContract.COLUMN_NAME_DESCRIPTION + " TEXT)";
+                    DatabaseContract.StudentContract.COLUMN_NAME_DESCRIPTION + " TEXT," +
+                    DatabaseContract.StudentContract.COLUMN_NAME_COMPARABLE + " TEXT)";
 
     private static final String SQL_DELETE_STUDENT_TABLE =
             "DROP TABLE IF EXISTS " + DatabaseContract.StudentContract.TABLE_NAME;

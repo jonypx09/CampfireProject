@@ -41,7 +41,7 @@
         <activity
             android:name=".PersonalizeActivity"
             android:parentActivityName=".SignUpActivity"
-            android:windowSoftInputMode="adjustNothing" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MessengerActivity"
             android:parentActivityName=".MainActivity"

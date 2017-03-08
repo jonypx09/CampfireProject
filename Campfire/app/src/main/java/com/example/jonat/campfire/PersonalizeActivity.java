@@ -6,7 +6,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import backend.algorithms.CSCCoursesCriteria;
 import backend.algorithms.ElectivesCriteria;
@@ -17,13 +20,16 @@ import backend.database.DatabaseAdapter;
 public class PersonalizeActivity extends AppCompatActivity {
 
     DatabaseAdapter db;
-
     private String[] newStudentID;
+    private String[] programmingLanguages = {null, null, null, null, null, null};
 
-    private ProgrammingLanguagesCriteria newStudentLang;
-    private CSCCoursesCriteria newStudentCourses;
-    private ElectivesCriteria newStudentElectives;
-    private HobbiesCriteria newStudentHobbies;
+    Spinner pastimeSpinner;
+    CheckBox pythonCheckbox;
+    CheckBox javaCheckbox;
+    CheckBox cCheckbox;
+    CheckBox htmlCheckbox;
+    CheckBox javascriptCheckbox;
+    CheckBox sqlCheckbox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,14 @@ public class PersonalizeActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
+
+        pastimeSpinner = (Spinner) findViewById(R.id.pastimeSpinner);
+        pythonCheckbox = (CheckBox) findViewById(R.id.pythonCheckbox);
+        javaCheckbox = (CheckBox) findViewById(R.id.javaCheckbox);
+        cCheckbox = (CheckBox) findViewById(R.id.cCheckbox);
+        htmlCheckbox = (CheckBox) findViewById(R.id.htmlCheckbox);
+        javascriptCheckbox = (CheckBox) findViewById(R.id.javascriptCheckbox);
+        sqlCheckbox = (CheckBox) findViewById(R.id.sqlCheckbox);
     }
 
     public void toScheduleScreen(View view){
@@ -56,7 +70,7 @@ public class PersonalizeActivity extends AppCompatActivity {
         electiveCourse = electiveCourse.trim();
 
         if (previousCourse.equals("") || electiveCourse.equals("") || previousCourse.length() != 8
-                || electiveCourse.length() != 8){
+                || electiveCourse.length() != 8 || pastimeSpinner.getSelectedItem().toString().equals("Choose an activity")){
             AlertDialog missingInfoDialog = new AlertDialog.Builder(PersonalizeActivity.this).create();
             if (previousCourse.length() != 8){
                 missingInfoDialog.setTitle("Invalid Previous Course Code");
@@ -64,6 +78,9 @@ public class PersonalizeActivity extends AppCompatActivity {
             }else if (electiveCourse.length() != 8) {
                 missingInfoDialog.setTitle("Invalid Elective Course Code");
                 missingInfoDialog.setMessage("Please enter a valid course code (i.e. CSC207H1)");
+            }else if (pastimeSpinner.getSelectedItem().toString().equals("Choose an activity")){
+                missingInfoDialog.setTitle("Choose a pastime");
+                missingInfoDialog.setMessage("You must choose a pastime activity");
             }else{
                 missingInfoDialog.setTitle("Missing Fields");
                 missingInfoDialog.setMessage("You are missing one or more fields");
@@ -76,8 +93,32 @@ public class PersonalizeActivity extends AppCompatActivity {
                     });
             missingInfoDialog.show();
         }else{
+            if (pythonCheckbox.isChecked()){
+                programmingLanguages[0] = "Python";
+            }
+            if (javaCheckbox.isChecked()){
+                programmingLanguages[1] = "Java";
+            }
+            if (cCheckbox.isChecked()){
+                programmingLanguages[2] = "C";
+            }
+            if (htmlCheckbox.isChecked()){
+                programmingLanguages[3] = "HTML";
+            }
+            if (javascriptCheckbox.isChecked()){
+                programmingLanguages[4] = "Javascript";
+            }
+            if (sqlCheckbox.isChecked()){
+                programmingLanguages[5] = "SQL";
+            }
+
+
+            String pastime = pastimeSpinner.getSelectedItem().toString();
+            String[] fullStudentID = {newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], newStudentID[4],
+                    previousCourse, electiveCourse, pastime};
             Intent scheduleIntent = new Intent(this, ScheduleActivity.class);
-            scheduleIntent.putExtra("identity", newStudentID);
+            scheduleIntent.putExtra("identity", fullStudentID);
+            scheduleIntent.putExtra("programmingLanguages", programmingLanguages);
             startActivity(scheduleIntent);
         }
     }

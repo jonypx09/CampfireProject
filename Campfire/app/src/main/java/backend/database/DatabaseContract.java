@@ -20,6 +20,7 @@ public final class DatabaseContract {
         public static final String COLUMN_NAME_EMAIL = "email";
         public static final String COLUMN_NAME_PASS = "pass";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
+        public static final String COLUMN_NAME_COMPARABLE = "comparable";
     }
 
     /**

@@ -18,6 +18,7 @@ import backend.database.DatabaseAdapter;
 
 public class MessagesFragment extends Fragment{
 
+    private String[] newStudentID;
     DatabaseAdapter db;
     private String uEmail;
     private ListView listView;
@@ -38,7 +39,8 @@ public class MessagesFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        uEmail = getArguments().getString("userEmail");
+        newStudentID = getArguments().getStringArray("identity");
+        uEmail = newStudentID[2];
 
         //returning our layout file
         return inflater.inflate(R.layout.fragment_messages, container, false);
@@ -58,7 +60,7 @@ public class MessagesFragment extends Fragment{
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), MessengerActivity.class);
                 //intent.putExtra(); for when we are passing which messages to look at
-                intent.putExtra("userEmail", uEmail);
+                intent.putExtra("identity", newStudentID);
                 startActivity(intent);
             }
         });

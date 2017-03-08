@@ -9,6 +9,7 @@ import backend.database.DatabaseAdapter;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private String[] newStudentID;
     DatabaseAdapter db;
     private String uEmail;
 
@@ -19,14 +20,15 @@ public class SettingsActivity extends AppCompatActivity {
         setTitle("Settings");
 
         Intent intent = getIntent();
-        uEmail = intent.getExtras().getString("userEmail");
+        newStudentID = intent.getExtras().getStringArray("identity");
+        uEmail = newStudentID[2];
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if (item.getItemId() == android.R.id.home){
             Intent mainIntent = new Intent(this, MainActivity.class);
-            mainIntent.putExtra("userEmail", uEmail);
+            mainIntent.putExtra("identity", newStudentID);
             startActivity(mainIntent);
             return true;
         }
