@@ -186,6 +186,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], newStudentCriteria);
                 db.addStudent(newStudent);
                 db.addCourse(newCourse);
+                db.addToTaking(newStudentID[4], newStudentID[2]);
 
                 Intent mainIntent = new Intent(this, MainActivity.class);
                 mainIntent.putExtra("identity", newStudentID);

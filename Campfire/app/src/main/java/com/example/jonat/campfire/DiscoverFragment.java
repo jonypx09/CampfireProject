@@ -52,15 +52,17 @@ public class DiscoverFragment extends Fragment {
         db = new DatabaseAdapter(getActivity());
 
         uStudent = db.getStudent(uEmail);
-//        uClassmates = db.getStudentsInCourse(newStudentID[4]);
+
+        ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
+        ArrayList<Student> classmates = db.getStudentsInCourse(enrolledCourses.get(0));
 
 //        ListView userList = (ListView) getActivity().findViewById(R.id.userList);
         LinearLayout userList = (LinearLayout) getActivity().findViewById(R.id.userList);
 
-        for (int i = 0; i < 20; i++){
+        for (int i = 0; i < classmates.size(); i++){
             Button newButton = new Button(getActivity());
-            newButton.setText(Integer.toString(i));
-//            userList.addView(newButton);
+            newButton.setText(classmates.get(i).getFname() + " " + classmates.get(i).getLname());
+            userList.addView(newButton);
         }
 
 
