@@ -172,6 +172,10 @@ public class MainActivity extends AppCompatActivity
                 miscIntent.putExtra("identity", newStudentID);
                 startActivity(miscIntent);
                 break;
+            case R.id.nav_logout:
+                Intent promoIntent = new Intent(this, PromoActivity.class);
+                startActivity(promoIntent);
+                break;
         }
 
         //replacing the fragment
