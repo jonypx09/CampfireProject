@@ -1,22 +1,18 @@
 package com.example.jonat.campfire;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 
 import backend.algorithms.CSCCoursesCriteria;
 import backend.algorithms.Comparable;
@@ -48,11 +44,13 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     private TextView dayOfWeek;
 
     private int daynum = 0;
-    private String uEmail;
 
     private String[] days = {"Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday", "Sunday"};
     String[][] schedule = new String[7][24];
+    // change this to HashMap<String, ArrayList<String>>
+
+    HashMap<String, ArrayList<String>> scheduleTest = new HashMap<String, ArrayList<String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +58,12 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_schedule);
         setTitle("Set Availability");
+
+        // setting up hash map of schedule, setting availability to null
+        ArrayList<String> emptyList = new ArrayList<String>();
+        for (String day: days) {
+            scheduleTest.put(day, emptyList);
+        }
 
         //Connect to the database
         db = new DatabaseAdapter(this);
@@ -213,97 +217,97 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.twelveam:
-                changeScheduleButton(0, twelveam);
+                changeScheduleButton(days[daynum], "00:00 - 00:59", twelveam);
                 break;
 
             case R.id.oneam:
-                changeScheduleButton(1, oneam);
+                changeScheduleButton(days[daynum], "01:00 - 01:59", oneam);
                 break;
 
             case R.id.twoam:
-                changeScheduleButton(2, twoam);
+                changeScheduleButton(days[daynum], "02:00 - 02:59", twoam);
                 break;
 
             case R.id.threeam:
-                changeScheduleButton(3, threeam);
+                changeScheduleButton(days[daynum], "03:00 - 03:59", threeam);
                 break;
             case R.id.fouram:
-                changeScheduleButton(4, fouram);
+                changeScheduleButton(days[daynum], "04:00 - 04:59", fouram);
                 break;
 
             case R.id.fiveam:
-                changeScheduleButton(5, fiveam);
+                changeScheduleButton(days[daynum], "05:00 - 05:59", fiveam);
                 break;
 
             case R.id.sixam:
-                changeScheduleButton(6, sixam);
+                changeScheduleButton(days[daynum], "06:00 - 06:59", sixam);
                 break;
 
             case R.id.sevenam:
-                changeScheduleButton(7, sevenam);
+                changeScheduleButton(days[daynum], "07:00 - 07:59", sevenam);
                 break;
 
             case R.id.eightam:
-                changeScheduleButton(8, eightam);
+                changeScheduleButton(days[daynum], "08:00 - 08:59", eightam);
                 break;
 
             case R.id.nineam:
-                changeScheduleButton(9, nineam);
+                changeScheduleButton(days[daynum], "09:00 - 09:59", nineam);
                 break;
 
             case R.id.tenam:
-                changeScheduleButton(10, tenam);
+                changeScheduleButton(days[daynum], "10:00 - 10:59", tenam);
                 break;
 
             case R.id.elevenam:
-                changeScheduleButton(11, elevenam);
+                changeScheduleButton(days[daynum], "11:00 - 11:59", elevenam);
                 break;
 
             case R.id.twelvepm:
-                changeScheduleButton(12, twelvepm);
+                changeScheduleButton(days[daynum], "12:00 - 12:59", twelvepm);
                 break;
 
             case R.id.onepm:
-                changeScheduleButton(13, onepm);
+                changeScheduleButton(days[daynum], "13:00 - 13:59", onepm);
                 break;
 
             case R.id.twopm:
-                changeScheduleButton(14, twopm);
+                changeScheduleButton(days[daynum], "14:00 - 14:59", twopm);
                 break;
 
             case R.id.threepm:
-                changeScheduleButton(15, threepm);
+                changeScheduleButton(days[daynum], "15:00 - 15:59", threepm);
                 break;
 
             case R.id.fourpm:
-                changeScheduleButton(16, fourpm);
+                changeScheduleButton(days[daynum], "16:00 - 16:59", fourpm);
                 break;
 
             case R.id.fivepm:
-                changeScheduleButton(17, fivepm);
+                changeScheduleButton(days[daynum], "17:00 - 17:59", fivepm);
 
             case R.id.sixpm:
-                changeScheduleButton(18, sixpm);
+                changeScheduleButton(days[daynum], "18:00 - 18:59", sixpm);
                 break;
 
             case R.id.sevenpm:
-                changeScheduleButton(19, sevenpm);
+                changeScheduleButton(days[daynum], "19:00 - 19:59", sevenpm);
                 break;
 
             case R.id.eightpm:
-                changeScheduleButton(20, eightpm);
+                changeScheduleButton(days[daynum], "20:00 - 20:59", eightpm);
                 break;
 
             case R.id.ninepm:
-                changeScheduleButton(21, ninepm);
+                changeScheduleButton(days[daynum], "21:00 - 21:59", ninepm);
                 break;
 
             case R.id.tenpm:
-                changeScheduleButton(22, tenpm);
+                changeScheduleButton(days[daynum], "23:00 - 22:59", tenpm);
                 break;
 
             case R.id.elevenpm:
-                changeScheduleButton(23, elevenpm);
+                changeScheduleButton(days[daynum], "23:00 - 23:59", elevenpm);
                 break;
         }
     }
@@ -377,21 +381,25 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public void changeScheduleButton(int value, Button toChange) {
+    public void changeScheduleButton(String day, String time, Button toChange) {
 
-        if (schedule[daynum][value] == null || schedule[daynum][value].equals("0")) {
+        ArrayList<String> temp = scheduleTest.get(day);
+
+        if (temp == null || !temp.contains(time)) { // toggle to available
             toChange.setBackgroundColor(Color.GREEN);
-            schedule[daynum][value] = "1";
-            validate();
+            // update ArrayList for this day (adding available time)
+            temp.add(time);
+            scheduleTest.put(day, temp);
 
-        } else if (schedule[daynum][value].equals("1")) {
-            toChange.setBackgroundColor(Color.RED);
-            schedule[daynum][value] = "0";
-            validate();
+        } else if (temp.contains(time)){ // set to not available for this time and day
+            toChange.setBackgroundColor(Color.LTGRAY);
+            // update ArrayList for this day (removing previously available time)
+            temp.remove(time);
+            scheduleTest.put(day, temp);
         }
     }
 
-    public boolean validate() {
+/*    public boolean validate() {
         for (int i = 0; i < 7; i++) {
             for (String s: schedule[i]) {
                 if (s == null) {
@@ -403,7 +411,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         submitButton.setBackgroundColor(Color.GREEN);
         return true;
 
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
