@@ -15,6 +15,9 @@ import android.widget.ProgressBar;
 import java.util.ArrayList;
 
 import backend.algorithms.Comparable;
+import backend.algorithms.Course;
+import backend.algorithms.HobbiesCriteria;
+import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
@@ -36,12 +39,45 @@ public class LoginActivity extends AppCompatActivity {
 
         //Connect to the database
         db = new DatabaseAdapter(this);
-        //Test Student so we don't need to signup.
-        if (db.getStudent("test@mail.com") == null) {
-            ArrayList<Comparable> crit = new ArrayList<>();
-            db.addStudent(new Student("John", "Smith", "test@mail.com", "12345678", crit));
+        // Database sample population so we don't need to signup.
+        if (db.getCourse("csc301h1") == null) {
+            Course course = new Course("csc301h1", "Introduction to Software Engineering", "Joey Freund");
+            db.addCourse(course);
         }
-        System.out.println(db.getStudent("test@mail.com"));
+        ArrayList<String> c1 = new ArrayList<>();
+        c1.add("Java");
+        c1.add("HTML");
+        c1.add("CSS");
+        c1.add("JavaScript");
+
+        ArrayList<String> c2 = new ArrayList<>();
+        c2.add("Running");
+        c2.add("Video Games");
+        c2.add("Reading");
+        c2.add("Watching Sports");
+
+        ProgrammingLanguagesCriteria languages = new ProgrammingLanguagesCriteria(c1);
+        HobbiesCriteria hobbies = new HobbiesCriteria(c2);
+
+        ArrayList<Comparable> crit = new ArrayList<>();
+        crit.add(languages);
+        crit.add(hobbies);
+
+        ArrayList<Student> sampleStudents = new ArrayList<>();
+        sampleStudents.add(new Student("Adam", "Capparelli", "adam@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Andrew", "Goupil", "andrew@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Fullchee", "Zhang", "fullchee@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Jonathan", "Pelastine", "jonathan@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Quinn", "Daneyko", "quinn@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Rod", "Mazloomi", "rod@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Vlad", "Chapurny", "vlad@mail.com", "12345678", crit));
+        for (Student s : sampleStudents) {
+            s.setDescription("Sample Description");
+            if (db.getStudent(s.getEmail()) == null) {
+                db.addStudent(s);
+                db.addToTaking("csc301h1", s.getEmail());
+            }
+        }
 
         load = (ProgressBar) findViewById(R.id.loginProgress);
         loginButton = (Button) findViewById(R.id.loginButton);
