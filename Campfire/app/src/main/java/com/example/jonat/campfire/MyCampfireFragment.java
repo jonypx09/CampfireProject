@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.database.DatabaseUtilsCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import backend.algorithms.Comparable;
+import backend.algorithms.Course;
 import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.Student;
+import backend.database.DatabaseAdapter;
 
 public class MyCampfireFragment extends Fragment {
 
@@ -49,26 +52,10 @@ public class MyCampfireFragment extends Fragment {
         uStudent = ((MainActivity) getActivity()).getCurrentStudent();
         uEmail = uStudent.getEmail();
 
-        c1 = new ArrayList<>();
-        c1.add("Java");
-        c1.add("Python");
-        c1.add("HTML");
-        c1.add("CSS");
-        c1.add("JavaScript");
+        DatabaseAdapter db = new DatabaseAdapter(getContext());
+        Course csc301 = db.getCourse("csc301h1");
+        sampleStudents = uStudent.getallOtherCourseStudents(csc301);
 
-        ProgrammingLanguagesCriteria languages = new ProgrammingLanguagesCriteria(c1);
-
-        crit = new ArrayList<>();
-        crit.add(languages);
-
-        sampleStudents = new ArrayList<>();
-        sampleStudents.add(new Student("Adam", "Capparelli", "adam@mail.com", "12345678", crit));
-        sampleStudents.add(new Student("Andrew", "Goupil", "andrew@mail.com", "12345678", crit));
-        sampleStudents.add(new Student("Fullchee", "Zhang", "fullchee@mail.com", "12345678", crit));
-        sampleStudents.add(new Student("Jonathan", "Pelastine", "jonathan@mail.com", "12345678", crit));
-        sampleStudents.add(new Student("Quinn", "Daneyko", "quinn@mail.com", "12345678", crit));
-        sampleStudents.add(new Student("Rod", "Mazloomi", "rod@mail.com", "12345678", crit));
-        sampleStudents.add(new Student("Vlad", "Chapurny", "vlad@mail.com", "12345678", crit));
         names = new String[sampleStudents.size()];
         images = new Integer[sampleStudents.size()];
         emails = new String[sampleStudents.size()];
@@ -96,13 +83,14 @@ public class MyCampfireFragment extends Fragment {
                         })
                         .setNeutralButton("Message", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Fragment fragment = new MessagesFragment();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("userEmail", uEmail);
-                                fragment.setArguments(bundle);
-                                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                                ft.replace(R.id.content_frame, fragment);
-                                ft.commit();
+//                                Fragment fragment = new MessagesFragment();
+//                                Bundle bundle = new Bundle();
+//                                bundle.putString("userEmail", uEmail);
+//                                fragment.setArguments(bundle);
+//                                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//                                ft.replace(R.id.content_frame, fragment);
+//                                ft.commit();
+                                Toast.makeText(getContext(), "Out of service.", Toast.LENGTH_LONG).show();
                             }
                         })
                         .setIcon(images[i])

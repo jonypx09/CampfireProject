@@ -161,6 +161,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_home:
                 fragment = new HomeFragment();
+                fragment.setArguments(bundle);
                 break;
             case R.id.nav_help:
                 miscIntent = new Intent(this, HelpActivity.class);

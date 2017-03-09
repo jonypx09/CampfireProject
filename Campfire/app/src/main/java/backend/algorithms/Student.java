@@ -142,9 +142,10 @@ public class Student {
 	public ArrayList<Student> getallOtherCourseStudents(Course course){
 		ArrayList<Student>tmpStudents = new ArrayList<Student>();
 		for (Student stu : course.getStudents()){
-			tmpStudents.add(stu);
+			if (!stu.getEmail().equals(this.getEmail())) {
+				tmpStudents.add(stu);
+			}
 		}
-		tmpStudents.remove(this);
 		return tmpStudents;
 	}
 	
