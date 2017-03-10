@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -48,9 +49,8 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     private String[] days = {"Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday", "Sunday"};
     String[][] schedule = new String[7][24];
-    // change this to HashMap<String, ArrayList<String>>
 
-    HashMap<String, ArrayList<String>> scheduleTest = new HashMap<String, ArrayList<String>>();
+    HashMap<String, ArrayList<String>> scheduleTest = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +60,11 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         setTitle("Set Availability");
 
         // setting up hash map of schedule, setting availability to null
-        ArrayList<String> emptyList = new ArrayList<String>();
+        //ArrayList<String> emptyList = new ArrayList<String>();
         for (String day: days) {
-            scheduleTest.put(day, emptyList);
+            scheduleTest.put(day, new ArrayList<String>());
         }
+        System.out.println(scheduleTest);
 
         //Connect to the database
         db = new DatabaseAdapter(this);
@@ -92,7 +93,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         nextButton.setOnClickListener(this);
         submitButton = (Button) findViewById(R.id.submit);
         submitButton.setOnClickListener(this);
-//        submitButton.setEnabled(false);
+        submitButton.setBackgroundColor(Color.GREEN);
         twelveam = (Button) findViewById(R.id.twelveam);
         twelveam.setOnClickListener(this);
         oneam = (Button) findViewById(R.id.oneam);
@@ -201,10 +202,9 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                     daynum = 0;
                 }
                 dayOfWeek.setText(days[daynum]);
-                fillSchedule();
+                fillSchedule(days[daynum]);
                 scheduleScroll.fullScroll(ScrollView.FOCUS_UP);
                 break;
-
             case R.id.previous:
                 if (daynum != 0) {
                     daynum--;
@@ -212,7 +212,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                     daynum = 6;
                 }
                 dayOfWeek.setText(days[daynum]);
-                fillSchedule();
+                fillSchedule(days[daynum]);
                 scheduleScroll.fullScroll(ScrollView.FOCUS_UP);
                 break;
 
@@ -285,6 +285,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.fivepm:
                 changeScheduleButton(days[daynum], "17:00 - 17:59", fivepm);
+                break;
 
             case R.id.sixpm:
                 changeScheduleButton(days[daynum], "18:00 - 18:59", sixpm);
@@ -303,7 +304,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.tenpm:
-                changeScheduleButton(days[daynum], "23:00 - 22:59", tenpm);
+                changeScheduleButton(days[daynum], "22:00 - 22:59", tenpm);
                 break;
 
             case R.id.elevenpm:
@@ -312,72 +313,106 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public void fillSchedule(){
-        int i = 0;
-        for (String s: schedule[daynum]) {
-            switch(i) {
-                case 0:
-                    setScheduleButton(i, twelveam);
-                case 1:
-                    setScheduleButton(i, oneam);
-                case 2:
-                    setScheduleButton(i, twoam);
-                case 3:
-                    setScheduleButton(i, threeam);
-                case 4:
-                    setScheduleButton(i, fouram);
-                case 5:
-                    setScheduleButton(i, fiveam);
-                case 6:
-                    setScheduleButton(i, sixam);
-                case 7:
-                    setScheduleButton(i, sevenam);
-                case 8:
-                    setScheduleButton(i, eightam);
-                case 9:
-                    setScheduleButton(i, nineam);
-                case 10:
-                    setScheduleButton(i, tenam);
-                case 11:
-                    setScheduleButton(i, elevenam);
-                case 12:
-                    setScheduleButton(i, twelvepm);
-                case 13:
-                    setScheduleButton(i, onepm);
-                case 14:
-                    setScheduleButton(i, twopm);
-                case 15:
-                    setScheduleButton(i, threepm);
-                case 16:
-                    setScheduleButton(i, fourpm);
-                case 17:
-                    setScheduleButton(i, fivepm);
-                case 18:
-                    setScheduleButton(i, sixpm);
-                case 19:
-                    setScheduleButton(i, sevenpm);
-                case 20:
-                    setScheduleButton(i, eightpm);
-                case 21:
-                    setScheduleButton(i, ninepm);
-                case 22:
-                    setScheduleButton(i, tenpm);
-                case 23:
-                    setScheduleButton(i, elevenpm);
-            }
-            i++;
+    public void fillSchedule(String day){
+        ArrayList<String> temp = scheduleTest.get(day);
+        System.out.println("Changing to " + day + " : " + temp);
+        System.out.println(scheduleTest);
+        ArrayList<Button> greenButtons = new ArrayList<Button>();
+
+        for (String t: temp) {
+                if (t.equals("00:00 - 00:59")) {
+                    greenButtons.add(twelveam);
+                }
+                else if (t.equals("01:00 - 01:59")) {
+                    greenButtons.add(oneam);
+                }
+                else if (t.equals("02:00 - 02:59")) {
+                     greenButtons.add(twoam);
+                }
+                else if (t.equals("03:00 - 03:59")) {
+                    greenButtons.add(threeam);
+                }
+                else if (t.equals("04:00 - 04:59")) {
+                    greenButtons.add(fouram);
+                }
+                else if (t.equals("05:00 - 05:59")) {
+                     greenButtons.add(fiveam);
+                }
+                else if (t.equals("06:00 - 06:59")) {
+                    greenButtons.add(sixam);
+                }
+                else if (t.equals("07:00 - 07:59")) {
+                    greenButtons.add(sevenam);
+                }
+                else if (t.equals("08:00 - 08:59")) {
+                    greenButtons.add(eightam);
+                }
+                else if (t.equals("09:00 - 09:59")) {
+                    greenButtons.add(nineam);
+                }
+                else if (t.equals("10:00 - 10:59")) {
+                    greenButtons.add(tenam);
+                }
+                else if (t.equals("11:00 - 11:59")) {
+                    greenButtons.add(elevenam);
+                }
+                else if (t.equals("12:00 - 12:59")) {
+                    greenButtons.add(twelvepm);
+                }
+                else if (t.equals("13:00 - 13:59")) {
+                    greenButtons.add(onepm);
+                }
+                else if (t.equals("14:00 - 14:59")) {
+                    greenButtons.add(twopm);
+                }
+                else if (t.equals("15:00 - 15:59")) {
+                    greenButtons.add(threepm);
+                }
+                else if (t.equals("16:00 - 16:59")) {
+                    greenButtons.add(fourpm);
+                }
+                else if (t.equals("17:00 - 17:59")) {
+                    greenButtons.add(fivepm);
+                }
+                else if (t.equals("18:00 - 18:59")) {
+                    greenButtons.add(sixpm);
+                }
+                else if (t.equals("19:00 - 19:59")) {
+                    greenButtons.add(sevenpm);
+                }
+                else if (t.equals("20:00 - 20:59")) {
+                    greenButtons.add(eightpm);
+                }
+                else if (t.equals("21:00 - 21:59")) {
+                    greenButtons.add(ninepm);
+                }
+                else if (t.equals("22:00 - 22:59")) {
+                    greenButtons.add(tenpm);
+                }
+                else if (t.equals("23:00 - 23:59")) {
+                    greenButtons.add(elevenpm);
+                }
         }
 
+        setScheduleButton(greenButtons);
     }
 
-    public void setScheduleButton(int value, Button toChange) {
+    public void setScheduleButton(ArrayList<Button> savedButtons) {
 
-        if (schedule[daynum][value] == null) {
-            toChange.setBackgroundColor(Color.LTGRAY);
-        } else if (schedule[daynum][value].equals("0")) {
-            toChange.setBackgroundColor(Color.RED);
-        } else if (schedule[daynum][value].equals("1")) {
-            toChange.setBackgroundColor(Color.GREEN);
+        ArrayList<Button> buttons = new ArrayList<>(Arrays.asList(twelveam, oneam, twoam,
+                threeam, fouram, fiveam, sixam, sevenam, eightam, nineam, tenam, elevenam, twelvepm,
+                onepm, twopm, threepm, fourpm, fivepm, sixpm, sevenpm, eightpm, ninepm, tenpm,
+                elevenpm));
+
+        for (Button b: savedButtons) {
+            b.setBackgroundColor(Color.GREEN);
+        }
+
+
+        buttons.removeAll(savedButtons);
+
+        for (Button b: buttons) {
+            b.setBackgroundColor(Color.LTGRAY);
         }
     }
 
@@ -388,30 +423,28 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         if (temp == null || !temp.contains(time)) { // toggle to available
             toChange.setBackgroundColor(Color.GREEN);
             // update ArrayList for this day (adding available time)
+
             temp.add(time);
             scheduleTest.put(day, temp);
+
+            System.out.println("Currently on " + day + " : " + scheduleTest.get(day));
+            System.out.println(scheduleTest);
 
         } else if (temp.contains(time)){ // set to not available for this time and day
             toChange.setBackgroundColor(Color.LTGRAY);
             // update ArrayList for this day (removing previously available time)
             temp.remove(time);
+
+            for ( String key : scheduleTest.keySet() ) {
+                System.out.println(key);
+            }
+
             scheduleTest.put(day, temp);
+
+            System.out.println("Currently on " + day + " : " + scheduleTest.get(day));
+            System.out.println(scheduleTest);
         }
     }
-
-/*    public boolean validate() {
-        for (int i = 0; i < 7; i++) {
-            for (String s: schedule[i]) {
-                if (s == null) {
-                    return false;
-                }
-            }
-        }
-        submitButton.setEnabled(true);
-        submitButton.setBackgroundColor(Color.GREEN);
-        return true;
-
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
