@@ -21,6 +21,7 @@ import backend.algorithms.Course;
 import backend.algorithms.ElectivesCriteria;
 import backend.algorithms.HobbiesCriteria;
 import backend.algorithms.ProgrammingLanguagesCriteria;
+import backend.algorithms.ScheduleCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
@@ -48,9 +49,8 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
 
     private String[] days = {"Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday", "Sunday"};
-    String[][] schedule = new String[7][24];
 
-    HashMap<String, ArrayList<String>> scheduleTest = new HashMap<>();
+    HashMap<String, ArrayList<String>> schedule = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +60,9 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         setTitle("Set Availability");
 
         // setting up hash map of schedule, setting availability to null
-        //ArrayList<String> emptyList = new ArrayList<String>();
         for (String day: days) {
-            scheduleTest.put(day, new ArrayList<String>());
+            schedule.put(day, new ArrayList<String>());
         }
-        System.out.println(scheduleTest);
 
         //Connect to the database
         db = new DatabaseAdapter(this);
@@ -183,7 +181,9 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                 newStudentCriteria.add(newStudentPreviousCourses);
                 newStudentCriteria.add(newStudentElectives);
                 newStudentCriteria.add(newStudentHobbies);
-
+                
+                ScheduleCriteria sc = new ScheduleCriteria(schedule);
+                newStudentCriteria.add(sc);
 
                 /**
                  * The last argument should NOT be null; it is there to keep Gradle happy :P
@@ -314,9 +314,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void fillSchedule(String day){
-        ArrayList<String> temp = scheduleTest.get(day);
-        System.out.println("Changing to " + day + " : " + temp);
-        System.out.println(scheduleTest);
+        ArrayList<String> temp = schedule.get(day);
         ArrayList<Button> greenButtons = new ArrayList<Button>();
 
         for (String t: temp) {
@@ -418,31 +416,21 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
 
     public void changeScheduleButton(String day, String time, Button toChange) {
 
-        ArrayList<String> temp = scheduleTest.get(day);
+        ArrayList<String> temp = schedule.get(day);
 
         if (temp == null || !temp.contains(time)) { // toggle to available
             toChange.setBackgroundColor(Color.GREEN);
             // update ArrayList for this day (adding available time)
 
             temp.add(time);
-            scheduleTest.put(day, temp);
-
-            System.out.println("Currently on " + day + " : " + scheduleTest.get(day));
-            System.out.println(scheduleTest);
+            schedule.put(day, temp);
 
         } else if (temp.contains(time)){ // set to not available for this time and day
             toChange.setBackgroundColor(Color.LTGRAY);
             // update ArrayList for this day (removing previously available time)
             temp.remove(time);
 
-            for ( String key : scheduleTest.keySet() ) {
-                System.out.println(key);
-            }
-
-            scheduleTest.put(day, temp);
-
-            System.out.println("Currently on " + day + " : " + scheduleTest.get(day));
-            System.out.println(scheduleTest);
+            schedule.put(day, temp);
         }
     }
 
