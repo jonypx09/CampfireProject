@@ -36,6 +36,8 @@ public class DiscoverFragment extends Fragment {
     private String[] names;
     private Integer[] images;
     private String[] emails;
+    private String [] previousElectives;
+    private String [] pastimes;
     private Integer sampleImage = R.drawable.person_icon;
 
     private ArrayList<Student> uClassmates;
@@ -68,10 +70,14 @@ public class DiscoverFragment extends Fragment {
         names = new String[classmates.size()];
         images = new Integer[classmates.size()];
         emails = new String[classmates.size()];
+        previousElectives = new String[classmates.size()];
+        pastimes = new String[classmates.size()];
         int i = 0;
         for (Student s : classmates) {
             names[i] = s.getFname() + " " + s.getLname();
             emails[i] = s.getEmail();
+            previousElectives[i] = s.getElectives().get(0);
+            pastimes[i] = s.getHobbies().get(0);
             images[i] = sampleImage;
             i++;
         }
@@ -85,7 +91,9 @@ public class DiscoverFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 new android.app.AlertDialog.Builder(getActivity())
                         .setTitle(names[i])
-                        .setMessage(emails[i])
+                        .setMessage("Email: " + emails[i] + "\n\n" +
+                                "Previous Elective Course: " + previousElectives[i] + "\n\n" +
+                                "Favourite Pastime: " + pastimes[i])
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                             }

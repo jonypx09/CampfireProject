@@ -2,8 +2,9 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:drawable="@color/colorPrimaryDark"/>
-
+        android:drawable="@color/colorPrimaryDark"
+        android:statusBarColor="@color/colorPrimaryDark"
+        android:navigationBarColor="@color/colorPrimaryDark"/>
     <item>
         <bitmap
             android:gravity="center"

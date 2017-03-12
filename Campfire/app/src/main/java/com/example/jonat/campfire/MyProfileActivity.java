@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
@@ -24,6 +25,7 @@ public class MyProfileActivity extends AppCompatActivity {
     private ArrayList<String> previousCSCourses;
     private ArrayList<String> previousElectiveCourses;
     private ArrayList<String> hobbiesList;
+    private HashMap<String, ArrayList<String>> schedule;
 
     CheckBox pythonCheckbox;
     CheckBox javaCheckbox;
@@ -31,6 +33,14 @@ public class MyProfileActivity extends AppCompatActivity {
     CheckBox htmlCheckbox;
     CheckBox javascriptCheckbox;
     CheckBox sqlCheckbox;
+
+    CheckBox sundayCheckbox;
+    CheckBox mondayCheckbox;
+    CheckBox tuesdayCheckbox;
+    CheckBox wednesdayCheckbox;
+    CheckBox thursdayCheckbox;
+    CheckBox fridayCheckbox;
+    CheckBox saturdayCheckbox;
 
     TextView previousCSCourse;
     TextView previousElective;
@@ -71,6 +81,13 @@ public class MyProfileActivity extends AppCompatActivity {
         javascriptCheckbox = (CheckBox) findViewById(R.id.javascriptCheckboxP);
         sqlCheckbox = (CheckBox) findViewById(R.id.sqlCheckboxP);
 
+        sundayCheckbox = (CheckBox) findViewById(R.id.sundayCheckbox);
+        mondayCheckbox = (CheckBox) findViewById(R.id.mondayCheckbox);
+        tuesdayCheckbox = (CheckBox) findViewById(R.id.tuesdayCheckbox);
+        wednesdayCheckbox = (CheckBox) findViewById(R.id.wednesdayCheckbox);
+        thursdayCheckbox = (CheckBox) findViewById((R.id.thursdayCheckbox));
+        fridayCheckbox = (CheckBox) findViewById((R.id.fridayCheckbox));
+
         previousCSCourse = (TextView) findViewById(R.id.previousCourseTextview);
         previousElective = (TextView) findViewById(R.id.electiveCourseTextview);
         hobbyTextview = (TextView) findViewById(R.id.hobbiesTextview);
@@ -79,6 +96,7 @@ public class MyProfileActivity extends AppCompatActivity {
         previousCSCourses = myStudent.getCSCCourses();
         previousElectiveCourses = myStudent.getElectives();
         hobbiesList = myStudent.getHobbies();
+        schedule = myStudent.getCalendar();
 
         for (String language : programmingLanguages) {
             if (language == null){
@@ -108,6 +126,24 @@ public class MyProfileActivity extends AppCompatActivity {
 
         for (String hobby: hobbiesList){
             hobbyTextview.setText("Your Hobbies:   " + hobby);
+        }
+
+        for (String day : schedule.keySet()){
+            if (day.equals("Sunday") && schedule.get(day).size() != 0){
+                sundayCheckbox.setChecked(true);
+            }else if (day.equals("Monday") && schedule.get(day).size() != 0){
+                mondayCheckbox.setChecked(true);
+            }else if (day.equals("Tuesday") && schedule.get(day).size() != 0){
+                tuesdayCheckbox.setChecked(true);
+            }else if (day.equals("Wednesday") && schedule.get(day).size() != 0){
+                wednesdayCheckbox.setChecked(true);
+            }else if (day.equals("Thursday") && schedule.get(day).size() != 0){
+                thursdayCheckbox.setChecked(true);
+            }else if (day.equals("Friday") && schedule.get(day).size() != 0){
+                fridayCheckbox.setChecked(true);
+            }else if (day.equals("Saturday") && schedule.get(day).size() != 0){
+                saturdayCheckbox.setChecked(true);
+            }
         }
 
     }

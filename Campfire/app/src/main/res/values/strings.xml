@@ -15,7 +15,7 @@
         <item>Video Games</item>
         <item>Cooking</item>
         <item>TV/Netflix</item>
-        <item>Other</item>
+        <item>Other (Enter Your Own)</item>
     </string-array>
     <string name="title_activity_messenger">MessengerActivity</string>
     <string name="title_activity_settings">Settings</string>
