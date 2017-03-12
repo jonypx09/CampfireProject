@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -53,7 +55,7 @@ public class PersonalizeActivity extends AppCompatActivity {
         sqlCheckbox = (CheckBox) findViewById(R.id.sqlCheckbox);
     }
 
-    public void toScheduleScreen(View view){
+    public void processUserPreferences(View view){
 
 //        Course newCourse = new Course(newStudentID[3], "Some Course Name", "Some Instructor");
 //        Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], null);
@@ -112,14 +114,44 @@ public class PersonalizeActivity extends AppCompatActivity {
                 programmingLanguages[5] = "SQL";
             }
 
-
             String pastime = pastimeSpinner.getSelectedItem().toString();
-            String[] fullStudentID = {newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], newStudentID[4],
-                    previousCourse, electiveCourse, pastime};
-            Intent scheduleIntent = new Intent(this, ScheduleActivity.class);
-            scheduleIntent.putExtra("identity", fullStudentID);
-            scheduleIntent.putExtra("programmingLanguages", programmingLanguages);
-            startActivity(scheduleIntent);
+
+            //Prompt User for Input if "Other" is selected
+            if (pastime.equals("Other (Enter Your Own)")){
+                LayoutInflater pastimeInflator = LayoutInflater.from(this);
+                View inputView = pastimeInflator.inflate(R.layout.pastime_input_dialog_box, null);
+                AlertDialog.Builder pastimeBuilderInput = new AlertDialog.Builder(this);
+                pastimeBuilderInput.setView(inputView);
+
+                final String previousCourseCopy = previousCourse;
+                final String electiveCourseCopy = electiveCourse;
+                final EditText userInputPastimeDialog = (EditText) inputView.findViewById(R.id.userInputPastime);
+                pastimeBuilderInput
+                        .setCancelable(false)
+                        .setPositiveButton("Enter", new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialogBox, int id){
+                                String custom = userInputPastimeDialog.getText().toString();
+                                custom = custom.trim();
+                                final String customPastime = custom;
+                                if (!customPastime.equals("")) {
+                                    toScheduleScreen(previousCourseCopy, electiveCourseCopy, customPastime);
+                                }
+                            }
+                        });
+                AlertDialog alertDialogPastime = pastimeBuilderInput.create();
+                alertDialogPastime.show();
+            }else{
+                toScheduleScreen(previousCourse, electiveCourse, pastime);
+            }
         }
+    }
+
+    public void toScheduleScreen(String previousCourse, String electiveCourse, String pastime){
+        String[] fullStudentID = {newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], newStudentID[4],
+                previousCourse, electiveCourse, pastime};
+        Intent scheduleIntent = new Intent(this, ScheduleActivity.class);
+        scheduleIntent.putExtra("identity", fullStudentID);
+        scheduleIntent.putExtra("programmingLanguages", programmingLanguages);
+        startActivity(scheduleIntent);
     }
 }
