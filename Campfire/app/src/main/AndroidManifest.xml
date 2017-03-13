@@ -12,10 +12,10 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".SplashActivity"
+            android:navigationBarColor="@color/colorPrimaryDark"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme"
             android:statusBarColor="@color/colorPrimaryDark"
-            android:navigationBarColor="@color/colorPrimaryDark">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,7 +44,7 @@
             android:name=".PersonalizeActivity"
             android:parentActivityName=".SignUpActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".MessengerActivity"
             android:parentActivityName=".MainActivity"
@@ -52,18 +52,19 @@
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity" />
-
         <activity
             android:name=".MyProfileActivity"
             android:label="@string/title_activity_my_profile"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".ScheduleActivity"
             android:parentActivityName=".PersonalizeActivity">
         </activity>
 
+        <activity android:name=".ChangePasswordActivity"
+                  android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>

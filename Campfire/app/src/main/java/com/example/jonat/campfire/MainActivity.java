@@ -177,6 +177,10 @@ public class MainActivity extends AppCompatActivity
                 Intent promoIntent = new Intent(this, PromoActivity.class);
                 startActivity(promoIntent);
                 break;
+            case R.id.nav_change_password:
+                miscIntent = new Intent(this, ChangePasswordActivity.class);
+                miscIntent.putExtra("identity", newStudentID);
+                startActivity(miscIntent);
         }
 
         //replacing the fragment

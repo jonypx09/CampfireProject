@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void checkFields(View view){
 
-        EditText emailField = (EditText) findViewById(R.id.emailField);
+        EditText emailField = (EditText) findViewById(R.id.confirmPassTextField);
         EditText passwordField = (EditText) findViewById(R.id.passwordField);
         String email = emailField.getText().toString();
         email = email.trim();

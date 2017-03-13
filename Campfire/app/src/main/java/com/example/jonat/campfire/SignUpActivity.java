@@ -36,13 +36,13 @@ public class SignUpActivity extends AppCompatActivity {
         db = new DatabaseAdapter(this);
 
         load = (ProgressBar) findViewById(R.id.signupProgress);
-        createAccountButton = (Button) findViewById(R.id.createAccountButton);
+        createAccountButton = (Button) findViewById(R.id.changePasswordButton);
     }
 
     public void obtainFields(View view){
-        EditText fNameField = (EditText) findViewById(R.id.firstNameTextField);
-        EditText sNameField = (EditText) findViewById(R.id.surnameTextField);
-        EditText emailField = (EditText) findViewById(R.id.emailField);
+        EditText fNameField = (EditText) findViewById(R.id.oldPasswordTextField);
+        EditText sNameField = (EditText) findViewById(R.id.newPasswordTextField);
+        EditText emailField = (EditText) findViewById(R.id.confirmPassTextField);
         EditText passwordField = (EditText) findViewById(R.id.passwordField);
         EditText courseField = (EditText) findViewById(R.id.courseField);
 
