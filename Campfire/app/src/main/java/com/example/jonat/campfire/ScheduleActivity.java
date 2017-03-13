@@ -189,6 +189,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                  * The last argument should NOT be null; it is there to keep Gradle happy :P
                  */
                 Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], newStudentCriteria);
+                newCourse.addStudent(newStudent);
                 db.addStudent(newStudent);
                 db.addCourse(newCourse);
                 db.addToTaking(newStudentID[4], newStudentID[2]);
