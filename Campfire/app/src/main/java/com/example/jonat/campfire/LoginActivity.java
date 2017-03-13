@@ -29,6 +29,8 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     ImageView correctLogin;
     ImageView incorrectLogin;
+    ImageView incorrectEmailIcon;
+    ImageView incorrectPasswordIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.loginButton);
         correctLogin = (ImageView) findViewById(R.id.successfulLogin);
         incorrectLogin = (ImageView) findViewById(R.id.unsuccessfulLogin);
+        incorrectEmailIcon = (ImageView) findViewById(R.id.incorrectEmailIcon);
+        incorrectPasswordIcon = (ImageView) findViewById(R.id.incorrectPasswordIcon);
     }
 
     public void checkFields(View view){
@@ -116,6 +120,8 @@ public class LoginActivity extends AppCompatActivity {
             load.setVisibility(View.VISIBLE);
             loginButton.setText("Authenticating...");
             loginButton.setEnabled(false);
+            incorrectEmailIcon.setVisibility(View.INVISIBLE);
+            incorrectPasswordIcon.setVisibility(View.INVISIBLE);
 
             final String emailCopy = email;
             final String passwordCopy = password;
@@ -175,11 +181,14 @@ public class LoginActivity extends AppCompatActivity {
             if (foundStudent != null){
                 if (!password.equals(foundStudent.getPass())){
                     missingEmailDialog.setMessage("Incorrect Password");
+                    incorrectPasswordIcon.setVisibility(View.VISIBLE);
                 }else{
                     missingEmailDialog.setMessage("This account does not exist. Please Try Again.");
+                    incorrectEmailIcon.setVisibility(View.VISIBLE);
                 }
             }else{
                 missingEmailDialog.setMessage("This account does not exist. Please Try Again.");
+                incorrectEmailIcon.setVisibility(View.VISIBLE);
             }
             missingEmailDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Try Again",
                     new DialogInterface.OnClickListener() {

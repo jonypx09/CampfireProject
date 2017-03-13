@@ -133,5 +133,25 @@
         android:visibility="invisible"
         app:srcCompat="@drawable/login_error" />
 
+    <ImageView
+        android:id="@+id/incorrectEmailIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/confirmPassTextField"
+        android:layout_toEndOf="@+id/confirmPassTextField"
+        android:layout_toRightOf="@+id/confirmPassTextField"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_error_white_48dp" />
+
+    <ImageView
+        android:id="@+id/incorrectPasswordIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/passwordField"
+        android:layout_toEndOf="@+id/passwordField"
+        android:layout_toRightOf="@+id/passwordField"
+        android:visibility="invisible"
+        app:srcCompat="@drawable/ic_error_white_48dp" />
+
 
 </RelativeLayout>
