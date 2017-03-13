@@ -8,15 +8,15 @@
             android:title="Home" />
         <item
             android:id="@+id/nav_messages"
-            android:icon="@drawable/ic_message_black"
+            android:icon="@drawable/ic_chat_black_48dp"
             android:title="Messages" />
         <item
             android:id="@+id/nav_my_campfire"
-            android:icon="@drawable/ic_my_campfire"
+            android:icon="@drawable/ic_group_work_black_48dp"
             android:title="My Campfire" />
         <item
             android:id="@+id/nav_discover"
-            android:icon="@drawable/ic_discover"
+            android:icon="@drawable/ic_search_black_48dp"
             android:title="Discover" />
     </group>
 
@@ -24,7 +24,7 @@
         <menu>
             <item
                 android:id="@+id/nav_help"
-                android:icon="@drawable/ic_help_black"
+                android:icon="@drawable/ic_help_black_48dp"
                 android:title="FAQ and Help" />
             <item
                 android:id="@+id/nav_settings"
@@ -36,8 +36,12 @@
     <item android:title="Account Settings">
         <menu>
             <item
+                android:id="@+id/nav_change_password"
+                android:icon="@drawable/ic_security_black_48dp"
+                android:title="Change Password" />
+            <item
                 android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_signout"
+                android:icon="@drawable/ic_power_settings_new_black_48dp"
                 android:title="Log Out" />
         </menu>
     </item>
