@@ -53,6 +53,7 @@
             android:id="@+id/sundayCheckbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:enabled="false"
             android:fontFamily="serif"
             android:text="Sunday"
@@ -62,7 +63,8 @@
             android:id="@+id/mondayCheckbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="false"
+            android:clickable="true"
+            android:enabled="true"
             android:fontFamily="serif"
             android:text="Monday"
             android:textColor="@color/white" />
@@ -71,8 +73,10 @@
             android:id="@+id/tuesdayCheckbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:enabled="false"
             android:fontFamily="serif"
+            android:onClick="openTuesdaySchedule"
             android:text="Tuesday"
             android:textColor="@color/white" />
 
@@ -80,8 +84,10 @@
             android:id="@+id/wednesdayCheckbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:enabled="false"
             android:fontFamily="serif"
+            android:onClick="openWednesdaySchedule"
             android:text="Wednesday"
             android:textColor="@color/white" />
 
@@ -89,8 +95,10 @@
             android:id="@+id/thursdayCheckbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:enabled="false"
             android:fontFamily="serif"
+            android:onClick="openThursdaySchedule"
             android:text="Thursday"
             android:textColor="@color/white" />
 
@@ -98,8 +106,10 @@
             android:id="@+id/fridayCheckbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:enabled="false"
             android:fontFamily="serif"
+            android:onClick="openFridaySchedule"
             android:text="Friday"
             android:textColor="@color/white" />
 
@@ -107,8 +117,10 @@
             android:id="@+id/saturdayCheckbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clickable="true"
             android:enabled="false"
             android:fontFamily="serif"
+            android:onClick="openSaturdaySchedule"
             android:text="Saturday"
             android:textColor="@color/white" />
 

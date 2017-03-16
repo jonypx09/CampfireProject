@@ -94,7 +94,7 @@ public class DiscoverFragment extends Fragment {
                         .setMessage("Email: " + emails[i] + "\n\n" +
                                 "Previous Elective Course: " + previousElectives[i] + "\n\n" +
                                 "Favourite Pastime: " + pastimes[i])
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                             }
                         })
