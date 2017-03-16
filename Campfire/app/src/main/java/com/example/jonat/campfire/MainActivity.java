@@ -1,11 +1,16 @@
 package com.example.jonat.campfire;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,6 +20,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +42,10 @@ public class MainActivity extends AppCompatActivity
     private String uEmail;
     private String uName;
     private Student uStudent;
+
+    private MenuItem mSearchAction;
+    private boolean isSearchOpened = false;
+    private EditText editSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,36 +105,43 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
+        if (isSearchOpened){
+            handleMenuSearch();
+            return;
+        }else{
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
 
-            AlertDialog terminateDialog = new AlertDialog.Builder(MainActivity.this).create();
-            terminateDialog.setMessage("Would you like to Logout or Close the App?");
-            terminateDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Close App",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            moveTaskToBack(true);
-                            android.os.Process.killProcess(android.os.Process.myPid());
-                            System.exit(1);
-                        }
-                    });
-            terminateDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Logout",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            logout();
-                        }
-                    });
-            terminateDialog.show();
+                AlertDialog terminateDialog = new AlertDialog.Builder(MainActivity.this).create();
+                terminateDialog.setMessage("Would you like to Logout or Close the App?");
+                terminateDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Close App",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                moveTaskToBack(true);
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                                System.exit(1);
+                            }
+                        });
+                terminateDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Logout",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                logout();
+                            }
+                        });
+                terminateDialog.show();
+            }
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -133,11 +152,14 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent promoIntent = new Intent(this, PromoActivity.class);
-            startActivity(promoIntent);
-            return true;
+        switch(id){
+            case R.id.action_settings:
+                Intent promoIntent = new Intent(this, PromoActivity.class);
+                startActivity(promoIntent);
+                return true;
+            case R.id.action_search:
+                handleMenuSearch();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -163,6 +185,10 @@ public class MainActivity extends AppCompatActivity
         Fragment fragment = null;
         Intent miscIntent;
 
+        if (isSearchOpened) {
+            handleMenuSearch();
+            return;
+        }
         //initializing the fragment object which is selected
         switch (itemId) {
             case R.id.nav_messages:
@@ -228,5 +254,65 @@ public class MainActivity extends AppCompatActivity
         Toast.makeText(getApplicationContext(), "You have logged out!", Toast.LENGTH_SHORT).show();
         Intent promoIntent = new Intent(this, PromoActivity.class);
         startActivity(promoIntent);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        mSearchAction = menu.findItem(R.id.action_search);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    protected void handleMenuSearch(){
+        ActionBar action = getSupportActionBar(); //get the actionbar
+
+        if(isSearchOpened){ //test if the search is open
+
+            action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
+            action.setDisplayShowTitleEnabled(true); //show the title in the action bar
+
+            //hides the keyboard
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+
+            //add the search icon in the action bar
+            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
+            isSearchOpened = false;
+        } else { //open the search entry
+
+            action.setDisplayShowCustomEnabled(true); //enable it to display a
+            // custom view in the action bar.
+            action.setCustomView(R.layout.search_bar);//add the custom view
+            action.setDisplayShowTitleEnabled(false); //hide the title
+
+            editSearch = (EditText)action.getCustomView().findViewById(R.id.editSearch); //the text editor
+
+            //this is a listener to do a search when the user clicks on search button
+            editSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        performSearch();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            editSearch.requestFocus();
+
+            //open the keyboard focused in the edtSearch
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(editSearch, InputMethodManager.SHOW_IMPLICIT);
+
+            //add the close icon
+            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_clear_white_24dp));
+            isSearchOpened = true;
+        }
+    }
+
+    public void performSearch(){
+        //Temporary
+        Snackbar.make(findViewById(R.id.content_main), "Search not functional yet!", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+        //Temporary
     }
 }
