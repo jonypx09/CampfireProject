@@ -3,6 +3,8 @@ package com.example.jonat.campfire;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -29,11 +32,13 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     ImageView correctLogin;
     ImageView incorrectLogin;
+    ImageView incorrectEmailIcon;
+    ImageView incorrectPasswordIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_login);
         setTitle("Log In");
 
@@ -83,11 +88,13 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.loginButton);
         correctLogin = (ImageView) findViewById(R.id.successfulLogin);
         incorrectLogin = (ImageView) findViewById(R.id.unsuccessfulLogin);
+        incorrectEmailIcon = (ImageView) findViewById(R.id.incorrectEmailIcon);
+        incorrectPasswordIcon = (ImageView) findViewById(R.id.incorrectPasswordIcon);
     }
 
     public void checkFields(View view){
 
-        EditText emailField = (EditText) findViewById(R.id.emailField);
+        EditText emailField = (EditText) findViewById(R.id.confirmPassTextField);
         EditText passwordField = (EditText) findViewById(R.id.passwordField);
         String email = emailField.getText().toString();
         email = email.trim();
@@ -116,6 +123,8 @@ public class LoginActivity extends AppCompatActivity {
             load.setVisibility(View.VISIBLE);
             loginButton.setText("Authenticating...");
             loginButton.setEnabled(false);
+            incorrectEmailIcon.setVisibility(View.INVISIBLE);
+            incorrectPasswordIcon.setVisibility(View.INVISIBLE);
 
             final String emailCopy = email;
             final String passwordCopy = password;
@@ -175,11 +184,14 @@ public class LoginActivity extends AppCompatActivity {
             if (foundStudent != null){
                 if (!password.equals(foundStudent.getPass())){
                     missingEmailDialog.setMessage("Incorrect Password");
+                    incorrectPasswordIcon.setVisibility(View.VISIBLE);
                 }else{
                     missingEmailDialog.setMessage("This account does not exist. Please Try Again.");
+                    incorrectEmailIcon.setVisibility(View.VISIBLE);
                 }
             }else{
                 missingEmailDialog.setMessage("This account does not exist. Please Try Again.");
+                incorrectEmailIcon.setVisibility(View.VISIBLE);
             }
             missingEmailDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Try Again",
                     new DialogInterface.OnClickListener() {

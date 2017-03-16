@@ -24,6 +24,10 @@ import backend.database.DatabaseAdapter;
 
 public class MyCampfireFragment extends Fragment {
 
+    private String[] newStudentID;
+    private String[] programmingLanguages;
+    DatabaseAdapter db;
+
     private ArrayList<Student> sampleStudents;
     private ArrayList<String> c1;
     ArrayList<Comparable> crit;

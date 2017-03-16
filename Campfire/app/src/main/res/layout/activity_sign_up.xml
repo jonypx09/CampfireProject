@@ -12,7 +12,7 @@
     android:background="@color/colorPrimaryDark">
 
     <TextView
-        android:id="@+id/firstNamePrompt"
+        android:id="@+id/oldPasswordPrompt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -23,12 +23,12 @@
         android:textColor="@android:color/white" />
 
     <EditText
-        android:id="@+id/firstNameTextField"
+        android:id="@+id/oldPasswordTextField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/firstNamePrompt"
+        android:layout_below="@+id/oldPasswordPrompt"
         android:ems="10"
         android:fontFamily="serif"
         android:inputType="textPersonName"
@@ -36,26 +36,26 @@
         android:textColor="@color/colorAccent" />
 
     <TextView
-        android:id="@+id/surnamePrompt"
+        android:id="@+id/newPasswordPrompt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/firstNameTextField"
+        android:layout_below="@+id/oldPasswordTextField"
         android:layout_marginTop="10dp"
         android:fontFamily="serif"
         android:text="Surname:"
         android:textColor="@android:color/white" />
 
     <EditText
-        android:id="@+id/surnameTextField"
+        android:id="@+id/newPasswordTextField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/firstNameTextField"
+        android:layout_alignEnd="@+id/oldPasswordTextField"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/firstNameTextField"
-        android:layout_below="@+id/surnamePrompt"
+        android:layout_alignRight="@+id/oldPasswordTextField"
+        android:layout_below="@+id/newPasswordPrompt"
         android:ems="10"
         android:fontFamily="serif"
         android:inputType="textPersonName"
@@ -63,26 +63,26 @@
         android:textColor="@color/colorAccent" />
 
     <TextView
-        android:id="@+id/emailPrompt"
+        android:id="@+id/confirmPasswordPrompt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/surnameTextField"
+        android:layout_below="@+id/newPasswordTextField"
         android:layout_marginTop="26dp"
         android:fontFamily="serif"
         android:text="Email Address:"
         android:textColor="@android:color/white" />
 
     <EditText
-        android:id="@+id/emailField"
+        android:id="@+id/confirmPassTextField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/surnameTextField"
+        android:layout_alignEnd="@+id/newPasswordTextField"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/surnameTextField"
-        android:layout_below="@+id/emailPrompt"
+        android:layout_alignRight="@+id/newPasswordTextField"
+        android:layout_below="@+id/confirmPasswordPrompt"
         android:ems="10"
         android:fontFamily="serif"
         android:inputType="textEmailAddress"
@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/emailField"
+        android:layout_below="@+id/confirmPassTextField"
         android:layout_marginTop="24dp"
         android:fontFamily="serif"
         android:text="Password:"
@@ -104,10 +104,10 @@
         android:id="@+id/passwordField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/emailField"
+        android:layout_alignEnd="@+id/confirmPassTextField"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/emailField"
+        android:layout_alignRight="@+id/confirmPassTextField"
         android:layout_below="@+id/passwordPrompt"
         android:ems="10"
         android:fontFamily="serif"
@@ -139,7 +139,7 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:id="@+id/createAccountButton"
+        android:id="@+id/changePasswordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -157,7 +157,7 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/createAccountButton"
+        android:layout_above="@+id/changePasswordButton"
         android:layout_below="@+id/courseField"
         android:layout_centerHorizontal="true"
         android:visibility="invisible" />
