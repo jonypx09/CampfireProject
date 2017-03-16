@@ -1,9 +1,11 @@
 package com.example.jonat.campfire;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -95,10 +97,25 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
 
-            //Pressing the back button on the Android device will log the user off
-            Toast.makeText(getApplicationContext(), "You have logged out!", Toast.LENGTH_SHORT).show();
-            Intent promoIntent = new Intent(this, PromoActivity.class);
-            startActivity(promoIntent);
+            AlertDialog terminateDialog = new AlertDialog.Builder(MainActivity.this).create();
+            terminateDialog.setMessage("Would you like to Logout or Close the App?");
+            terminateDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Close App",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            moveTaskToBack(true);
+                            android.os.Process.killProcess(android.os.Process.myPid());
+                            System.exit(1);
+                        }
+                    });
+            terminateDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Logout",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            logout();
+                        }
+                    });
+            terminateDialog.show();
         }
     }
 
@@ -204,5 +221,12 @@ public class MainActivity extends AppCompatActivity
 
     public Student getCurrentStudent() {
         return this.uStudent;
+    }
+
+    public void logout(){
+        //Pressing the back button on the Android device will log the user off
+        Toast.makeText(getApplicationContext(), "You have logged out!", Toast.LENGTH_SHORT).show();
+        Intent promoIntent = new Intent(this, PromoActivity.class);
+        startActivity(promoIntent);
     }
 }

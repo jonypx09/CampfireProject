@@ -100,13 +100,13 @@ public class DiscoverFragment extends Fragment {
                         })
                         .setNeutralButton("Add to Campfire", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Fragment fragment = new MessagesFragment();
+//                                Fragment fragment = new MessagesFragment();
 //                                Bundle bundle = new Bundle();
 //                                bundle.putString("userEmail", uEmail);
 //                                fragment.setArguments(bundle);
-                                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-                                ft.replace(R.id.content_frame, fragment);
-                                ft.commit();
+//                                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+//                                ft.replace(R.id.content_frame, fragment);
+//                                ft.commit();
                             }
                         })
                         .setIcon(images[i])
