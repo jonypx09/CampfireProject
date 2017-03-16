@@ -412,7 +412,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         buttons.removeAll(savedButtons);
 
         for (Button b: buttons) {
-            b.setBackgroundColor(Color.LTGRAY);
+            b.setBackgroundResource(android.R.drawable.btn_default);
         }
     }
 
@@ -428,7 +428,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
             schedule.put(day, temp);
 
         } else if (temp.contains(time)){ // set to not available for this time and day
-            toChange.setBackgroundColor(Color.LTGRAY);
+            toChange.setBackgroundResource(android.R.drawable.btn_default);
             // update ArrayList for this day (removing previously available time)
             temp.remove(time);
 
