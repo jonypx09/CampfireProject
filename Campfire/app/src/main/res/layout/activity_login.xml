@@ -48,7 +48,8 @@
         android:onClick="checkFields"
         android:text="Log In"
         android:textColor="@android:color/black"
-        android:layout_below="@+id/loginProgress"
+        android:layout_marginBottom="11dp"
+        android:layout_above="@+id/forgotPasswordTextview"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
@@ -92,7 +93,8 @@
         android:layout_marginTop="72dp"
         android:fontFamily="serif"
         android:text="Enter your email address:"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/passwordPrompt"
@@ -104,17 +106,18 @@
         android:layout_marginTop="41dp"
         android:fontFamily="serif"
         android:text="Enter your password:"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:textSize="15sp" />
 
     <ProgressBar
         android:id="@+id/loginProgress"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/passwordField"
-        android:layout_centerHorizontal="true"
         android:visibility="invisible"
-        android:layout_alignBottom="@+id/unsuccessfulLogin" />
+        android:layout_alignTop="@+id/unsuccessfulLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/loginButton" />
 
     <ImageView
         android:id="@+id/successfulLogin"
@@ -131,11 +134,11 @@
         android:id="@+id/unsuccessfulLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/successfulLogin"
-        android:layout_alignStart="@+id/successfulLogin"
         android:visibility="invisible"
         app:srcCompat="@drawable/login_error"
-        android:layout_below="@+id/incorrectPasswordIcon" />
+        android:layout_below="@+id/incorrectPasswordIcon"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/loginButton" />
 
     <ImageView
         android:id="@+id/incorrectEmailIcon"
@@ -161,14 +164,17 @@
         android:id="@+id/forgotPasswordTextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/appSignP2"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/appSignP2"
         android:fontFamily="serif"
         android:onClick="toRecovery"
         android:text="Forgot Your Password?"
+        android:textAlignment="center"
         android:textColor="@android:color/holo_orange_light"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>
