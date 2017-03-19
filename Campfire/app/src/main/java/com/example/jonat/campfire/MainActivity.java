@@ -1,5 +1,6 @@
 package com.example.jonat.campfire;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -272,7 +273,8 @@ public class MainActivity extends AppCompatActivity
 
             //hides the keyboard
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
 
             //add the search icon in the action bar
             mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
@@ -314,5 +316,10 @@ public class MainActivity extends AppCompatActivity
         Snackbar.make(findViewById(R.id.content_main), "Search not functional yet!", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
         //Temporary
+    }
+
+    public void closeKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 }
