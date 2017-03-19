@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(myProfileIntent);
             }
         });
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @Override
@@ -231,7 +232,6 @@ public class MainActivity extends AppCompatActivity
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, fragment);
-
             ft.commit();
         }
 
