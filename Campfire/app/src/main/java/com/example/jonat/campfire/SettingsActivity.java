@@ -4,6 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import backend.database.DatabaseAdapter;
 
@@ -12,6 +17,7 @@ public class SettingsActivity extends AppCompatActivity {
     private String[] newStudentID;
     DatabaseAdapter db;
     private String uEmail;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
         uEmail = newStudentID[2];
+
     }
 
     @Override

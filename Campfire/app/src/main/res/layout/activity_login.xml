@@ -11,6 +11,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context="com.example.jonat.campfire.LoginActivity">
 
     <TextView
@@ -23,7 +25,7 @@
         android:fontFamily="serif"
         android:text="Campfire"
         android:textColor="@color/colorAccent"
-        android:textSize="36sp" />
+        android:textSize="40sp" />
 
     <TextView
         android:id="@+id/appSignP1"
@@ -41,16 +43,16 @@
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
         android:width="200dp"
         android:background="@android:color/holo_blue_dark"
         android:onClick="checkFields"
         android:text="Log In"
-        android:textColor="@android:color/black" />
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/loginProgress"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:id="@+id/confirmPassTextField"
@@ -109,10 +111,10 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/loginButton"
         android:layout_below="@+id/passwordField"
         android:layout_centerHorizontal="true"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_alignBottom="@+id/unsuccessfulLogin" />
 
     <ImageView
         android:id="@+id/successfulLogin"
@@ -122,7 +124,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/login_success" />
+        app:srcCompat="@drawable/login_success"
+        android:layout_alignBottom="@+id/loginProgress" />
 
     <ImageView
         android:id="@+id/unsuccessfulLogin"
@@ -130,9 +133,9 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/successfulLogin"
         android:layout_alignStart="@+id/successfulLogin"
-        android:layout_alignTop="@+id/successfulLogin"
         android:visibility="invisible"
-        app:srcCompat="@drawable/login_error" />
+        app:srcCompat="@drawable/login_error"
+        android:layout_below="@+id/incorrectPasswordIcon" />
 
     <ImageView
         android:id="@+id/incorrectEmailIcon"
@@ -153,6 +156,19 @@
         android:layout_toRightOf="@+id/passwordField"
         android:visibility="invisible"
         app:srcCompat="@drawable/ic_error_white_48dp" />
+
+    <TextView
+        android:id="@+id/forgotPasswordTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/appSignP2"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/appSignP2"
+        android:fontFamily="serif"
+        android:onClick="toRecovery"
+        android:text="Forgot Your Password?"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="14sp" />
 
 
 </RelativeLayout>

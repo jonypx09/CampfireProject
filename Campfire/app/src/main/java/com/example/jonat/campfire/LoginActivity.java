@@ -209,4 +209,9 @@ public class LoginActivity extends AppCompatActivity {
         InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
+
+    public void toRecovery(View view){
+        Intent recoverIntent = new Intent(this, AccountRecoveryActivity.class);
+        startActivity(recoverIntent);
+    }
 }
