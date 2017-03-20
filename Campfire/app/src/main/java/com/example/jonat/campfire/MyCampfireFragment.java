@@ -24,7 +24,6 @@ import backend.database.DatabaseAdapter;
 
 public class MyCampfireFragment extends Fragment {
 
-    private String[] newStudentID;
     private String[] programmingLanguages;
     DatabaseAdapter db;
 
@@ -33,6 +32,7 @@ public class MyCampfireFragment extends Fragment {
     ArrayList<Comparable> crit;
     private ListView listView;
 
+    private String[] newStudentID;
     private String uEmail;
     private Student uStudent;
     private String[] names;
@@ -44,6 +44,7 @@ public class MyCampfireFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        newStudentID = getArguments().getStringArray("identity");
         //returning our layout file
         return inflater.inflate(R.layout.fragment_my_campfire, container, false);
     }
@@ -87,14 +88,13 @@ public class MyCampfireFragment extends Fragment {
                         })
                         .setNeutralButton("Message", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-//                                Fragment fragment = new MessagesFragment();
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString("userEmail", uEmail);
-//                                fragment.setArguments(bundle);
-//                                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//                                ft.replace(R.id.content_frame, fragment);
-//                                ft.commit();
-                                Toast.makeText(getContext(), "Out of service.", Toast.LENGTH_LONG).show();
+                                Fragment fragment = new MessagesFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putStringArray("identity", newStudentID);
+                                fragment.setArguments(bundle);
+                                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                                ft.replace(R.id.content_frame, fragment);
+                                ft.commit();
                             }
                         })
                         .setIcon(images[i])

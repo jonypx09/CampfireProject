@@ -201,6 +201,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_my_campfire:
                 fragment = new MyCampfireFragment();
+                fragment.setArguments(bundle);
                 break;
             case R.id.nav_discover:
                 fragment = new DiscoverFragment();
