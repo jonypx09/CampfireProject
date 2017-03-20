@@ -89,8 +89,16 @@ public class DiscoverFragment extends Fragment {
                 if (!s.getEmail().equals(uEmail)){
                     names[i] = s.getFname() + " " + s.getLname();
                     emails[i] = s.getEmail();
-                    previousElectives[i] = s.getElectives().get(0);
-                    pastimes[i] = s.getHobbies().get(0);
+                    if (s.getElectives() == null){
+                        previousElectives[i] = "No previous electives.";
+                    }else{
+                        previousElectives[i] = s.getElectives().get(0);
+                    }
+                    if (s.getHobbies() == null){
+                        pastimes[i] = "No previous hobbies.";
+                    }else{
+                        pastimes[i] = s.getHobbies().get(0);
+                    }
                     images[i] = sampleImage;
                     i++;
                 }
