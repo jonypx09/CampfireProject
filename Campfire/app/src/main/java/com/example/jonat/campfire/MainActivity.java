@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity
 
     private String[] newStudentID;
     DatabaseAdapter db;
+    NavigationView navigationView;
 
     static final String STATE_EMAIL = "email";
     private String uEmail;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
     private EditText editSearch;
+    private boolean searchInProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
@@ -275,10 +277,25 @@ public class MainActivity extends AppCompatActivity
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
 
-
             //add the search icon in the action bar
             mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
             isSearchOpened = false;
+
+            //Refresh user list
+            if (searchInProgress){
+                Bundle bundle = new Bundle();
+                bundle.putStringArray("identity", newStudentID);
+                bundle.putStringArray("search", null);
+                Fragment fragment = null;
+                fragment = new DiscoverFragment();
+                fragment.setArguments(bundle);
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, fragment);
+                ft.commit();
+                searchInProgress = false;
+            }
+
+
         } else { //open the search entry
 
             action.setDisplayShowCustomEnabled(true); //enable it to display a
@@ -293,7 +310,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        performSearch();
+                        performSearch(editSearch.getText().toString());
                         return true;
                     }
                     return false;
@@ -311,11 +328,35 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void performSearch(){
+    public void performSearch(String query){
         //Temporary
-        Snackbar.make(findViewById(R.id.content_main), "Search not functional yet!", Snackbar.LENGTH_LONG)
+        Snackbar.make(findViewById(R.id.content_main), "Search results for: " + query, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
         //Temporary
+
+        ArrayList<String> searchResults = new ArrayList<String>();
+        ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
+        ArrayList<Student> classmates = db.getStudentsInCourse(enrolledCourses.get(0));
+        for (Student s : classmates) {
+            if ((!s.getEmail().equals(uEmail)) && (s.getFname().contains(query))){
+                searchResults.add(s.getEmail());
+            }
+        }
+        String[] searchResultsArray = new String[searchResults.size()];
+        searchResultsArray = searchResults.toArray(searchResultsArray);
+
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("identity", newStudentID);
+        bundle.putStringArray("search", searchResultsArray);
+        Fragment fragment = null;
+        fragment = new DiscoverFragment();
+        fragment.setArguments(bundle);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
+        closeKeyboard();
+        navigationView.getMenu().getItem(3).setChecked(true);
+        searchInProgress = true;
     }
 
     public void closeKeyboard(){

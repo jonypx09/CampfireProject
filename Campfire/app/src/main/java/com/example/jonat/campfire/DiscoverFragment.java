@@ -42,12 +42,14 @@ public class DiscoverFragment extends Fragment {
     private Integer sampleImage = R.drawable.person_icon;
 
     private ArrayList<Student> uClassmates;
+    private String[] searchResults;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         newStudentID = getArguments().getStringArray("identity");
+        searchResults = getArguments().getStringArray("search");
         uEmail = newStudentID[2];
 
         //returning our layout file
@@ -68,22 +70,44 @@ public class DiscoverFragment extends Fragment {
         ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
         ArrayList<Student> classmates = db.getStudentsInCourse(enrolledCourses.get(0));
 
-        names = new String[classmates.size() - 1];
-        images = new Integer[classmates.size() - 1];
-        emails = new String[classmates.size() - 1];
-        previousElectives = new String[classmates.size() - 1];
-        pastimes = new String[classmates.size() - 1];
-        int i = 0;
-        for (Student s : classmates) {
-            if (!s.getEmail().equals(uEmail)){
-                names[i] = s.getFname() + " " + s.getLname();
-                emails[i] = s.getEmail();
-                previousElectives[i] = s.getElectives().get(0);
-                pastimes[i] = s.getHobbies().get(0);
+        int classSize = 0;
+        if (searchResults == null){
+            classSize = classmates.size() - 1;
+        }else{
+            classSize = searchResults.length;
+        }
+        names = new String[classSize];
+        images = new Integer[classSize];
+        emails = new String[classSize];
+        previousElectives = new String[classSize];
+        pastimes = new String[classSize];
+
+        if (searchResults == null){
+            //Display all results
+            int i = 0;
+            for (Student s : classmates) {
+                if (!s.getEmail().equals(uEmail)){
+                    names[i] = s.getFname() + " " + s.getLname();
+                    emails[i] = s.getEmail();
+                    previousElectives[i] = s.getElectives().get(0);
+                    pastimes[i] = s.getHobbies().get(0);
+                    images[i] = sampleImage;
+                    i++;
+                }
+            }
+        }else{
+            //Display search results
+            for (int i = 0; i < searchResults.length; i++){
+                Student result = db.getStudent(searchResults[i]);
+                names[i] = result.getFname() + " " + result.getLname();
+                emails[i] = result.getEmail();
+                previousElectives[i] = result.getElectives().get(0);
+                pastimes[i] = result.getHobbies().get(0);
                 images[i] = sampleImage;
-                i++;
             }
         }
+
+
         MyCampfireList customList = new MyCampfireList(getActivity(), names, emails, images);
 
         listView = (ListView) getView().findViewById(R.id.allUsersList);
