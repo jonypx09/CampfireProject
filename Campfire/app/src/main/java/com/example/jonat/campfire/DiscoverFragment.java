@@ -17,6 +17,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import backend.algorithms.Comparable;
+import backend.algorithms.Course;
 import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
@@ -67,19 +68,21 @@ public class DiscoverFragment extends Fragment {
         ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
         ArrayList<Student> classmates = db.getStudentsInCourse(enrolledCourses.get(0));
 
-        names = new String[classmates.size()];
-        images = new Integer[classmates.size()];
-        emails = new String[classmates.size()];
-        previousElectives = new String[classmates.size()];
-        pastimes = new String[classmates.size()];
+        names = new String[classmates.size() - 1];
+        images = new Integer[classmates.size() - 1];
+        emails = new String[classmates.size() - 1];
+        previousElectives = new String[classmates.size() - 1];
+        pastimes = new String[classmates.size() - 1];
         int i = 0;
         for (Student s : classmates) {
-            names[i] = s.getFname() + " " + s.getLname();
-            emails[i] = s.getEmail();
-            previousElectives[i] = s.getElectives().get(0);
-            pastimes[i] = s.getHobbies().get(0);
-            images[i] = sampleImage;
-            i++;
+            if (!s.getEmail().equals(uEmail)){
+                names[i] = s.getFname() + " " + s.getLname();
+                emails[i] = s.getEmail();
+                previousElectives[i] = s.getElectives().get(0);
+                pastimes[i] = s.getHobbies().get(0);
+                images[i] = sampleImage;
+                i++;
+            }
         }
         MyCampfireList customList = new MyCampfireList(getActivity(), names, emails, images);
 
