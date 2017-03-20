@@ -52,6 +52,8 @@ public class MyProfileActivity extends AppCompatActivity {
     TextView previousElective;
     TextView hobbyTextview;
 
+    private Integer clockImage = R.drawable.ic_access_time_black_48dp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,9 +104,33 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
         tuesdayCheckbox = (CheckBox) findViewById(R.id.tuesdayCheckbox);
+        tuesdayCheckbox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                tuesdayCheckbox.setChecked(true);
+                openTuesdaySchedule();
+            }
+        });
         wednesdayCheckbox = (CheckBox) findViewById(R.id.wednesdayCheckbox);
+        wednesdayCheckbox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                wednesdayCheckbox.setChecked(true);
+                openWednesdaySchedule();
+            }
+        });
         thursdayCheckbox = (CheckBox) findViewById((R.id.thursdayCheckbox));
+        thursdayCheckbox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                thursdayCheckbox.setChecked(true);
+                openThursdaySchedule();
+            }
+        });
         fridayCheckbox = (CheckBox) findViewById((R.id.fridayCheckbox));
+        fridayCheckbox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                fridayCheckbox.setChecked(true);
+                openFridaySchedule();
+            }
+        });
 
         previousCSCourse = (TextView) findViewById(R.id.previousCourseTextview);
         previousElective = (TextView) findViewById(R.id.electiveCourseTextview);
@@ -192,48 +218,60 @@ public class MyProfileActivity extends AppCompatActivity {
 
     public void openMondaySchedule(){
         if (mondayCheckbox.isChecked()){
-            ArrayList<String> times = this.schedule.get("Monday");
-            AlertDialog scheduleDialog = new AlertDialog.Builder(this).create();
-            scheduleDialog.setTitle("Details for: Monday");
-            scheduleDialog.setMessage("Something1 \n");
-            scheduleDialog.setMessage("Something2 \n");
-            scheduleDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Close",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            scheduleDialog.show();
+            scheduleDialog("Monday");
         }
     }
 
     public void openTuesdaySchedule(){
         if (tuesdayCheckbox.isChecked()){
-
+            scheduleDialog("Tuesday");
         }
     }
 
     public void openWednesdaySchedule(){
         if (wednesdayCheckbox.isChecked()){
-
+            scheduleDialog("Wednesday");
         }
     }
 
     public void openThursdaySchedule(){
         if (thursdayCheckbox.isChecked()){
-
+            scheduleDialog("Thursday");
         }
     }
 
     public void openFridaySchedule(){
         if (fridayCheckbox.isChecked()){
-
+            scheduleDialog("Friday");
         }
     }
 
     public void openSaturdaySchedule(){
         if (saturdayCheckbox.isChecked()){
-
+            scheduleDialog("Saturday");
         }
+    }
+
+    public void scheduleDialog(String day){
+        ArrayList<String> times = this.schedule.get(day);
+        AlertDialog scheduleDialog = new AlertDialog.Builder(this).create();
+        scheduleDialog.setTitle("Details for: " + day);
+
+        String details = "Available Times:\n\n";
+        for (int i = 0; i < times.size(); i++) {
+            details += times.get(i);
+            if (i != times.size() - 1){
+                details += "\n";
+            }
+        }
+        scheduleDialog.setMessage(details);
+        scheduleDialog.setIcon(clockImage);
+        scheduleDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Close",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        scheduleDialog.show();
     }
 }
