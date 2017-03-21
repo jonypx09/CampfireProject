@@ -11,4 +11,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.jonat.campfire.SettingsActivity">
 
+    <ListView
+        android:id="@+id/settingsListview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:entries="@array/settings_options" />
 </RelativeLayout>

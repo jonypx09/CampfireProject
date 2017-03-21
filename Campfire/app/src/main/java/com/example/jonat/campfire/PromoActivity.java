@@ -16,10 +16,10 @@ public class PromoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_promo);
+        setTitle("");
 
         //Connect to the database
         database = new DatabaseAdapter(this);
-
     }
 
     public void toLoginScreen(View view){

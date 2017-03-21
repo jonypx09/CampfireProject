@@ -18,60 +18,61 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="closeKeyboard"
             android:orientation="vertical"
             android:weightSum="1">
 
             <TextView
-                android:text="Preferred Programming Language(s):"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/languagePrompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:fontFamily="serif"
-                android:textColor="@android:color/white"
+                android:paddingBottom="8dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="8dp" />
+                android:text="Preferred Programming Language(s):"
+                android:textColor="@android:color/white" />
 
             <CheckBox
-                android:text="Python"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/pythonCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:fontFamily="serif"
+                android:text="Python"
                 android:textColor="@android:color/white" />
 
             <CheckBox
-                android:text="Java"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/javaCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Java"
                 android:textColor="@android:color/white" />
 
             <CheckBox
-                android:text="C"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/cCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="C"
                 android:textColor="@android:color/white" />
 
             <CheckBox
-                android:text="HTML"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/htmlCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="HTML"
                 android:textColor="@android:color/white" />
 
             <CheckBox
-                android:text="Javascript"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/javascriptCheckbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Javascript"
                 android:textColor="@android:color/white" />
 
             <CheckBox
-                android:text="SQL"
+                android:id="@+id/sqlCheckbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/sqlCheckbox"
+                android:text="SQL"
                 android:textColor="@android:color/white" />
 
             <TextView
@@ -84,41 +85,41 @@
                 android:textColor="@android:color/white" />
 
             <EditText
+                android:id="@+id/previousField"
                 android:layout_width="203dp"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
                 android:ems="10"
-                android:id="@+id/previousField"
-                android:textColor="@color/colorAccent"
-                android:fontFamily="serif" />
-
-            <TextView
-                android:text="Interesting Elective Course you have taken:"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/electivePrompt"
                 android:fontFamily="serif"
-                android:textColor="@android:color/white"
-                android:paddingTop="16dp" />
-
-            <EditText
-                android:layout_width="204dp"
-                android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
-                android:ems="10"
-                android:id="@+id/electivesField"
-                android:fontFamily="serif"
                 android:textColor="@color/colorAccent" />
 
             <TextView
-                android:text="Favourite pastime activity:"
+                android:id="@+id/electivePrompt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/hobbiesPrompt"
                 android:fontFamily="serif"
-                android:textColor="@android:color/white"
                 android:paddingTop="16dp"
-                android:layout_marginBottom="10dp" />
+                android:text="Interesting Elective Course you have taken:"
+                android:textColor="@android:color/white" />
+
+            <EditText
+                android:id="@+id/electivesField"
+                android:layout_width="204dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:fontFamily="serif"
+                android:inputType="textMultiLine"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/hobbiesPrompt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="serif"
+                android:paddingTop="16dp"
+                android:text="Favourite pastime activity:"
+                android:textColor="@android:color/white" />
 
             <Spinner
                 android:id="@+id/pastimeSpinner"

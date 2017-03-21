@@ -17,6 +17,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import backend.algorithms.Comparable;
+import backend.algorithms.Course;
 import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
@@ -41,12 +42,14 @@ public class DiscoverFragment extends Fragment {
     private Integer sampleImage = R.drawable.person_icon;
 
     private ArrayList<Student> uClassmates;
+    private String[] searchResults;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         newStudentID = getArguments().getStringArray("identity");
+        searchResults = getArguments().getStringArray("search");
         uEmail = newStudentID[2];
 
         //returning our layout file
@@ -67,30 +70,52 @@ public class DiscoverFragment extends Fragment {
         ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
         ArrayList<Student> classmates = db.getStudentsInCourse(enrolledCourses.get(0));
 
-        names = new String[classmates.size()];
-        images = new Integer[classmates.size()];
-        emails = new String[classmates.size()];
-        previousElectives = new String[classmates.size()];
-        pastimes = new String[classmates.size()];
-        int i = 0;
-        for (Student s : classmates) {
-            names[i] = s.getFname() + " " + s.getLname();
-            emails[i] = s.getEmail();
-            if (s.getElectives() == null) {
-                previousElectives[i] = "No previous electives.";
-            }
-            else {
-                previousElectives[i] = s.getElectives().get(0);
-            }
-            if (s.getHobbies() == null) {
-                pastimes[i] = "No previous hobbies.";
-            }
-            else {
-                pastimes[i] = s.getHobbies().get(0);
-            }
-            images[i] = sampleImage;
-            i++;
+        int classSize = 0;
+        if (searchResults == null){
+            classSize = classmates.size() - 1;
+        }else{
+            classSize = searchResults.length;
         }
+        names = new String[classSize];
+        images = new Integer[classSize];
+        emails = new String[classSize];
+        previousElectives = new String[classSize];
+        pastimes = new String[classSize];
+
+        if (searchResults == null){
+            //Display all results
+            int i = 0;
+            for (Student s : classmates) {
+                if (!s.getEmail().equals(uEmail)){
+                    names[i] = s.getFname() + " " + s.getLname();
+                    emails[i] = s.getEmail();
+                    if (s.getElectives() == null){
+                        previousElectives[i] = "No previous electives.";
+                    }else{
+                        previousElectives[i] = s.getElectives().get(0);
+                    }
+                    if (s.getHobbies() == null){
+                        pastimes[i] = "No previous hobbies.";
+                    }else{
+                        pastimes[i] = s.getHobbies().get(0);
+                    }
+                    images[i] = sampleImage;
+                    i++;
+                }
+            }
+        }else{
+            //Display search results
+            for (int i = 0; i < searchResults.length; i++){
+                Student result = db.getStudent(searchResults[i]);
+                names[i] = result.getFname() + " " + result.getLname();
+                emails[i] = result.getEmail();
+                previousElectives[i] = result.getElectives().get(0);
+                pastimes[i] = result.getHobbies().get(0);
+                images[i] = sampleImage;
+            }
+        }
+
+
         MyCampfireList customList = new MyCampfireList(getActivity(), names, emails, images);
 
         listView = (ListView) getView().findViewById(R.id.allUsersList);
@@ -104,7 +129,7 @@ public class DiscoverFragment extends Fragment {
                         .setMessage("Email: " + emails[i] + "\n\n" +
                                 "Previous Elective Course: " + previousElectives[i] + "\n\n" +
                                 "Favourite Pastime: " + pastimes[i])
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                             }
                         })

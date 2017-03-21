@@ -28,7 +28,8 @@
         <activity
             android:name=".LoginActivity"
             android:parentActivityName=".PromoActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".SignUpActivity"
             android:parentActivityName=".PromoActivity"
@@ -64,10 +65,16 @@
             android:parentActivityName=".PersonalizeActivity">
         </activity>
 
-        <activity android:name=".ChangePasswordActivity"
-                  android:parentActivityName=".MainActivity">
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:parentActivityName=".MainActivity">
         </activity>
 
+        <activity
+            android:name=".AccountRecoveryActivity"
+            android:parentActivityName=".LoginActivity">
+
+        </activity>
     </application>
 
 </manifest>

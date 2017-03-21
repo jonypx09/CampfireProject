@@ -5,113 +5,119 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:onClick="closeKeyboard"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.jonat.campfire.LoginActivity"
-    android:background="@color/colorPrimaryDark">
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    tools:context="com.example.jonat.campfire.LoginActivity">
 
     <TextView
-        android:text="Campfire"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
         android:id="@+id/appSignP2"
-        android:fontFamily="serif"
-        android:textSize="36sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/colorAccent" />
-
-    <TextView
-        android:text="Welcome to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:id="@+id/appSignP1"
-        android:fontFamily="cursive"
-        android:textSize="30sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/colorAccent" />
+        android:layout_marginTop="72dp"
+        android:fontFamily="serif"
+        android:text="Campfire"
+        android:textColor="@color/colorAccent"
+        android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/appSignP1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:fontFamily="cursive"
+        android:text="Welcome to"
+        android:textColor="@color/colorAccent"
+        android:textSize="30sp" />
 
     <Button
-        android:text="Log In"
+        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/loginButton"
-        android:onClick="checkFields"
         android:width="200dp"
         android:background="@android:color/holo_blue_dark"
+        android:onClick="checkFields"
+        android:text="Log In"
         android:textColor="@android:color/black"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:layout_below="@+id/confirmPasswordPrompt"
+        android:layout_marginBottom="11dp"
+        android:layout_above="@+id/forgotPasswordTextview"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
         android:id="@+id/confirmPassTextField"
-        android:layout_alignRight="@+id/appSignP2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/appSignP2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/appSignP2"
+        android:layout_below="@+id/confirmPasswordPrompt"
+        android:ems="10"
         android:fontFamily="serif"
+        android:inputType="textEmailAddress"
         android:textColor="@color/colorAccent" />
 
     <EditText
+        android:id="@+id/passwordField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/passwordField"
-        android:layout_below="@+id/passwordPrompt"
+        android:layout_alignEnd="@+id/confirmPassTextField"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/confirmPassTextField"
-        android:layout_alignEnd="@+id/confirmPassTextField"
-        android:textColor="@color/colorAccent"
-        android:fontFamily="serif" />
+        android:layout_below="@+id/passwordPrompt"
+        android:ems="10"
+        android:fontFamily="serif"
+        android:inputType="textPassword"
+        android:textColor="@color/colorAccent" />
 
     <TextView
-        android:text="Enter your email address:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
         android:id="@+id/confirmPasswordPrompt"
-        android:fontFamily="serif"
-        android:textColor="@android:color/white"
-        android:layout_below="@+id/appSignP2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="Enter your password:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="41dp"
-        android:id="@+id/passwordPrompt"
-        android:fontFamily="serif"
-        android:textColor="@android:color/white"
-        android:layout_below="@+id/confirmPassTextField"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/appSignP2"
+        android:layout_marginTop="72dp"
+        android:fontFamily="serif"
+        android:text="Enter your email address:"
+        android:textColor="@android:color/white"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/passwordPrompt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/confirmPassTextField"
+        android:layout_marginTop="41dp"
+        android:fontFamily="serif"
+        android:text="Enter your password:"
+        android:textColor="@android:color/white"
+        android:textSize="15sp" />
 
     <ProgressBar
         android:id="@+id/loginProgress"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/loginButton"
-        android:layout_below="@+id/passwordField"
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/unsuccessfulLogin"
         android:layout_centerHorizontal="true"
-        android:visibility="invisible" />
+        android:layout_above="@+id/loginButton" />
 
     <ImageView
         android:id="@+id/successfulLogin"
@@ -121,17 +127,18 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
         android:visibility="invisible"
-        app:srcCompat="@drawable/login_success" />
+        app:srcCompat="@drawable/login_success"
+        android:layout_alignBottom="@+id/loginProgress" />
 
     <ImageView
         android:id="@+id/unsuccessfulLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/successfulLogin"
-        android:layout_alignStart="@+id/successfulLogin"
-        android:layout_alignTop="@+id/successfulLogin"
         android:visibility="invisible"
-        app:srcCompat="@drawable/login_error" />
+        app:srcCompat="@drawable/login_error"
+        android:layout_below="@+id/incorrectPasswordIcon"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/loginButton" />
 
     <ImageView
         android:id="@+id/incorrectEmailIcon"
@@ -152,6 +159,22 @@
         android:layout_toRightOf="@+id/passwordField"
         android:visibility="invisible"
         app:srcCompat="@drawable/ic_error_white_48dp" />
+
+    <TextView
+        android:id="@+id/forgotPasswordTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="serif"
+        android:onClick="toRecovery"
+        android:text="Forgot Your Password?"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="14sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>

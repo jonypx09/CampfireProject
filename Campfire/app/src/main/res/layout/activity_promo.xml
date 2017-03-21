@@ -13,16 +13,16 @@
     android:background="@color/colorPrimaryDark">
 
     <TextView
-        android:text="Campfire"
+        android:id="@+id/appSignP2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:id="@+id/appSignP2"
-        android:fontFamily="serif"
-        android:textSize="36sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/colorAccent" />
+        android:layout_marginTop="72dp"
+        android:fontFamily="serif"
+        android:text="Campfire"
+        android:textColor="@color/colorAccent"
+        android:textSize="40sp" />
 
     <TextView
         android:text="Welcome to"
