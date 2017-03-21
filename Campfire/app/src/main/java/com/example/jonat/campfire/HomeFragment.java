@@ -129,11 +129,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        getActivity().findViewById(R.id.swipeView).setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(R.id.infoBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: go to the profile of the user that you are currently viewing
-                // give instrustions so users know this feature is available, or use "view profile button"
             }
         });
 
