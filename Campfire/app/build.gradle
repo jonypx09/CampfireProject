@@ -35,4 +35,5 @@ dependencies {
     compile 'com.mindorks:placeholderview:0.6.1'
     compile 'com.android.support.constraint:constraint-layout:+'
     testCompile 'junit:junit:4.12'
+    compile 'com.yarolegovich:lovely-dialog:1.0.7'
 }
