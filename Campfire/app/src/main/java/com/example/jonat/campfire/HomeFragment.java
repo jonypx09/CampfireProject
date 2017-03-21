@@ -1,10 +1,14 @@
 package com.example.jonat.campfire;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +26,8 @@ import backend.algorithms.HobbiesCriteria;
 import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -45,12 +51,15 @@ public class HomeFragment extends Fragment {
     DatabaseAdapter db;
     Course csc301;
 
+    SharedPreferences prefs = null;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
         newStudentID = getArguments().getStringArray("identity");
+        prefs = getContext().getSharedPreferences("come.example.jonat.campfire", MODE_PRIVATE);
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -115,5 +124,17 @@ public class HomeFragment extends Fragment {
                 mSwipeView.doSwipe(true);
             }
         });
-    }
+
+        if (prefs.getBoolean("firstrun", true)) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Welcome to Campfire!")
+                    .setMessage("Get ready to start building a great team!")
+                    .setNeutralButton("Join the Campfire", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    })
+                    .show();
+            prefs.edit().putBoolean("firstrun", false).commit();
+        }
+   }
 }
