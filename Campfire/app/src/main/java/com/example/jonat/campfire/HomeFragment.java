@@ -3,6 +3,7 @@ package com.example.jonat.campfire;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.mindorks.placeholderview.SwipeDecor;
@@ -47,6 +49,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<Student> students301;
     private ArrayList<String> c1;
     private ArrayList<String> c2;
+    private Button viewProfile;
     ArrayList<Comparable> crit;
     DatabaseAdapter db;
     Course csc301;
@@ -79,6 +82,7 @@ public class HomeFragment extends Fragment {
 
         getActivity().setTitle("Home");
         mSwipeView = (SwipePlaceHolderView) getActivity().findViewById(R.id.swipeView);
+
         mContext = getActivity().getApplicationContext();
         //TODO: Probably not the best way of doing margin adjustments
         int bottomMargin = Utils.dpToPx(180);
@@ -122,6 +126,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mSwipeView.doSwipe(true);
+            }
+        });
+
+        getActivity().findViewById(R.id.swipeView).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: go to the profile of the user that you are currently viewing
+                // give instrustions so users know this feature is available, or use "view profile button"
             }
         });
 
