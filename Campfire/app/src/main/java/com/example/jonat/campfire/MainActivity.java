@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import backend.algorithms.Comparable;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
@@ -182,7 +181,6 @@ public class MainActivity extends AppCompatActivity
     private void displaySelectedScreen(int itemId) {
 
         Bundle bundle = new Bundle();
-//        bundle.putString("userEmail", uEmail);
         bundle.putStringArray("identity", newStudentID);
 
         //creating fragment object
@@ -296,7 +294,6 @@ public class MainActivity extends AppCompatActivity
                 searchInProgress = false;
             }
 
-
         } else { //open the search entry
 
             action.setDisplayShowCustomEnabled(true); //enable it to display a
@@ -311,7 +308,9 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        editSearch.clearFocus();
                         performSearch(editSearch.getText().toString());
+                        closeKeyboard();
                         return true;
                     }
                     return false;
@@ -330,10 +329,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void performSearch(String query){
-        //Temporary
         Snackbar.make(findViewById(R.id.content_main), "Search results for: " + query, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
-        //Temporary
 
         ArrayList<String> searchResults = new ArrayList<String>();
         ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
@@ -358,10 +355,13 @@ public class MainActivity extends AppCompatActivity
         closeKeyboard();
         navigationView.getMenu().getItem(3).setChecked(true);
         searchInProgress = true;
+        isSearchOpened = true;
     }
 
     public void closeKeyboard(){
-        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        Context context = getApplicationContext();
+        View view = getCurrentFocus();
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

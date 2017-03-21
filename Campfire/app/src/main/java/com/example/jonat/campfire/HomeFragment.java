@@ -8,7 +8,6 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +21,6 @@ import java.util.ArrayList;
 
 import backend.algorithms.Comparable;
 import backend.algorithms.Course;
-import backend.algorithms.HobbiesCriteria;
-import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
