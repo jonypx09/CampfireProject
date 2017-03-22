@@ -57,7 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
                 "Notifications"
         };
         String[] miscOptions = new String[] {
-                "Version \n 0.8 (Alpha)",
+                "Version\n0.8 (Alpha)",
                 "What's new",
                 "Rate this app",
                 "View help",

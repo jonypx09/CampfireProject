@@ -48,7 +48,15 @@ public class MyProfileActivity extends AppCompatActivity {
     TextView previousElective;
     TextView hobbyTextview;
 
+    FloatingActionButton fab;
+    FloatingActionButton addPrevCourseFab;
+    FloatingActionButton addElectiveCourseFab;
+    FloatingActionButton addHobbiesFab;
+    private boolean editMode = false;
+
     private Integer clockImage = R.drawable.ic_access_time_black_48dp;
+    private Integer saveImage = R.drawable.ic_save_white_48dp;
+    private Integer editImage = R.drawable.ic_edit_white_48dp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +65,28 @@ public class MyProfileActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        addPrevCourseFab = (FloatingActionButton) findViewById(R.id.addPreviousCourseFab);
+        addElectiveCourseFab = (FloatingActionButton) findViewById(R.id.addElectivesFab);
+        addHobbiesFab = (FloatingActionButton) findViewById(R.id.addHobbiesFab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Edit some specific elements of your profile", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                if (editMode){
+                    fab.setImageResource(editImage);
+                    addPrevCourseFab.setVisibility(View.INVISIBLE);
+                    addElectiveCourseFab.setVisibility(View.INVISIBLE);
+                    addHobbiesFab.setVisibility(View.INVISIBLE);
+                    editMode = false;
+                }else{
+                    addPrevCourseFab.setVisibility(View.VISIBLE);
+                    addElectiveCourseFab.setVisibility(View.VISIBLE);
+                    addHobbiesFab.setVisibility(View.VISIBLE);
+                    fab.setImageResource(saveImage);
+                    editMode = true;
+                }
             }
         });
 
@@ -157,15 +181,15 @@ public class MyProfileActivity extends AppCompatActivity {
         }
 
         for (String course: previousCSCourses){
-            previousCSCourse.setText("Previous CSC Course:   " + course);
+            previousCSCourse.setText("Previous CSC Courses:\n-" + course);
         }
 
         for (String course: previousElectiveCourses){
-            previousElective.setText("Previous Elective Course:   " + course);
+            previousElective.setText("Previous Elective Courses:\n-" + course);
         }
 
         for (String hobby: hobbiesList){
-            hobbyTextview.setText("Your Hobbies:   " + hobby);
+            hobbyTextview.setText("Your Hobbies:\n-" + hobby);
         }
 
         for (String day : schedule.keySet()){
