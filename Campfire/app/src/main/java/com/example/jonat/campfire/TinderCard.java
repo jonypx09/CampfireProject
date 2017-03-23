@@ -93,7 +93,9 @@ public class TinderCard {
 
     @SwipeIn
     private void onSwipeIn(){
-        swipedRight.add(this.student);
+        if (!swipedYet(this.student)) {
+            swipedRight.add(this.student);
+        }
         Log.d("EVENT", "onSwipedIn");
     }
 
@@ -107,4 +109,13 @@ public class TinderCard {
         Log.d("EVENT", "onSwipeOutState");
     }
 
+    //Helper for checking if swiped right yet.
+    private boolean swipedYet(Student s) {
+        for (Student stu : swipedRight) {
+            if (stu.getEmail().equals(s.getEmail())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

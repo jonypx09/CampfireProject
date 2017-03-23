@@ -53,6 +53,13 @@ public class MessagesFragment extends Fragment{
             imageid[i] = R.drawable.person_icon;
             i++;
         }
+        //Temporary until we get messages.
+        if (display.length > 0) {
+            display[0] = "Hey! Are you looking for someone good at Web Dev?";
+        }
+        if (display.length > 1) {
+            display[1] = "Yo, what's up dude?";
+        }
 
         //returning our layout file
         return inflater.inflate(R.layout.fragment_messages, container, false);

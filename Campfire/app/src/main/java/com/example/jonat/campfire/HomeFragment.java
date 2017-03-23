@@ -25,6 +25,7 @@ import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
 import static android.content.Context.MODE_PRIVATE;
+import static com.example.jonat.campfire.MyCampfireFragment.campfireStudents;
 
 
 /**
@@ -107,7 +108,9 @@ public class HomeFragment extends Fragment {
         }
         else {
             for (Student s : swipeOn) {
-                mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s));
+                if (!inCampfire(s) && !swipedYet(s)) {
+                    mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s));
+                }
             }
         }
         getActivity().findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
@@ -136,4 +139,24 @@ public class HomeFragment extends Fragment {
             prefs.edit().putBoolean("firstrun", false).commit();
         }
    }
+
+    //Temporary helper for finding if student is in campfire.
+    private boolean inCampfire(Student s) {
+        for (Student stu : campfireStudents) {
+            if (stu.getEmail().equals(s.getEmail())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //Helper for checking if swiped right yet.
+    private boolean swipedYet(Student s) {
+        for (Student stu : swipedRight) {
+            if (stu.getEmail().equals(s.getEmail())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
