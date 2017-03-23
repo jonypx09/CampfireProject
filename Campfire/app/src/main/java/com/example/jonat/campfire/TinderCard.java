@@ -55,6 +55,7 @@ public class TinderCard {
 
     @Resolve
     private void onResolved(){
+        System.out.println(student.getFname());
         //Glide.with(mContext).load(R.drawable.person_icon).into(profileImageView);
         nameTxt.setText(student.getFname() + " " + student.getLname());
         quickBioTxt.setText(student.getDescription());
