@@ -16,21 +16,31 @@
         android:id="@+id/profileImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:paddingTop="14dp"
         app:srcCompat="@mipmap/ic_person" />
 
     <TextView
         android:id="@+id/nameHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
+        android:paddingTop="4dp"
         android:text="Your Name Here"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <TextView
         android:id="@+id/emailHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your GitHub Username Here" />
+        android:paddingBottom="4dp"
+        android:text="Your Email Here"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+    <TextView
+        android:id="@+id/courseHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Current Course:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="@color/colorAccent" />
 
 </LinearLayout>

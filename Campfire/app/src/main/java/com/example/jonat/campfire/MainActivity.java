@@ -81,8 +81,11 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         TextView emailHeader = (TextView) headerView.findViewById(R.id.emailHeader);
         TextView nameHeader = (TextView) headerView.findViewById(R.id.nameHeader);
+        TextView courseHeader = (TextView) headerView.findViewById(R.id.courseHeader);
         emailHeader.setText(uEmail);
         nameHeader.setText(uName);
+        ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
+        courseHeader.setText("Current Course: " + enrolledCourses.get(1));
 
         displaySelectedScreen(R.id.nav_home);
 
