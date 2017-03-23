@@ -6,19 +6,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.database.DatabaseUtilsCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import backend.algorithms.Comparable;
 import backend.algorithms.Course;
-import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
@@ -27,7 +24,7 @@ public class MyCampfireFragment extends Fragment {
     private String[] programmingLanguages;
     DatabaseAdapter db;
 
-    private ArrayList<Student> sampleStudents;
+    private ArrayList<Student> studentCampfire;
     private ArrayList<String> c1;
     ArrayList<Comparable> crit;
     private ListView listView;
@@ -39,6 +36,9 @@ public class MyCampfireFragment extends Fragment {
     private Integer[] images;
     private String[] emails;
     private Integer sampleImage = R.drawable.person_icon;
+
+    // TODO: Needs to be changed, doesn't actually pull from database, just temp for video.
+    public static ArrayList<Student> campfireStudents = new ArrayList<>();
 
 
     @Nullable
@@ -59,13 +59,14 @@ public class MyCampfireFragment extends Fragment {
 
         DatabaseAdapter db = new DatabaseAdapter(getContext());
         Course csc301 = db.getCourse("csc301h1");
-        sampleStudents = uStudent.getallOtherCourseStudents(csc301);
-
-        names = new String[sampleStudents.size()];
-        images = new Integer[sampleStudents.size()];
-        emails = new String[sampleStudents.size()];
+        // Should be:
+        // studentCampfire = uStudent.getCampfire();
+        studentCampfire = campfireStudents;
+        names = new String[studentCampfire.size()];
+        images = new Integer[studentCampfire.size()];
+        emails = new String[studentCampfire.size()];
         int i = 0;
-        for (Student s : sampleStudents) {
+        for (Student s : studentCampfire) {
             names[i] = s.getFname() + " " + s.getLname();
             emails[i] = s.getEmail();
             images[i] = sampleImage;

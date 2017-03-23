@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
+import static com.example.jonat.campfire.MyCampfireFragment.campfireStudents;
+
 public class DiscoverFragment extends Fragment {
 
     private String[] newStudentID;
@@ -114,7 +116,7 @@ public class DiscoverFragment extends Fragment {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
                 new android.app.AlertDialog.Builder(getActivity())
                         .setTitle(names[i])
                         .setMessage("Email: " + emails[i] + "\n\n" +
@@ -126,13 +128,11 @@ public class DiscoverFragment extends Fragment {
                         })
                         .setNeutralButton("Add to Campfire", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-//                                Fragment fragment = new MessagesFragment();
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString("userEmail", uEmail);
-//                                fragment.setArguments(bundle);
-//                                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//                                ft.replace(R.id.content_frame, fragment);
-//                                ft.commit();
+                                System.out.println(emails[i]);
+                                // TODO: Doesn't save to database.
+                                uStudent.addToCampfire(db.getStudent(emails[i]));
+                                campfireStudents.add(db.getStudent(emails[i]));
+
                             }
                         })
                         .setIcon(images[i])

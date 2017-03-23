@@ -266,6 +266,9 @@ public class Student {
 		return this.campfire.getMembers();
 	}
 
+	public void addToCampfire(Student stu) {this.campfire.addMember(stu);}
+	public void removeFromCampfire(Student stu) {this.campfire.removeMember(stu);}
+
 	///////////////////////////////////////////////////////////////
 	//Methods for tracking assignments and groups
 
