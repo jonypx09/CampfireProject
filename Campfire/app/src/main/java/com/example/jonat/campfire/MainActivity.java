@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import java.util.ArrayList;
 
@@ -230,6 +233,9 @@ public class MainActivity extends AppCompatActivity
                 miscIntent = new Intent(this, ChangePasswordActivity.class);
                 miscIntent.putExtra("identity", newStudentID);
                 startActivity(miscIntent);
+            case R.id.nav_my_courses:
+                fragment = new MyCoursesFragment();
+                fragment.setArguments(bundle);
         }
 
         //replacing the fragment
