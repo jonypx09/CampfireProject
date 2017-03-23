@@ -8,9 +8,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,7 +53,15 @@ public class MyProfileActivity extends AppCompatActivity {
     TextView previousElective;
     TextView hobbyTextview;
 
+    FloatingActionButton fab;
+    FloatingActionButton addPrevCourseFab;
+    FloatingActionButton addElectiveCourseFab;
+    FloatingActionButton addHobbiesFab;
+    private boolean editMode = false;
+
     private Integer clockImage = R.drawable.ic_access_time_black_48dp;
+    private Integer saveImage = R.drawable.ic_save_white_48dp;
+    private Integer editImage = R.drawable.ic_edit_white_48dp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +70,51 @@ public class MyProfileActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        addPrevCourseFab = (FloatingActionButton) findViewById(R.id.addPreviousCourseFab);
+        addPrevCourseFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addPreviousCourse();
+            }
+        });
+
+        addElectiveCourseFab = (FloatingActionButton) findViewById(R.id.addElectivesFab);
+        addElectiveCourseFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addElectiveCourse();
+            }
+        });
+
+        addHobbiesFab = (FloatingActionButton) findViewById(R.id.addHobbiesFab);
+        addHobbiesFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                addHobby();
+            }
+        });
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Edit some specific elements of your profile", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                if (editMode){
+                    if (userAuthenticated()){
+                        fab.setImageResource(editImage);
+                        addPrevCourseFab.setVisibility(View.INVISIBLE);
+                        addElectiveCourseFab.setVisibility(View.INVISIBLE);
+                        addHobbiesFab.setVisibility(View.INVISIBLE);
+                        editMode = false;
+                    }
+                }else{
+                    addPrevCourseFab.setVisibility(View.VISIBLE);
+                    addElectiveCourseFab.setVisibility(View.VISIBLE);
+                    addHobbiesFab.setVisibility(View.VISIBLE);
+                    fab.setImageResource(saveImage);
+                    editMode = true;
+                }
             }
         });
 
@@ -156,17 +208,35 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         }
 
+        String headerCS = ("Previous CSC Courses:\n");
+        String csCourses = "";
         for (String course: previousCSCourses){
-            previousCSCourse.setText("Previous CSC Course:   " + course);
+            csCourses += "- " + course;
+            if (!previousCSCourses.get(previousCSCourses.size() - 1).equals(course)){
+                csCourses += "\n";
+            }
         }
+        previousCSCourse.setText(headerCS + csCourses);
 
+        String headerE = ("Previous CSC Courses:\n");
+        String electiveCourses = "";
         for (String course: previousElectiveCourses){
-            previousElective.setText("Previous Elective Course:   " + course);
+            electiveCourses += "- " + course;
+            if (!previousElectiveCourses.get(previousElectiveCourses.size() - 1).equals(course)){
+                electiveCourses += "\n";
+            }
         }
+        previousElective.setText(headerE + electiveCourses);
 
+        String headerO = ("Previous CSC Courses:\n");
+        String hobbies = "";
         for (String hobby: hobbiesList){
-            hobbyTextview.setText("Your Hobbies:   " + hobby);
+            hobbies += "- " + hobby;
+            if (!hobbiesList.get(hobbiesList.size() - 1).equals(hobby)){
+                hobbies += "\n";
+            }
         }
+        hobbyTextview.setText(headerO + hobbies);
 
         for (String day : schedule.keySet()){
             if (day.equals("Sunday") && schedule.get(day).size() != 0){
@@ -269,5 +339,120 @@ public class MyProfileActivity extends AppCompatActivity {
                     }
                 });
         scheduleDialog.show();
+    }
+
+    public boolean userAuthenticated(){
+        new LovelyTextInputDialog(this)
+                .setTopColorRes(R.color.colorPrimaryDark)
+                .setTitle("Authentication Required")
+                .setMessage("Please enter your password to confirm changes")
+                .setIcon(R.drawable.ic_security_black_48dp)
+                .setInputFilter("Incorrect Password", new LovelyTextInputDialog.TextFilter() {
+                    @Override
+                    public boolean check(String text) {
+                        return text.matches(myStudent.getPass());
+                    }
+                })
+                .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
+                    @Override
+                    public void onTextInputConfirmed(String text) {
+                        Toast.makeText(MyProfileActivity.this, "Changes Saved", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MyProfileActivity.this, "Changes Cancelled", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                .show();
+        return true;
+    }
+
+    public void addPreviousCourse(){
+        new LovelyTextInputDialog(this)
+                .setTopColorRes(R.color.colorPrimaryDark)
+                .setTitle("Add Previous CS Course")
+                .setMessage("Enter a course code")
+                .setInputFilter("Invalid course code", new LovelyTextInputDialog.TextFilter() {
+                    @Override
+                    public boolean check(String text) {
+                        return text.length() == 8;
+                    }
+                })
+                .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
+                    @Override
+                    public void onTextInputConfirmed(String text) {
+                        //TODO: Change this and follow up with update to textfield
+                        db.getStudent(uEmail).getCSCCourses().add(text);
+                        //This doesn't update the student's information in the db!!!
+                        Toast.makeText(MyProfileActivity.this, "Course Added", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Do Nothing Here
+                    }
+                })
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .show();
+    }
+
+    public void addElectiveCourse(){
+        new LovelyTextInputDialog(this)
+                .setTopColorRes(R.color.colorPrimaryDark)
+                .setTitle("Add Previous Elective Course")
+                .setMessage("Enter a course code")
+                .setInputFilter("Invalid course code", new LovelyTextInputDialog.TextFilter() {
+                    @Override
+                    public boolean check(String text) {
+                        return text.length() == 8;
+                    }
+                })
+                .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
+                    @Override
+                    public void onTextInputConfirmed(String text) {
+
+                        Toast.makeText(MyProfileActivity.this, "Course Added", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Do Nothing Here
+                    }
+                })
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .show();
+    }
+
+    public void addHobby(){
+        new LovelyTextInputDialog(this)
+                .setTopColorRes(R.color.colorPrimaryDark)
+                .setTitle("Add Hobby")
+                .setMessage("Enter the name of an activity")
+                .setInputFilter("Invalid Input", new LovelyTextInputDialog.TextFilter() {
+                    @Override
+                    public boolean check(String text) {
+                        return text.length() > 0;
+                    }
+                })
+                .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
+                    @Override
+                    public void onTextInputConfirmed(String text) {
+                        db.getStudent(uEmail).getCSCCourses().add(text);
+                        Toast.makeText(MyProfileActivity.this, "Hobby Added", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //Do Nothing Here
+                    }
+                })
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .show();
     }
 }

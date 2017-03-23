@@ -190,36 +190,70 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="serif"
-            android:paddingBottom="30dp"
+            android:paddingBottom="0dp"
             android:paddingLeft="8dp"
-            android:paddingTop="30dp"
-            android:text="Previous CSC Course:"
+            android:paddingTop="20dp"
+            android:text="Previous CSC Courses:"
             android:textColor="@color/white"
             android:textSize="18sp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addPreviousCourseFab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="invisible"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom|end"
+            app:rippleColor="@color/colorPrimaryDark"
+            app:srcCompat="@drawable/ic_add_box_white_48dp" />
 
         <TextView
             android:id="@+id/electiveCourseTextview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="serif"
-            android:paddingBottom="30dp"
+            android:paddingBottom="0dp"
             android:paddingLeft="8dp"
-            android:paddingTop="30dp"
-            android:text="Previous Elective Course:"
+            android:paddingTop="20dp"
+            android:text="Previous Elective Courses:"
             android:textColor="@color/white"
             android:textSize="18sp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addElectivesFab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="invisible"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom|end"
+            app:srcCompat="@drawable/ic_add_box_white_48dp" />
 
         <TextView
             android:id="@+id/hobbiesTextview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="serif"
-            android:paddingBottom="30dp"
+            android:paddingBottom="0dp"
             android:paddingLeft="8dp"
-            android:paddingTop="30dp"
+            android:paddingTop="20dp"
             android:text="Your Hobbies:"
             android:textColor="@color/white"
             android:textSize="18sp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addHobbiesFab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:visibility="invisible"
+            app:backgroundTint="@color/colorPrimaryDark"
+            app:layout_anchor="@id/app_bar"
+            app:layout_anchorGravity="bottom|end"
+            app:srcCompat="@drawable/ic_add_box_white_48dp" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

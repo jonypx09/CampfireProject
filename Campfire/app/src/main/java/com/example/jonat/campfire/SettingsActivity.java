@@ -2,6 +2,7 @@ package com.example.jonat.campfire;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,7 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
                 "Notifications"
         };
         String[] miscOptions = new String[] {
-                "Version \n 0.8 (Alpha)",
+                "Version\n0.8 (Alpha)",
                 "What's new",
                 "Rate this app",
                 "View help",
@@ -186,7 +187,27 @@ public class SettingsActivity extends AppCompatActivity {
                 .setItems(devs, new LovelyChoiceDialog.OnItemSelectedListener<String>() {
                     @Override
                     public void onItemSelected(int position, String item) {
+                        Intent moreInfo = new Intent(Intent.ACTION_VIEW);
+                        String url = null;
+                        switch (position){
+                            case 0:
+                                url = "https://github.com/acapparelli";
+                            case 1:
+                                url = "https://github.com/vladchapurny";
+                            case 2:
+                                url = "https://github.com/quinndaneyko";
+                            case 3:
+                                url = "https://github.com/AndrewGoupil";
+                            case 4:
+                                url = "https://github.com/RodAli";
+                            case 5:
+                                url = "https://github.com/jonypx19";
+                            case 6:
+                                url = "https://github.com/Fullchee";
 
+                        }
+                        moreInfo.setData(Uri.parse(url));
+                        startActivity(moreInfo);
                     }
                 })
                 .show();
