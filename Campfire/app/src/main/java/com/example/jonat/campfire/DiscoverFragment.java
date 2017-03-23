@@ -1,30 +1,24 @@
 package com.example.jonat.campfire;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import backend.algorithms.Comparable;
-import backend.algorithms.Course;
-import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
-/**
- * Created by jonat on 25-Feb-2017.
- */
+import static com.example.jonat.campfire.MyCampfireFragment.campfireStudents;
 
 public class DiscoverFragment extends Fragment {
 
@@ -70,7 +64,7 @@ public class DiscoverFragment extends Fragment {
         ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
         ArrayList<Student> classmates = db.getStudentsInCourse(enrolledCourses.get(0));
 
-        int classSize = 0;
+        int classSize;
         if (searchResults == null){
             classSize = classmates.size() - 1;
         }else{
@@ -116,14 +110,14 @@ public class DiscoverFragment extends Fragment {
         }
 
 
-        MyCampfireList customList = new MyCampfireList(getActivity(), names, emails, images);
+        MyCampfireListAdapter customList = new MyCampfireListAdapter(getActivity(), names, emails, images);
 
         listView = (ListView) getView().findViewById(R.id.allUsersList);
         listView.setAdapter(customList);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
                 new android.app.AlertDialog.Builder(getActivity())
                         .setTitle(names[i])
                         .setMessage("Email: " + emails[i] + "\n\n" +
@@ -135,19 +129,49 @@ public class DiscoverFragment extends Fragment {
                         })
                         .setNeutralButton("Add to Campfire", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-//                                Fragment fragment = new MessagesFragment();
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString("userEmail", uEmail);
-//                                fragment.setArguments(bundle);
-//                                FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-//                                ft.replace(R.id.content_frame, fragment);
-//                                ft.commit();
+                                // Should be if (!uStudent.getCampfire().contains(emails[i])) {
+                                if (!inCampfire(db.getStudent(emails[i]))) {
+                                    // TODO: Doesn't save to database.
+                                    uStudent.addToCampfire(db.getStudent(emails[i]));
+                                    campfireStudents.add(db.getStudent(emails[i]));
+                                    Snackbar.make(getView(), "Successfully added " +
+                                            names[i].substring(0, names[i].indexOf(" ")) +
+                                            " to your Campfire", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                }
+                                else {
+                                    Snackbar.make(getView(), "Already added " +
+                                            names[i].substring(0, names[i].indexOf(" ")) +
+                                            " to your Campfire", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                }
                             }
                         })
                         .setIcon(images[i])
                         .show();
             }
         });
+        hideKeyboard(getActivity());
+    }
 
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    //Temporary helper for finding if student is in campfire.
+    private boolean inCampfire(Student s) {
+        for (Student stu : campfireStudents) {
+            if (stu.getEmail().equals(s.getEmail())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
