@@ -50,6 +50,8 @@ public class HomeFragment extends Fragment {
 
     SharedPreferences prefs = null;
 
+    //TODO: Make this work with database, instead of local.
+    public static ArrayList<Student> swipedRight = new ArrayList<Student>();
 
     @Nullable
     @Override

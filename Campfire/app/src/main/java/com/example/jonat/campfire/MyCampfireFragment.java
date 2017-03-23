@@ -72,7 +72,7 @@ public class MyCampfireFragment extends Fragment {
             images[i] = sampleImage;
             i++;
         }
-        MyCampfireList customList = new MyCampfireList(getActivity(), names, emails, images);
+        MyCampfireListAdapter customList = new MyCampfireListAdapter(getActivity(), names, emails, images);
 
         listView = (ListView) getView().findViewById(R.id.listOfTeam);
         listView.setAdapter(customList);

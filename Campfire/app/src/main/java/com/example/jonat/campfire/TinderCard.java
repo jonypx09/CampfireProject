@@ -23,6 +23,8 @@ import java.util.List;
 
 import backend.algorithms.Student;
 
+import static com.example.jonat.campfire.HomeFragment.swipedRight;
+
 /**
  * Created by Quinn on 2/28/2017.
  */
@@ -74,7 +76,6 @@ public class TinderCard {
 
     @Click(R.id.profileImageView)
     private void onClick(){
-        System.out.println("in " + student.getFname());
         Log.d("EVENT", "profileImageView click");
         mSwipeView.addView(this);
     }
@@ -92,6 +93,7 @@ public class TinderCard {
 
     @SwipeIn
     private void onSwipeIn(){
+        swipedRight.add(this.student);
         Log.d("EVENT", "onSwipedIn");
     }
 

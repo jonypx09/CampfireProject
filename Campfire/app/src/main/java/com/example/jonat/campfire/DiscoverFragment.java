@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -109,7 +110,7 @@ public class DiscoverFragment extends Fragment {
         }
 
 
-        MyCampfireList customList = new MyCampfireList(getActivity(), names, emails, images);
+        MyCampfireListAdapter customList = new MyCampfireListAdapter(getActivity(), names, emails, images);
 
         listView = (ListView) getView().findViewById(R.id.allUsersList);
         listView.setAdapter(customList);
@@ -133,11 +134,16 @@ public class DiscoverFragment extends Fragment {
                                     // TODO: Doesn't save to database.
                                     uStudent.addToCampfire(db.getStudent(emails[i]));
                                     campfireStudents.add(db.getStudent(emails[i]));
-                                    System.out.println("Successfully added " + emails[i] +
-                                                        " to your Campfire");
+                                    Snackbar.make(getView(), "Successfully added " +
+                                            names[i].substring(0, names[i].indexOf(" ")) +
+                                            " to your Campfire", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
                                 }
                                 else {
-                                    System.out.println("Already added.");
+                                    Snackbar.make(getView(), "Already added " +
+                                            names[i].substring(0, names[i].indexOf(" ")) +
+                                            " to your Campfire", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
                                 }
                             }
                         })

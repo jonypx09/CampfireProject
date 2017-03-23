@@ -12,14 +12,14 @@ import android.widget.TextView;
 /**
  * Created by Quinn on 2/26/2017.
  */
-//TODO: Should be using ArrayLists instead of String[] probably.
-public class MyCampfireList extends ArrayAdapter<String> {
+
+public class MyCampfireListAdapter extends ArrayAdapter<String> {
     private String[] names;
     private String[] desc;
     private Integer[] imageid;
     private Activity context;
 
-    public MyCampfireList(Activity context, String[] names, String[] desc, Integer[] imageid) {
+    public MyCampfireListAdapter(Activity context, String[] names, String[] desc, Integer[] imageid) {
         super(context, R.layout.my_campfire_list_item, names);
         this.context = context;
         this.names = names;
@@ -29,7 +29,7 @@ public class MyCampfireList extends ArrayAdapter<String> {
 
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View listViewItem = inflater.inflate(R.layout.my_campfire_list_item, null, true);
+        View listViewItem = inflater.inflate(R.layout.my_campfire_list_item, null);
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.textViewName);
         TextView textViewDesc = (TextView) listViewItem.findViewById(R.id.textViewDesc);
         ImageView image = (ImageView) listViewItem.findViewById(R.id.imageView);
@@ -37,6 +37,8 @@ public class MyCampfireList extends ArrayAdapter<String> {
         textViewName.setText(names[position]);
         textViewDesc.setText(desc[position]);
         image.setImageResource(imageid[position]);
+
+
         return listViewItem;
     }
 
