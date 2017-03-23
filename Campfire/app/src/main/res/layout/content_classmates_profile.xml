@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.jonat.campfire.ClassmatesProfileActivity"
+    tools:showIn="@layout/activity_my_profile">
+
+    <LinearLayout
+        android:id="@+id/userInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/aboutYourselfTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingBottom="30dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:text="About"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/emailTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingBottom="10dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
+            android:text="Email:"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/availabilityTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingBottom="30dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="30dp"
+            android:text="Availability Schedule:"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/sundayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:text="Sunday"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/mondayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:enabled="true"
+            android:fontFamily="serif"
+            android:text="Monday"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/tuesdayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:onClick="openTuesdaySchedule"
+            android:text="Tuesday"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/wednesdayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:onClick="openWednesdaySchedule"
+            android:text="Wednesday"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/thursdayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:onClick="openThursdaySchedule"
+            android:text="Thursday"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/fridayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:onClick="openFridaySchedule"
+            android:text="Friday"
+            android:textColor="@color/white" />
+
+        <CheckBox
+            android:id="@+id/saturdayCheckbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:onClick="openSaturdaySchedule"
+            android:text="Saturday"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/programmingLanguages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingBottom="30dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="30dp"
+            android:text="Their Preferred Programming Languages:"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/pythonCheckboxP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:fontFamily="serif"
+            android:text="Python"
+            android:textColor="@android:color/white" />
+
+        <CheckBox
+            android:id="@+id/javaCheckboxP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Java"
+            android:textColor="@android:color/white" />
+
+        <CheckBox
+            android:id="@+id/cCheckboxP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="C"
+            android:textColor="@android:color/white" />
+
+        <CheckBox
+            android:id="@+id/htmlCheckboxP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="HTML"
+            android:textColor="@android:color/white" />
+
+        <CheckBox
+            android:id="@+id/javascriptCheckboxP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Javascript"
+            android:textColor="@android:color/white" />
+
+        <CheckBox
+            android:id="@+id/sqlCheckboxP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="SQL"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/previousCourseTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingBottom="30dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="30dp"
+            android:text="Previous CSC Course:"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/electiveCourseTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingBottom="30dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="30dp"
+            android:text="Previous Elective Course:"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/hobbiesTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:paddingBottom="30dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="30dp"
+            android:text="Hobbies:"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

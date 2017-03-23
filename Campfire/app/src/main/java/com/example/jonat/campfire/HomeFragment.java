@@ -1,5 +1,6 @@
 package com.example.jonat.campfire;
 
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -137,9 +138,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: make profile view for other users
-                //Intent profileIntent = new Intent(getActivity(), MyProfileActivity.class);
-                //profileIntent.putExtra("userEmail", loadedStudents.get(0).getEmail());
-                //startActivity(profileIntent);
+                Intent profileIntent = new Intent(getActivity(), ClassmatesProfileActivity.class);
+                profileIntent.putExtra("studentEmail", loadedStudents.get(0).getEmail());
+                startActivity(profileIntent);
             }
             });
 
