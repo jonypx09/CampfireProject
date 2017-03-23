@@ -69,10 +69,14 @@ public class TinderCard {
         ArrayList<String> stuLangs = new ArrayList();
         ArrayList<String> stuHobbies = new ArrayList();
         for (String s : student.getProgramming()) {
-            stuLangs.add(" " + s);
+            if (s != null) {
+                stuLangs.add(" " + s);
+            }
         }
         for (String s : student.getHobbies()) {
-            stuHobbies.add(" " + s);
+            if (s != null) {
+                stuHobbies.add(" " + s);
+            }
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.mContext, R.layout.criteria_list_item, stuLangs);
         userInfoListView.setAdapter(adapter);
