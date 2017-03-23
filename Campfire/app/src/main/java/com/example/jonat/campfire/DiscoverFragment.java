@@ -128,11 +128,17 @@ public class DiscoverFragment extends Fragment {
                         })
                         .setNeutralButton("Add to Campfire", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                System.out.println(emails[i]);
-                                // TODO: Doesn't save to database.
-                                uStudent.addToCampfire(db.getStudent(emails[i]));
-                                campfireStudents.add(db.getStudent(emails[i]));
-
+                                // Should be if (!uStudent.getCampfire().contains(emails[i])) {
+                                if (!inCampfire(db.getStudent(emails[i]))) {
+                                    // TODO: Doesn't save to database.
+                                    uStudent.addToCampfire(db.getStudent(emails[i]));
+                                    campfireStudents.add(db.getStudent(emails[i]));
+                                    System.out.println("Successfully added " + emails[i] +
+                                                        " to your Campfire");
+                                }
+                                else {
+                                    System.out.println("Already added.");
+                                }
                             }
                         })
                         .setIcon(images[i])
@@ -140,8 +146,6 @@ public class DiscoverFragment extends Fragment {
             }
         });
         hideKeyboard(getActivity());
-
-
     }
 
     public static void hideKeyboard(Activity activity) {
@@ -153,5 +157,15 @@ public class DiscoverFragment extends Fragment {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    //Temporary helper for finding if student is in campfire.
+    private boolean inCampfire(Student s) {
+        for (Student stu : campfireStudents) {
+            if (stu.getEmail().equals(s.getEmail())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
