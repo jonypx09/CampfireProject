@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_help"
     android:layout_width="match_parent"
@@ -11,4 +12,91 @@
     tools:context="com.example.jonat.campfire.HelpActivity"
     android:background="@color/colorPrimaryDark">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/generalHelp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:text="Campfire's main features can be accessed by tapping the menu button or alternatively, swipe from the left side of the screen"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/generalHelpImage"
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                app:srcCompat="@drawable/q1_part1" />
+
+            <TextView
+                android:id="@+id/messagesHelp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="serif"
+                android:text='Q: How do I view my messages?\nA: Simply open up the main menu and select "My Messages"'
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/messagesHelpImage"
+                android:layout_width="202dp"
+                android:layout_height="250dp"
+                android:layout_weight="1.92"
+                app:srcCompat="@drawable/q1_part2" />
+
+            <TextView
+                android:id="@+id/searchHelp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="serif"
+                android:text="Q: How find a particular student in a course?\nA: Use Campfire's built-in search bar and enter the name of the student you wish to add"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/searchHelpImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/search_help" />
+
+            <TextView
+                android:id="@+id/discoverHelp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="serif"
+                android:text='Tip: You can also search for all students in a course by tapping "Discover" in the main menu '
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/discoverHelpImage"
+                android:layout_width="202dp"
+                android:layout_height="250dp"
+                app:srcCompat="@drawable/search_help2" />
+
+            <TextView
+                android:id="@+id/accountHelp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="serif"
+                android:text="Tip: You can view your profile information by tapping on the name/email located at the top of the main menu. Account related settings are located at the bottom. "
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/accountHelpImage"
+                android:layout_width="202dp"
+                android:layout_height="250dp"
+                app:srcCompat="@drawable/account_help" />
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

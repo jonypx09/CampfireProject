@@ -1,30 +1,21 @@
 package com.example.jonat.campfire;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-import backend.algorithms.Comparable;
-import backend.algorithms.Course;
-import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
-
-/**
- * Created by jonat on 25-Feb-2017.
- */
 
 public class DiscoverFragment extends Fragment {
 
@@ -70,7 +61,7 @@ public class DiscoverFragment extends Fragment {
         ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
         ArrayList<Student> classmates = db.getStudentsInCourse(enrolledCourses.get(0));
 
-        int classSize = 0;
+        int classSize;
         if (searchResults == null){
             classSize = classmates.size() - 1;
         }else{
@@ -148,6 +139,19 @@ public class DiscoverFragment extends Fragment {
                         .show();
             }
         });
+        hideKeyboard(getActivity());
 
+
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
