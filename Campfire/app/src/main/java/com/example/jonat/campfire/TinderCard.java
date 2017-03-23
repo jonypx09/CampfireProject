@@ -23,7 +23,10 @@ import java.util.List;
 
 import backend.algorithms.Student;
 
+
+import static com.example.jonat.campfire.HomeFragment.loadedStudents;
 import static com.example.jonat.campfire.HomeFragment.swipedRight;
+
 
 /**
  * Created by Quinn on 2/28/2017.
@@ -53,20 +56,30 @@ public class TinderCard {
         this.mContext = context;
         this.mSwipeView = swipeView;
         this.student = student;
+
+        if (!(student.equals(null))) {
+            loadedStudents.add(student);
+        }
+
     }
 
     @Resolve
-    private void onResolved(){
+    private void onResolved() {
+
         //Glide.with(mContext).load(R.drawable.person_icon).into(profileImageView);
         nameTxt.setText(student.getFname() + " " + student.getLname());
         quickBioTxt.setText(student.getDescription());
         ArrayList<String> stuLangs = new ArrayList();
         ArrayList<String> stuHobbies = new ArrayList();
         for (String s : student.getProgramming()) {
-            stuLangs.add(" " + s);
+            if (s != null) {
+                stuLangs.add(" " + s);
+            }
         }
         for (String s : student.getHobbies()) {
-            stuHobbies.add(" " + s);
+            if (s != null) {
+                stuHobbies.add(" " + s);
+            }
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.mContext, R.layout.criteria_list_item, stuLangs);
         userInfoListView.setAdapter(adapter);
@@ -75,19 +88,20 @@ public class TinderCard {
     }
 
     @Click(R.id.profileImageView)
-    private void onClick(){
+    private void onClick() {
         Log.d("EVENT", "profileImageView click");
         mSwipeView.addView(this);
     }
 
     @SwipeOut
-    private void onSwipedOut(){
+    private void onSwipedOut() {
         Log.d("EVENT", "onSwipedOut");
         mSwipeView.addView(this);
+        loadedStudents.remove(0);
     }
 
     @SwipeCancelState
-    private void onSwipeCancelState(){
+    private void onSwipeCancelState() {
         Log.d("EVENT", "onSwipeCancelState");
     }
 
@@ -100,12 +114,12 @@ public class TinderCard {
     }
 
     @SwipeInState
-    private void onSwipeInState(){
+    private void onSwipeInState() {
         Log.d("EVENT", "onSwipeInState");
     }
 
     @SwipeOutState
-    private void onSwipeOutState(){
+    private void onSwipeOutState() {
         Log.d("EVENT", "onSwipeOutState");
     }
 

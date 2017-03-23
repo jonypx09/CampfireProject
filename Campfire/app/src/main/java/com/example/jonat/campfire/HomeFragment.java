@@ -1,8 +1,10 @@
 package com.example.jonat.campfire;
 
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -12,12 +14,17 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import backend.algorithms.Comparable;
 import backend.algorithms.Course;
@@ -45,6 +52,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<Student> students301;
     private ArrayList<String> c1;
     private ArrayList<String> c2;
+    public static List<Student> loadedStudents = new ArrayList<Student>();
     ArrayList<Comparable> crit;
     DatabaseAdapter db;
     Course csc301;
@@ -79,6 +87,7 @@ public class HomeFragment extends Fragment {
 
         getActivity().setTitle("Home");
         mSwipeView = (SwipePlaceHolderView) getActivity().findViewById(R.id.swipeView);
+
         mContext = getActivity().getApplicationContext();
         //TODO: Probably not the best way of doing margin adjustments
         int bottomMargin = Utils.dpToPx(180);
@@ -126,6 +135,16 @@ public class HomeFragment extends Fragment {
                 mSwipeView.doSwipe(true);
             }
         });
+
+        getActivity().findViewById(R.id.infoBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: make profile view for other users
+                Intent profileIntent = new Intent(getActivity(), ClassmatesProfileActivity.class);
+                profileIntent.putExtra("studentEmail", loadedStudents.get(0).getEmail());
+                startActivity(profileIntent);
+            }
+            });
 
         if (prefs.getBoolean("firstrun", true)) {
             new AlertDialog.Builder(getActivity())
