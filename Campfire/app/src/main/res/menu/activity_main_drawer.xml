@@ -15,6 +15,10 @@
             android:icon="@drawable/ic_group_work_black_48dp"
             android:title="My Campfire" />
         <item
+            android:id="@+id/nav_my_courses"
+            android:icon="@drawable/ic_class_black_48dp"
+            android:title="My Courses" />
+        <item
             android:id="@+id/nav_discover"
             android:icon="@drawable/ic_search_black_48dp"
             android:title="Discover" />
