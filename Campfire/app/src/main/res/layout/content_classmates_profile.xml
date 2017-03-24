@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.jonat.campfire.ClassmatesProfileActivity"
-    tools:showIn="@layout/activity_my_profile">
+    tools:showIn="@layout/activity_classmates_profile">
 
     <LinearLayout
         android:id="@+id/userInfo"
@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/aboutYourselfTextview"
+            android:id="@+id/aboutStudentTextview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="serif"
