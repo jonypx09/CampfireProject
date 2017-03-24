@@ -2,6 +2,7 @@ package com.example.jonat.campfire;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -79,7 +80,7 @@ public class MyCampfireFragment extends Fragment {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
                 new AlertDialog.Builder(getActivity())
                         .setTitle(names[i])
                         .setMessage(emails[i])
@@ -96,6 +97,13 @@ public class MyCampfireFragment extends Fragment {
                                 FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
                                 ft.replace(R.id.content_frame, fragment);
                                 ft.commit();
+                            }
+                        })
+                        .setNegativeButton("View Profile", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent profileIntent = new Intent(getActivity(), ClassmatesProfileActivity.class);
+                                profileIntent.putExtra("studentEmail", emails[i]);
+                                startActivity(profileIntent);
                             }
                         })
                         .setIcon(images[i])
