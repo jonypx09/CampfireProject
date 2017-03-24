@@ -1,5 +1,4 @@
 package backend.algorithms;
-
 /*
  * A holder class for double values in a Hashmap.
  * 
