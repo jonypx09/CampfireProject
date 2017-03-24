@@ -91,7 +91,13 @@ public class MainActivity extends AppCompatActivity
         emailHeader.setText(uEmail);
         nameHeader.setText(uName);
         ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
-        courseHeader.setText("Current Course: " + enrolledCourses.get(0));
+
+        if (enrolledCourses.size() == 1) {
+            courseHeader.setText("Current Course: " + enrolledCourses.get(0));
+        } else {
+            courseHeader.setText("Current Course: " + enrolledCourses.get(1));
+        }
+
 
         displaySelectedScreen(R.id.nav_home);
 
