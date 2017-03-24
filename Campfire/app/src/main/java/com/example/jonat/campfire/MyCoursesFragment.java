@@ -38,7 +38,8 @@ public class MyCoursesFragment extends Fragment {
     private String[] emails;
     private String [] previousElectives;
     private String [] pastimes;
-    private Integer sampleImage = R.drawable.ic_class_black_48dp;
+    private Integer sampleImage = R.drawable.ic_class_white_48dp;
+    private Integer courseImage = R.drawable.ic_class_black_48dp;
 
     private ArrayList<Student> uClassmates;
     private String[] searchResults;
@@ -91,7 +92,7 @@ public class MyCoursesFragment extends Fragment {
                 new android.app.AlertDialog.Builder(getActivity())
                         .setTitle(names[i])
                         .setMessage("Course Description:\nInstructor:")
-                        .setIcon(images[i])
+                        .setIcon(courseImage)
                         .show();
             }
         });

@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.MenuInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     private boolean isSearchOpened = false;
     private EditText editSearch;
     private boolean searchInProgress = false;
+    private boolean myCoursesIsOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,18 +205,25 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_messages:
                 fragment = new MessagesFragment();
                 fragment.setArguments(bundle);
+                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
                 break;
             case R.id.nav_my_campfire:
                 fragment = new MyCampfireFragment();
                 fragment.setArguments(bundle);
+                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
                 break;
             case R.id.nav_discover:
                 fragment = new DiscoverFragment();
                 fragment.setArguments(bundle);
+                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
                 break;
             case R.id.nav_home:
                 fragment = new HomeFragment();
                 fragment.setArguments(bundle);
+                if (myCoursesIsOpen){
+                    mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
+                    myCoursesIsOpen = false;
+                }
                 break;
             case R.id.nav_help:
                 miscIntent = new Intent(this, HelpActivity.class);
@@ -236,6 +246,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_my_courses:
                 fragment = new MyCoursesFragment();
                 fragment.setArguments(bundle);
+                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_add_circle_white_48dp));
+                myCoursesIsOpen = true;
         }
 
         //replacing the fragment
@@ -303,37 +315,41 @@ public class MainActivity extends AppCompatActivity
                 searchInProgress = false;
             }
 
-        } else { //open the search entry
+        } else { //open the search entry or course adder
 
-            action.setDisplayShowCustomEnabled(true); //enable it to display a
-            // custom view in the action bar.
-            action.setCustomView(R.layout.search_bar);//add the custom view
-            action.setDisplayShowTitleEnabled(false); //hide the title
+            if (myCoursesIsOpen){
+                addCourse();
+            }else{
+                action.setDisplayShowCustomEnabled(true); //enable it to display a
+                // custom view in the action bar.
+                action.setCustomView(R.layout.search_bar);//add the custom view
+                action.setDisplayShowTitleEnabled(false); //hide the title
 
-            editSearch = (EditText)action.getCustomView().findViewById(R.id.editSearch); //the text editor
+                editSearch = (EditText)action.getCustomView().findViewById(R.id.editSearch); //the text editor
 
-            //this is a listener to do a search when the user clicks on search button
-            editSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                        editSearch.clearFocus();
-                        performSearch(editSearch.getText().toString());
-                        closeKeyboard();
-                        return true;
+                //this is a listener to do a search when the user clicks on search button
+                editSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                            editSearch.clearFocus();
+                            performSearch(editSearch.getText().toString());
+                            closeKeyboard();
+                            return true;
+                        }
+                        return false;
                     }
-                    return false;
-                }
-            });
-            editSearch.requestFocus();
+                });
+                editSearch.requestFocus();
 
-            //open the keyboard focused in the edtSearch
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(editSearch, InputMethodManager.SHOW_IMPLICIT);
+                //open the keyboard focused in the edtSearch
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editSearch, InputMethodManager.SHOW_IMPLICIT);
 
-            //add the close icon
-            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_clear_white_24dp));
-            isSearchOpened = true;
+                //add the close icon
+                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_clear_white_24dp));
+                isSearchOpened = true;
+            }
         }
     }
 
@@ -372,5 +388,18 @@ public class MainActivity extends AppCompatActivity
         View view = getCurrentFocus();
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public void addCourse(){
+        new MaterialDialog.Builder(this)
+                .title("Add Course")
+                .content("Enter a course code:")
+                .inputType(InputType.TYPE_TEXT_VARIATION_NORMAL)
+                .input("CSC108H1", "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        // Do something
+                    }
+                }).show();
     }
 }
