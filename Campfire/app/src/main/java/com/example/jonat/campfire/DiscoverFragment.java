@@ -132,7 +132,7 @@ public class DiscoverFragment extends Fragment {
                                 // Should be if (!uStudent.getCampfire().contains(emails[i])) {
                                 if (!inCampfire(db.getStudent(emails[i]))) {
                                     // TODO: Doesn't save to database.
-                                    uStudent.addToCampfire(db.getStudent(emails[i]));
+//                                    uStudent.addToCampfire(db.getStudent(emails[i]));
                                     campfireStudents.add(db.getStudent(emails[i]));
                                     Snackbar.make(getView(), "Successfully added " +
                                             names[i].substring(0, names[i].indexOf(" ")) +

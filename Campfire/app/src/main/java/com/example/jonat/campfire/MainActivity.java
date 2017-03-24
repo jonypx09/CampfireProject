@@ -206,16 +206,19 @@ public class MainActivity extends AppCompatActivity
                 fragment = new MessagesFragment();
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
+                myCoursesIsOpen = false;
                 break;
             case R.id.nav_my_campfire:
                 fragment = new MyCampfireFragment();
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
+                myCoursesIsOpen = false;
                 break;
             case R.id.nav_discover:
                 fragment = new DiscoverFragment();
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
+                myCoursesIsOpen = false;
                 break;
             case R.id.nav_home:
                 fragment = new HomeFragment();
