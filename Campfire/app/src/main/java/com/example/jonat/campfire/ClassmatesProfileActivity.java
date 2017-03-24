@@ -133,6 +133,13 @@ public class ClassmatesProfileActivity extends AppCompatActivity {
                 openFridaySchedule();
             }
         });
+        saturdayCheckbox = (CheckBox) findViewById((R.id.saturdayCheckbox));
+        saturdayCheckbox.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                saturdayCheckbox.setChecked(true);
+                openSaturdaySchedule();
+            }
+        });
 
         previousCSCourse = (TextView) findViewById(R.id.previousCourseTextview);
         previousElective = (TextView) findViewById(R.id.electiveCourseTextview);
