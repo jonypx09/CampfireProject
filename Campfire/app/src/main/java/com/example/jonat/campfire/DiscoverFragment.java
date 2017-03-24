@@ -2,6 +2,7 @@ package com.example.jonat.campfire;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -147,6 +148,13 @@ public class DiscoverFragment extends Fragment {
                                             " to your Campfire", Snackbar.LENGTH_LONG)
                                             .setAction("Action", null).show();
                                 }
+                            }
+                        })
+                        .setNegativeButton("View Profile", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent profileIntent = new Intent(getActivity(), ClassmatesProfileActivity.class);
+                                profileIntent.putExtra("studentEmail", emails[i]);
+                                startActivity(profileIntent);
                             }
                         })
                         .setIcon(images[i])
