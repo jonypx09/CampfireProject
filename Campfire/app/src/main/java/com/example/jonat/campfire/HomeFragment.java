@@ -139,7 +139,6 @@ public class HomeFragment extends Fragment {
         getActivity().findViewById(R.id.infoBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: make profile view for other users
                 Intent profileIntent = new Intent(getActivity(), ClassmatesProfileActivity.class);
                 profileIntent.putExtra("studentEmail", loadedStudents.get(0).getEmail());
                 startActivity(profileIntent);
