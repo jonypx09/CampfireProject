@@ -15,11 +15,16 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
+import backend.algorithms.CSCCoursesCriteria;
 import backend.algorithms.Comparable;
 import backend.algorithms.Course;
+import backend.algorithms.ElectivesCriteria;
 import backend.algorithms.HobbiesCriteria;
 import backend.algorithms.ProgrammingLanguagesCriteria;
+import backend.algorithms.ScheduleCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
@@ -33,6 +38,36 @@ public class LoginActivity extends AppCompatActivity {
     ImageView incorrectLogin;
     ImageView incorrectEmailIcon;
     ImageView incorrectPasswordIcon;
+
+    private String[] possDescriptions = {"I like hardware!",
+                                         "Team up with me if you wanna have loads of fun :)",
+                                         "Work hard.. Then work harder ;)",
+                                         "I like android development!!!",
+                                         "Work late and sleep late is my motto",
+                                         "Shooting for a lazy 60, just want a chill partner",
+                                         "Message me if you have experience with Web",
+                                         "I use Vim!",
+                                         "If you use vim don't talk to me >:(",
+                                         "If you don't use Linux need not apply",
+                                         "I do it all! Don't hesitate to reach out!",
+                                         "I got a 90 in 373",
+                                         "Working with Angular changed my life",
+                                         "Got tons of ideas, just need a friend :(",
+                                         "Code from sun up till sun down, I'm like a reverse nightowl, Which I guess is a dayowl, but owls aren't really up during the day, so I guess more of a daybird",
+                                         "I don't like bios"};
+
+    private String[] possLanguages = {"Python", "Java", "C", "HTML", "Javascript", "SQL"};
+    private String[] possHobbies = {"Arts/Content Creation", "Music", "Sports", "Video Games",
+                                    "Cooking", "TV/Netflix", "Swimming", "Watching Sports",
+                                    "Photography", "Parkour", "Riddles", "Puppeteering",
+                                    "Yodeling", "Dancing", "Freestyle Rapping", "Table Tennis",
+                                    "Exploring", "Hiking", "Programming", "Writing"};
+    private String[] days = {"Monday", "Tuesday", "Wednesday",
+            "Thursday", "Friday", "Saturday", "Sunday"};
+
+    private HashMap<String, ArrayList<String>> schedMap = new HashMap<String, ArrayList<String>>();
+
+    private ArrayList<ArrayList<Comparable>> criterias = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,35 +83,57 @@ public class LoginActivity extends AppCompatActivity {
             Course course = new Course("csc301h1", "Introduction to Software Engineering", "Joey Freund");
             db.addCourse(course);
         }
-        ArrayList<String> c1 = new ArrayList<>();
-        c1.add("Java");
-        c1.add("HTML");
-        c1.add("CSS");
-        c1.add("JavaScript");
+        for (int i = 0; i < 7; i++) {
+            ArrayList<String> c1 = new ArrayList<>();
+            int spot = (new Random().nextInt(possLanguages.length) + 1) % possLanguages.length;
+            c1.add(possLanguages[spot]);
+            c1.add(possLanguages[(spot + 1) % possLanguages.length]);
+            c1.add(possLanguages[(spot + 2) % possLanguages.length]);
 
-        ArrayList<String> c2 = new ArrayList<>();
-        c2.add("Running");
-        c2.add("Video Games");
-        c2.add("Reading");
-        c2.add("Watching Sports");
+            ArrayList<String> c2 = new ArrayList<>();
+            for (int j = 0; j < (new Random().nextInt(possHobbies.length) + 1) % possHobbies.length; j++) {
+                c2.add(possHobbies[new Random().nextInt(possHobbies.length)]);
+            }
 
-        ProgrammingLanguagesCriteria languages = new ProgrammingLanguagesCriteria(c1);
-        HobbiesCriteria hobbies = new HobbiesCriteria(c2);
+            for (String day: days) {
+                ArrayList<String> times = new ArrayList<>();
+                times.add("09:00 - 09:59");
+                times.add("10:00 - 10:59");
+                times.add("11:00 - 11:59");
+                times.add("12:00 - 12:59");
+                times.add("13:00 - 13:59");
+                times.add("14:00 - 14:59");
+                times.add("15:00 - 15:59");
+                times.add("16:00 - 16:59");
 
-        ArrayList<Comparable> crit = new ArrayList<>();
-        crit.add(languages);
-        crit.add(hobbies);
+                schedMap.put(day, times);
+            }
+
+            ProgrammingLanguagesCriteria languages = new ProgrammingLanguagesCriteria(c1);
+            HobbiesCriteria hobbies = new HobbiesCriteria(c2);
+            CSCCoursesCriteria csCourses = new CSCCoursesCriteria(new ArrayList<String>());
+            ElectivesCriteria elCourses = new ElectivesCriteria(new ArrayList<String>());
+            ScheduleCriteria sched = new ScheduleCriteria(schedMap);
+
+            ArrayList<Comparable> crit = new ArrayList<>();
+            crit.add(languages);
+            crit.add(hobbies);
+            crit.add(csCourses);
+            crit.add(elCourses);
+            crit.add(sched);
+            criterias.add(crit);
+        }
 
         ArrayList<Student> sampleStudents = new ArrayList<>();
-        sampleStudents.add(new Student("Adam", "Capparelli", "adam@mail.com", "12345678", crit));
-        sampleStudents.add(new Student("Andrew", "Goupil", "andrew@mail.com", "12345678", crit));
-        sampleStudents.add(new Student("Fullchee", "Zhang", "fullchee@mail.com", "12345678", crit));
-        sampleStudents.add(new Student("Jonathan", "Pelastine", "jonathan@mail.com", "12345678", crit));
-        sampleStudents.add(new Student("Quinn", "Daneyko", "quinn@mail.com", "12345678", crit));
-        sampleStudents.add(new Student("Rod", "Mazloomi", "rod@mail.com", "12345678", crit));
-        sampleStudents.add(new Student("Vlad", "Chapurny", "vlad@mail.com", "12345678", crit));
+        sampleStudents.add(new Student("Adam", "Capparelli", "adam@mail.com", "12345678", criterias.get(0)));
+        sampleStudents.add(new Student("Andrew", "Goupil", "andrew@mail.com", "12345678", criterias.get(1)));
+        sampleStudents.add(new Student("Fullchee", "Zhang", "fullchee@mail.com", "12345678", criterias.get(2)));
+        sampleStudents.add(new Student("Jonathan", "Pelastine", "jonathan@mail.com", "12345678", criterias.get(3)));
+        sampleStudents.add(new Student("Quinn", "Daneyko", "quinn@mail.com", "12345678", criterias.get(4)));
+        sampleStudents.add(new Student("Rod", "Mazloomi", "rod@mail.com", "12345678", criterias.get(5)));
+        sampleStudents.add(new Student("Vlad", "Chapurny", "vlad@mail.com", "12345678", criterias.get(6)));
         for (Student s : sampleStudents) {
-            s.setDescription("Sample Description");
+            s.setDescription(possDescriptions[new Random().nextInt(possDescriptions.length)]);
             if (db.getStudent(s.getEmail()) == null) {
                 db.addStudent(s);
                 db.addToTaking("csc301h1", s.getEmail());

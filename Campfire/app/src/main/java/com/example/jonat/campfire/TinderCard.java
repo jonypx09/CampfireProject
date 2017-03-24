@@ -20,6 +20,7 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import backend.algorithms.Student;
 
@@ -45,8 +46,8 @@ public class TinderCard {
     @View(R.id.userPLanguagesListView)
     private ListView userInfoListView;
 
-    @View(R.id.userHobbiesListView)
-    private ListView userHobbiesListView;
+    @View(R.id.hobbieTextView)
+    private TextView userHobbieTextView;
 
     private Context mContext;
     private SwipePlaceHolderView mSwipeView;
@@ -70,21 +71,15 @@ public class TinderCard {
         nameTxt.setText(student.getFname() + " " + student.getLname());
         quickBioTxt.setText(student.getDescription());
         ArrayList<String> stuLangs = new ArrayList();
-        ArrayList<String> stuHobbies = new ArrayList();
         for (String s : student.getProgramming()) {
             if (s != null) {
                 stuLangs.add(" " + s);
             }
         }
-        for (String s : student.getHobbies()) {
-            if (s != null) {
-                stuHobbies.add(" " + s);
-            }
-        }
+        userHobbieTextView.setText(" Favourite Hobbie: " + student.getHobbies().get(new Random().nextInt(student.getHobbies().size())));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.mContext, R.layout.criteria_list_item, stuLangs);
         userInfoListView.setAdapter(adapter);
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this.mContext, R.layout.criteria_list_item, stuHobbies);
-        userHobbiesListView.setAdapter(adapter2);
+
     }
 
     @Click(R.id.profileImageView)
