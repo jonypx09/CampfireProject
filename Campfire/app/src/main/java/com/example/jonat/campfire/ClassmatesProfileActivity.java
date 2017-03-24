@@ -66,17 +66,22 @@ public class ClassmatesProfileActivity extends AppCompatActivity {
         //Connect to the database
         db = new DatabaseAdapter(this);
 
+
         Intent intent = getIntent();
         uEmail = intent.getExtras().getString("studentEmail");
         myStudent = db.getStudent(uEmail);
         System.out.println(myStudent.getCSCCourses());
         setTitle(myStudent.getFname() + " " + myStudent.getLname());
 
+
         View view = findViewById(R.id.userInfo);
         TextView userEmail = (TextView) view.findViewById(R.id.emailTextview);
         userEmail.setText("Student's Email:   " + uEmail);
 
-        TextView greeting = (TextView) view.findViewById(R.id.aboutYourselfTextview);
+
+
+
+        TextView greeting = (TextView) view.findViewById(R.id.aboutStudentTextview);
         greeting.append(" " + myStudent.getFname() + ":");
 
         pythonCheckbox = (CheckBox) findViewById(R.id.pythonCheckboxP);
