@@ -34,6 +34,7 @@ import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import java.util.ArrayList;
 
+import backend.algorithms.Course;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
 
@@ -395,11 +396,27 @@ public class MainActivity extends AppCompatActivity
                 .title("Add Course")
                 .content("Enter a course code:")
                 .inputType(InputType.TYPE_TEXT_VARIATION_NORMAL)
+                .inputRange(8, 8)
                 .input("CSC108H1", "", new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                        // Do something
+                        String userInput = input.toString();
+                        Course newCourse = new Course(userInput, "", "");
+                        db.addCourse(newCourse);
+                        db.addToTaking(userInput, uEmail);
+                        refreshCourseList();
                     }
                 }).show();
+    }
+
+    public void refreshCourseList(){
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("identity", newStudentID);
+        Fragment fragment = null;
+        fragment = new MyCoursesFragment();
+        fragment.setArguments(bundle);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
     }
 }

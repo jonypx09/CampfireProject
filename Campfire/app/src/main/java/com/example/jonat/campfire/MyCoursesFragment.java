@@ -93,6 +93,7 @@ public class MyCoursesFragment extends Fragment {
                         .setTitle(names[i])
                         .setMessage("Course Description:\nInstructor:")
                         .setIcon(courseImage)
+
                         .show();
             }
         });
