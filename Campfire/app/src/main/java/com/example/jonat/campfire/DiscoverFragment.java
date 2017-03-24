@@ -83,12 +83,12 @@ public class DiscoverFragment extends Fragment {
                 if (!s.getEmail().equals(uEmail)){
                     names[i] = s.getFname() + " " + s.getLname();
                     emails[i] = s.getEmail();
-                    if (s.getElectives() == null){
+                    if (s.getElectives() == null || s.getElectives().size() == 0){
                         previousElectives[i] = "No previous electives.";
                     }else{
                         previousElectives[i] = s.getElectives().get(0);
                     }
-                    if (s.getHobbies() == null){
+                    if (s.getHobbies() == null || s.getHobbies().size() == 0){
                         pastimes[i] = "No previous hobbies.";
                     }else{
                         pastimes[i] = s.getHobbies().get(0);
@@ -103,7 +103,9 @@ public class DiscoverFragment extends Fragment {
                 Student result = db.getStudent(searchResults[i]);
                 names[i] = result.getFname() + " " + result.getLname();
                 emails[i] = result.getEmail();
-                previousElectives[i] = result.getElectives().get(0);
+                if (result.getElectives() != null && result.getElectives().size() != 0) {
+                    previousElectives[i] = result.getElectives().get(0);
+                }
                 pastimes[i] = result.getHobbies().get(0);
                 images[i] = sampleImage;
             }
