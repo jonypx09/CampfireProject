@@ -179,7 +179,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 openFridaySchedule();
             }
         });
-        saturdayCheckbox = (CheckBox) findViewById(R.id.saturdayCheckbox);
+        saturdayCheckbox = (CheckBox) findViewById((R.id.saturdayCheckbox));
         saturdayCheckbox.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 saturdayCheckbox.setChecked(true);
@@ -248,31 +248,24 @@ public class MyProfileActivity extends AppCompatActivity {
         for (String day : schedule.keySet()){
             if (day.equals("Sunday") && schedule.get(day).size() != 0){
                 sundayCheckbox.setChecked(true);
-                sundayCheckbox.setEnabled(true);
                 sundayCheckbox.setText("Sunday (Tap to open details)");
             }else if (day.equals("Monday") && schedule.get(day).size() != 0){
                 mondayCheckbox.setChecked(true);
-                mondayCheckbox.setEnabled(true);
                 mondayCheckbox.setText("Monday (Tap to open details)");
             }else if (day.equals("Tuesday") && schedule.get(day).size() != 0){
                 tuesdayCheckbox.setChecked(true);
-                tuesdayCheckbox.setEnabled(true);
                 tuesdayCheckbox.setText("Tuesday (Tap to open details)");
             }else if (day.equals("Wednesday") && schedule.get(day).size() != 0){
                 wednesdayCheckbox.setChecked(true);
-                wednesdayCheckbox.setEnabled(true);
                 wednesdayCheckbox.setText("Wednesday (Tap to open details)");
             }else if (day.equals("Thursday") && schedule.get(day).size() != 0){
                 thursdayCheckbox.setChecked(true);
-                thursdayCheckbox.setEnabled(true);
                 thursdayCheckbox.setText("Thursday (Tap to open details)");
             }else if (day.equals("Friday") && schedule.get(day).size() != 0){
                 fridayCheckbox.setChecked(true);
-                fridayCheckbox.setEnabled(true);
                 fridayCheckbox.setText("Friday (Tap to open details)");
             }else if (day.equals("Saturday") && schedule.get(day).size() != 0){
                 saturdayCheckbox.setChecked(true);
-                saturdayCheckbox.setEnabled(true);
                 saturdayCheckbox.setText("Saturday (Tap to open details)");
             }
         }
