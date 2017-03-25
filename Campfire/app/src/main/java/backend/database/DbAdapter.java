@@ -20,6 +20,8 @@ public class DbAdapter {
     // We dont anyone creating an instance of this class
     private DbAdapter (){}
 
+    /* ---------- PRIVATE HELPER FUNCTIONS ---------- */
+
     /**
      * Deserialized string to a Comparable ArrayList.
      */
@@ -64,6 +66,28 @@ public class DbAdapter {
         return stu_list;
     }
 
+    /**
+     * Return the max chat ID.
+     * @return an int, the max chat ID
+     */
+    private static int getMaxChatID(){
+        try {
+            ResultDatabaseThread thread = new ResultDatabaseThread(
+                    "SELECT MAX(chat_id) AS max FROM chats", null
+            );
+            thread.execute();
+            ResultSet rs = thread.get();
+            if (rs.next()){
+                return rs.getInt("max");
+            } else {
+                return 0;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     /* ---------- STUDENT QUERIES ---------- */
 
     /**
@@ -73,7 +97,7 @@ public class DbAdapter {
     public static void addStudent(Student student){
         // Check if the student already exists
         if (getStudent(student.getEmail()) != null){
-            return;
+            throw new IllegalArgumentException();
         }
 
         ArrayList<String> args = new ArrayList<String>();
@@ -156,9 +180,9 @@ public class DbAdapter {
      * @param email identifier of the student that is going to be deleted
      */
     public static void deleteStudent(String email){
-        // If no student exists return
+        // Check if no student exists
         if (getStudent(email) == null){
-            return;
+            throw new IllegalArgumentException();
         }
 
         List<String> args = new ArrayList<>();
@@ -176,7 +200,7 @@ public class DbAdapter {
     public static void updateStudent(Student student){
         // Make sure that the student exists
         if (getStudent(student.getEmail()) == null){
-            return;
+            throw new IllegalArgumentException();
         }
 
         List<String> args = new ArrayList<>();
@@ -202,7 +226,7 @@ public class DbAdapter {
     public static void addCourse(Course course){
         // Check if the course already exists
         if (getCourse(course.getCourseCode()) != null){
-            return;
+            throw new IllegalArgumentException();
         }
 
         List<String> args = new ArrayList<String>();
@@ -297,7 +321,7 @@ public class DbAdapter {
     public static void enrolStudentInCourse(String email, String code){
         // If course / student does not exist exit
         if (getStudent(email) == null || getCourse(code) == null){
-            return;
+            throw new IllegalArgumentException();
         }
 
         List<String> args = new ArrayList<String>();
@@ -334,41 +358,118 @@ public class DbAdapter {
         return course_codes;
     }
 
-    /* ---------- ASSIGNMENT QUERIES ---------- */
-
-    public static void addAssignment(Assignment assignment){
-
-    }
-
-    public static void getAssignment(String assignment_id){
-
-    }
-
-    public static void getAllAssignments(){
-
-    }
-
-    /* ---------- ASSIGNMENT GROUP QUERIES ---------- */
-
-    public static void addGroup(int assignment_id, AssignmentGroup group){
-
-    }
-
-    public static void getGroup(String group_id){
-
-    }
 
     /* ---------- CHAT QUERIES ---------- */
 
-    public static void addChat(String email){
-
+    /**
+     * Get the presentable name of the user when given an email.
+     * @param email indentifier of the user
+     * @return proper name of this user
+     */
+    public static String emailToName(String email){
+        Student stu = getStudent(email);
+        if(stu == null){
+            throw new IllegalArgumentException();
+        }
+        return stu.getFname() + " " + stu.getLname().charAt(0) + ".";
     }
 
-    public static void getChat(int chat_id){
-
+    public static void newChat(String email_user1, String email_user2){
+        // Check that the two students exist
+        if (getStudent(email_user1) == null || getStudent(email_user2) == null){
+            throw new IllegalArgumentException();
+        }
+        int id = getMaxChatID() + 1;
+        List<String> args = new ArrayList<>();
+        args.add(email_user1);
+        args.add(email_user2);
+        UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                "INSERT INTO chats VALUES (" + Integer.toString(id) + ", ?);"
+                + "INSERT INTO chats VALUES (" + Integer.toString(id) + ", ?)",
+                args
+        );
+        thread.execute();
     }
 
-    public static void getAllChats(){
+    public static boolean chatExists(int chat_id){
+        try {
+            // Check if this chat exists
+            ResultDatabaseThread thread = new ResultDatabaseThread(
+                    "SELECT * FROM chats WHERE chat_id = " + Integer.toString(chat_id),
+                    null
+            );
+            thread.execute();
+            ResultSet rs1 = thread.get();
+            if (rs1.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
+    public static Chat getChat(int chat_id){
+        // Check if the chat exists or not
+        if (!chatExists(chat_id)){
+            throw new IllegalArgumentException();
+        }
+        try {
+            ResultDatabaseThread thread = new ResultDatabaseThread(
+                    "SELECT * FROM chat_line WHERE chat_id = " + Integer.toString(chat_id)
+                    + " ORDER BY sent_at",
+                    null
+            );
+            thread.execute();
+            ResultSet rs = thread.get();
+            Chat chat = new Chat(chat_id);
+            while(rs.next()){
+                Message msg = new Message(
+                        rs.getString("email"),
+                        rs.getString("content"),
+                        rs.getString("sent_at")
+                );
+                chat.addMessage(msg);
+            }
+            return chat;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<Chat> getAllChatsForUser(String email){
+        // Check if student exists
+        if(getStudent(email) == null){
+            throw new IllegalArgumentException();
+        }
+        List<Chat> chats = new ArrayList<>();
+        try {
+            List<String> args = new ArrayList<>();
+            args.add(email);
+            ResultDatabaseThread thread = new ResultDatabaseThread(
+                    "SELECT * FROM chats WHERE email = ?",
+                    args
+            );
+            thread.execute();
+            // Get all the chats this user belongs to
+            List<Integer> chat_ids = new ArrayList<>();
+            ResultSet rs = thread.get();
+            while(rs.next()){
+                chat_ids.add(rs.getInt("chat_id"));
+            }
+
+            // Get all the chat instances for this user
+            for (Integer id : chat_ids){
+                Chat chat = getChat(id);
+                chats.add(chat);
+            }
+            return chats;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return chats;
     }
 }

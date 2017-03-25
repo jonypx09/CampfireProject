@@ -41,6 +41,7 @@ public class UpdateDatabaseThread extends AsyncTask<Void, Void, Void>{
                 }
             }
             statement.execute();
+            this.connection.close();
         } catch (Exception e){
             e.printStackTrace();
         }

@@ -40,7 +40,9 @@ public class ResultDatabaseThread extends AsyncTask<Void, Void, ResultSet>{
                     statement.setString(i + 1, this.arguments.get(i));
                 }
             }
-            return statement.executeQuery();
+            ResultSet rs =  statement.executeQuery();
+            this.connection.close();
+            return rs;
         } catch (Exception e){
             e.printStackTrace();
         }

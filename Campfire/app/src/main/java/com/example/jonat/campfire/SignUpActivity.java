@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -70,7 +71,8 @@ public class SignUpActivity extends AppCompatActivity {
         validPassword = verifyPassword(password);
 
         //Check if this student exists in the database; if so, prevent user from continuing
-        final Student alreadyExists = db.getStudent(email);
+//        final Student alreadyExists = db.getStudent(email);
+        final Student alreadyExists = DbAdapter.getStudent(email);
 
         load.setVisibility(View.VISIBLE);
         createAccountButton.setText("Checking Fields...");

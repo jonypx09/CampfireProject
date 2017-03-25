@@ -27,6 +27,7 @@ import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.ScheduleCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -203,7 +204,8 @@ public class LoginActivity extends AppCompatActivity {
 
         //Perform validation here
         Student foundStudent;
-        foundStudent = db.getStudent(email);
+//        foundStudent = db.getStudent(email);
+        foundStudent = DbAdapter.getStudent(email);
 
         if ((foundStudent != null) && (password.equals(foundStudent.getPass()))){
             load.setVisibility(View.INVISIBLE);

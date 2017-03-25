@@ -33,9 +33,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -72,7 +74,8 @@ public class MainActivity extends AppCompatActivity
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
         uEmail = newStudentID[2];
-        uStudent = db.getStudent(uEmail);
+//        uStudent = db.getStudent(uEmail);
+        uStudent = DbAdapter.getStudent(uEmail);
         uName = uStudent.getFname() + " " + uStudent.getLname();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -90,8 +93,9 @@ public class MainActivity extends AppCompatActivity
         TextView courseHeader = (TextView) headerView.findViewById(R.id.courseHeader);
         emailHeader.setText(uEmail);
         nameHeader.setText(uName);
-        ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
-        courseHeader.setText("Current Course: " + enrolledCourses.get(1));
+//        ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
+        List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+        courseHeader.setText("Current Course: " + enrolledCourses.get(0));
 
         displaySelectedScreen(R.id.nav_home);
 
@@ -361,13 +365,15 @@ public class MainActivity extends AppCompatActivity
                 .setAction("Action", null).show();
 
         ArrayList<String> searchResults = new ArrayList<String>();
-        ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
-        ArrayList<Student> classmates = db.getStudentsInCourse(enrolledCourses.get(0));
-        for (Student s : classmates) {
-            if ((!s.getEmail().equals(uEmail)) && (s.getFname().contains(query))){
-                searchResults.add(s.getEmail());
-            }
-        }
+//        ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
+        List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+//        ArrayList<Student> classmates = db.getStudentsInCourse(enrolledCourses.get(0));
+        //Requires a method in DbAdapter that retrieves all students in a course
+//        for (Student s : classmates) {
+//            if ((!s.getEmail().equals(uEmail)) && (s.getFname().contains(query))){
+//                searchResults.add(s.getEmail());
+//            }
+//        }
         String[] searchResultsArray = new String[searchResults.size()];
         searchResultsArray = searchResults.toArray(searchResultsArray);
 

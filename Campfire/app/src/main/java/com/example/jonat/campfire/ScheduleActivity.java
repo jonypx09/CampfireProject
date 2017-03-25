@@ -24,6 +24,7 @@ import backend.algorithms.ProgrammingLanguagesCriteria;
 import backend.algorithms.ScheduleCriteria;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
 
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -190,9 +191,12 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                  */
                 Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], newStudentCriteria);
                 newCourse.addStudent(newStudent);
-                db.addStudent(newStudent);
-                db.addCourse(newCourse);
-                db.addToTaking(newStudentID[4], newStudentID[2]);
+//                db.addStudent(newStudent);
+//                db.addCourse(newCourse);
+//                db.addToTaking(newStudentID[4], newStudentID[2]);
+                DbAdapter.addStudent(newStudent);
+                DbAdapter.addCourse(newCourse);
+                DbAdapter.enrolStudentInCourse(newStudentID[2], newStudentID[4]);
 
                 Intent mainIntent = new Intent(this, MainActivity.class);
                 mainIntent.putExtra("identity", newStudentID);
