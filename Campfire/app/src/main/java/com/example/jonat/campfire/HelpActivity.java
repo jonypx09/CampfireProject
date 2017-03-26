@@ -10,7 +10,6 @@ import backend.database.DatabaseAdapter;
 public class HelpActivity extends AppCompatActivity {
 
     private String[] newStudentID;
-    DatabaseAdapter db;
     private String uEmail;
 
     @Override

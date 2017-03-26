@@ -31,8 +31,6 @@ import backend.database.DbAdapter;
 
 public class LoginActivity extends AppCompatActivity {
 
-    DatabaseAdapter db;
-
     ProgressBar load;
     Button loginButton;
     ImageView correctLogin;
@@ -77,69 +75,75 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         setTitle("Log In");
 
-        //Connect to the database
-        db = new DatabaseAdapter(this);
         // Database sample population so we don't need to signup.
-        if (db.getCourse("csc301h1") == null) {
-            Course course = new Course("csc301h1", "Introduction to Software Engineering", "Joey Freund");
-            db.addCourse(course);
-        }
-        for (int i = 0; i < 7; i++) {
-            ArrayList<String> c1 = new ArrayList<>();
-            int spot = (new Random().nextInt(possLanguages.length) + 1) % possLanguages.length;
-            c1.add(possLanguages[spot]);
-            c1.add(possLanguages[(spot + 1) % possLanguages.length]);
-            c1.add(possLanguages[(spot + 2) % possLanguages.length]);
 
-            ArrayList<String> c2 = new ArrayList<>();
-            for (int j = 0; j < (new Random().nextInt(possHobbies.length) + 1) % possHobbies.length; j++) {
-                c2.add(possHobbies[new Random().nextInt(possHobbies.length)]);
-            }
+        // From Jonathan [March 25]: Sample data is already in online database, so there is no need
+        // execute this set of code (Delete afterwards)
 
-            for (String day: days) {
-                ArrayList<String> times = new ArrayList<>();
-                times.add("09:00 - 09:59");
-                times.add("10:00 - 10:59");
-                times.add("11:00 - 11:59");
-                times.add("12:00 - 12:59");
-                times.add("13:00 - 13:59");
-                times.add("14:00 - 14:59");
-                times.add("15:00 - 15:59");
-                times.add("16:00 - 16:59");
-
-                schedMap.put(day, times);
-            }
-
-            ProgrammingLanguagesCriteria languages = new ProgrammingLanguagesCriteria(c1);
-            HobbiesCriteria hobbies = new HobbiesCriteria(c2);
-            CSCCoursesCriteria csCourses = new CSCCoursesCriteria(new ArrayList<String>());
-            ElectivesCriteria elCourses = new ElectivesCriteria(new ArrayList<String>());
-            ScheduleCriteria sched = new ScheduleCriteria(schedMap);
-
-            ArrayList<Comparable> crit = new ArrayList<>();
-            crit.add(languages);
-            crit.add(hobbies);
-            crit.add(csCourses);
-            crit.add(elCourses);
-            crit.add(sched);
-            criterias.add(crit);
-        }
-
-        ArrayList<Student> sampleStudents = new ArrayList<>();
-        sampleStudents.add(new Student("Adam", "Capparelli", "adam@mail.com", "12345678", criterias.get(0)));
-        sampleStudents.add(new Student("Andrew", "Goupil", "andrew@mail.com", "12345678", criterias.get(1)));
-        sampleStudents.add(new Student("Fullchee", "Zhang", "fullchee@mail.com", "12345678", criterias.get(2)));
-        sampleStudents.add(new Student("Jonathan", "Pelastine", "jonathan@mail.com", "12345678", criterias.get(3)));
-        sampleStudents.add(new Student("Quinn", "Daneyko", "quinn@mail.com", "12345678", criterias.get(4)));
-        sampleStudents.add(new Student("Rod", "Mazloomi", "rod@mail.com", "12345678", criterias.get(5)));
-        sampleStudents.add(new Student("Vlad", "Chapurny", "vlad@mail.com", "12345678", criterias.get(6)));
-        for (Student s : sampleStudents) {
-            s.setDescription(possDescriptions[new Random().nextInt(possDescriptions.length)]);
-            if (db.getStudent(s.getEmail()) == null) {
-                db.addStudent(s);
-                db.addToTaking("csc301h1", s.getEmail());
-            }
-        }
+//        if (DbAdapter.getCourse("CSC301H1") == null) {
+//            Course course = new Course("CSC301H1", "Introduction to Software Engineering", "Joey Freund");
+//            DbAdapter.addCourse(course);
+//        }
+//        for (int i = 0; i < 7; i++) {
+//            ArrayList<String> c1 = new ArrayList<>();
+//            int spot = (new Random().nextInt(possLanguages.length) + 1) % possLanguages.length;
+//            c1.add(possLanguages[spot]);
+//            c1.add(possLanguages[(spot + 1) % possLanguages.length]);
+//            c1.add(possLanguages[(spot + 2) % possLanguages.length]);
+//
+//            ArrayList<String> c2 = new ArrayList<>();
+//            for (int j = 0; j < (new Random().nextInt(possHobbies.length) + 1) % possHobbies.length; j++) {
+//                c2.add(possHobbies[new Random().nextInt(possHobbies.length)]);
+//            }
+//
+//            for (String day: days) {
+//                ArrayList<String> times = new ArrayList<>();
+//                times.add("09:00 - 09:59");
+//                times.add("10:00 - 10:59");
+//                times.add("11:00 - 11:59");
+//                times.add("12:00 - 12:59");
+//                times.add("13:00 - 13:59");
+//                times.add("14:00 - 14:59");
+//                times.add("15:00 - 15:59");
+//                times.add("16:00 - 16:59");
+//
+//                schedMap.put(day, times);
+//            }
+//
+//            ProgrammingLanguagesCriteria languages = new ProgrammingLanguagesCriteria(c1);
+//            HobbiesCriteria hobbies = new HobbiesCriteria(c2);
+//            CSCCoursesCriteria csCourses = new CSCCoursesCriteria(new ArrayList<String>());
+//            ElectivesCriteria elCourses = new ElectivesCriteria(new ArrayList<String>());
+//            ScheduleCriteria sched = new ScheduleCriteria(schedMap);
+//
+//            ArrayList<Comparable> crit = new ArrayList<>();
+//            crit.add(languages);
+//            crit.add(hobbies);
+//            crit.add(csCourses);
+//            crit.add(elCourses);
+//            crit.add(sched);
+//            criterias.add(crit);
+//        }
+//
+//        ArrayList<Student> sampleStudents = new ArrayList<>();
+//        sampleStudents.add(new Student("Adam", "Capparelli", "adam@mail.com", "12345678", criterias.get(0)));
+//        sampleStudents.add(new Student("Andrew", "Goupil", "andrew@mail.com", "12345678", criterias.get(1)));
+//        sampleStudents.add(new Student("Fullchee", "Zhang", "fullchee@mail.com", "12345678", criterias.get(2)));
+//        sampleStudents.add(new Student("Jonathan", "Pelastine", "jonathan@mail.com", "12345678", criterias.get(3)));
+//        sampleStudents.add(new Student("Quinn", "Daneyko", "quinn@mail.com", "12345678", criterias.get(4)));
+//        sampleStudents.add(new Student("Rod", "Mazloomi", "rod@mail.com", "12345678", criterias.get(5)));
+//        sampleStudents.add(new Student("Vlad", "Chapurny", "vlad@mail.com", "12345678", criterias.get(6)));
+//        for (Student s : sampleStudents) {
+//            s.setDescription(possDescriptions[new Random().nextInt(possDescriptions.length)]);
+////            if (db.getStudent(s.getEmail()) == null) {
+////                db.addStudent(s);
+////                db.addToTaking("csc301h1", s.getEmail());
+////            }
+//            if (DbAdapter.getStudent(s.getEmail()) == null) {
+//                DbAdapter.addStudent(s);
+//                DbAdapter.enrolStudentInCourse(s.getEmail(), "CSC301H1");
+//            }
+//        }
 
         load = (ProgressBar) findViewById(R.id.loginProgress);
         loginButton = (Button) findViewById(R.id.loginButton);
@@ -204,7 +208,6 @@ public class LoginActivity extends AppCompatActivity {
 
         //Perform validation here
         Student foundStudent;
-//        foundStudent = db.getStudent(email);
         foundStudent = DbAdapter.getStudent(email);
 
         if ((foundStudent != null) && (password.equals(foundStudent.getPass()))){

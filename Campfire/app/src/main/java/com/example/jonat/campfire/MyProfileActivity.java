@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
 
 public class MyProfileActivity extends AppCompatActivity {
 
@@ -123,7 +124,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         uEmail = intent.getExtras().getString("userEmail");
-        myStudent = db.getStudent(uEmail);
+//        myStudent = db.getStudent(uEmail);
+        myStudent = DbAdapter.getStudent(uEmail);
         setTitle(myStudent.getFname() + " " + myStudent.getLname());
 
         View view = findViewById(R.id.userInfo);
@@ -225,7 +227,7 @@ public class MyProfileActivity extends AppCompatActivity {
         }
         previousCSCourse.setText(headerCS + csCourses);
 
-        String headerE = ("Previous CSC Courses:\n");
+        String headerE = ("Previous Elective Courses:\n");
         String electiveCourses = "";
         for (String course: previousElectiveCourses){
             electiveCourses += "- " + course;
@@ -235,7 +237,7 @@ public class MyProfileActivity extends AppCompatActivity {
         }
         previousElective.setText(headerE + electiveCourses);
 
-        String headerO = ("Previous CSC Courses:\n");
+        String headerO = ("Your Hobbies:\n");
         String hobbies = "";
         for (String hobby: hobbiesList){
             hobbies += "- " + hobby;
@@ -281,18 +283,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     public void openSundaySchedule(){
         if (sundayCheckbox.isChecked()){
-            ArrayList<String> times = this.schedule.get("Sunday");
-            AlertDialog scheduleDialog = new AlertDialog.Builder(this).create();
-            scheduleDialog.setTitle("Details for: Sunday");
-            scheduleDialog.setMessage("Something1 \n");
-            scheduleDialog.setMessage("Something2 \n");
-            scheduleDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Close",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            scheduleDialog.show();
+            scheduleDialog("Sunday");
         }
     }
 

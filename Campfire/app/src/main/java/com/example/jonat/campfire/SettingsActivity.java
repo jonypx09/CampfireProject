@@ -28,7 +28,6 @@ import backend.database.DatabaseAdapter;
 public class SettingsActivity extends AppCompatActivity {
 
     private String[] newStudentID;
-    DatabaseAdapter db;
     private String uEmail;
 
     private TextView settingsTextview;

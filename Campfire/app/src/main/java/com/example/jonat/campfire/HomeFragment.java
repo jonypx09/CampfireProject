@@ -30,6 +30,7 @@ import backend.algorithms.Comparable;
 import backend.algorithms.Course;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.jonat.campfire.MyCampfireFragment.campfireStudents;
@@ -47,7 +48,7 @@ public class HomeFragment extends Fragment {
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
     private Student uStudent;
-    private ArrayList<Student> allStudents;
+    private List<Student> allStudents;
     private ArrayList<Student> otherStudents301;
     private ArrayList<Student> students301;
     private ArrayList<String> c1;
@@ -77,8 +78,8 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         db = new DatabaseAdapter(getContext());
-        allStudents = db.getAllStudents();
-        csc301 = db.getCourse("csc301h1");
+        allStudents = DbAdapter.getAllStudents();
+        csc301 = DbAdapter.getCourse("CSC301H1");
         students301 = db.getStudentsInCourse("csc301h1");
 
         uStudent = ((MainActivity) getActivity()).getCurrentStudent();

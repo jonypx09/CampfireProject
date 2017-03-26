@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity
         TextView courseHeader = (TextView) headerView.findViewById(R.id.courseHeader);
         emailHeader.setText(uEmail);
         nameHeader.setText(uName);
-//        ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
         List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
         courseHeader.setText("Current Course: " + enrolledCourses.get(0));
 
@@ -366,15 +365,14 @@ public class MainActivity extends AppCompatActivity
                 .setAction("Action", null).show();
 
         ArrayList<String> searchResults = new ArrayList<String>();
-//        ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
         List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-//        ArrayList<Student> classmates = db.getStudentsInCourse(enrolledCourses.get(0));
-        //Requires a method in DbAdapter that retrieves all students in a course
-//        for (Student s : classmates) {
-//            if ((!s.getEmail().equals(uEmail)) && (s.getFname().contains(query))){
-//                searchResults.add(s.getEmail());
-//            }
-//        }
+        ArrayList<Student> classmates = uStudent.getallOtherCourseStudents(DbAdapter.getCourse(enrolledCourses.get(0)));
+
+        for (Student s : classmates) {
+            if ((!s.getEmail().equals(uEmail)) && (s.getFname().contains(query))){
+                searchResults.add(s.getEmail());
+            }
+        }
         String[] searchResultsArray = new String[searchResults.size()];
         searchResultsArray = searchResults.toArray(searchResultsArray);
 
@@ -387,8 +385,9 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
+
         closeKeyboard();
-        navigationView.getMenu().getItem(3).setChecked(true);
+        navigationView.getMenu().getItem(4).setChecked(true);
         searchInProgress = true;
         isSearchOpened = true;
     }

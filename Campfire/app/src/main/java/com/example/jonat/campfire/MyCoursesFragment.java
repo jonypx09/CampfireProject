@@ -20,8 +20,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import backend.algorithms.Course;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
 
 import static com.example.jonat.campfire.MyCampfireFragment.campfireStudents;
 
@@ -64,11 +66,11 @@ public class MyCoursesFragment extends Fragment {
 
         //Connect to the database & Obtain Student Object
         db = new DatabaseAdapter(getActivity());
-        uStudent = db.getStudent(uEmail);
+        uStudent = DbAdapter.getStudent(uEmail);
 
-        ArrayList<String> courses = db.enrolledIn(uEmail);
+        List<String> courses = DbAdapter.allStudentsCourses(uEmail);
         ArrayList<String> coursesFiltered = new ArrayList<String>();
-        for (int i = 1; i < courses.size(); i++){
+        for (int i = 0; i < courses.size(); i++){
             coursesFiltered.add(courses.get(i));
         }
         String[] coursesArray = new String[coursesFiltered.size()];
@@ -86,12 +88,15 @@ public class MyCoursesFragment extends Fragment {
         coursesListView = (ListView) getView().findViewById(R.id.allUsersList);
         coursesListView.setAdapter(customList);
 
+        final Course currentCourse = DbAdapter.getCourse(coursesArray[0]);
+
         coursesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
                 new android.app.AlertDialog.Builder(getActivity())
                         .setTitle(names[i])
-                        .setMessage("Course Description:\nInstructor:")
+                        .setMessage(currentCourse.getName() + "\n\n" +
+                                    "Instructor: " + currentCourse.getInstructor())
                         .setIcon(courseImage)
 
                         .show();

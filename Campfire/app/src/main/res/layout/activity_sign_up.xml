@@ -124,20 +124,20 @@
         android:layout_below="@+id/passwordField"
         android:layout_marginTop="27dp"
         android:fontFamily="serif"
-        android:text="Course Code:"
+        android:text="Course Code (i.e. CSC207):"
         android:textColor="@android:color/white" />
 
     <EditText
         android:id="@+id/courseField"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/coursePrompt"
         android:ems="10"
         android:fontFamily="serif"
         android:inputType="textPersonName"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorAccent"
+        android:layout_below="@+id/coursePrompt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/changePasswordButton"

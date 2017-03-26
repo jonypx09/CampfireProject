@@ -195,7 +195,11 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
 //                db.addCourse(newCourse);
 //                db.addToTaking(newStudentID[4], newStudentID[2]);
                 DbAdapter.addStudent(newStudent);
-                DbAdapter.addCourse(newCourse);
+                try{
+                    DbAdapter.addCourse(newCourse);
+                }catch(Exception e){
+
+                }
                 DbAdapter.enrolStudentInCourse(newStudentID[2], newStudentID[4]);
 
                 Intent mainIntent = new Intent(this, MainActivity.class);

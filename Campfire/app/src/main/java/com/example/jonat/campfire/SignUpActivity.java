@@ -71,7 +71,6 @@ public class SignUpActivity extends AppCompatActivity {
         validPassword = verifyPassword(password);
 
         //Check if this student exists in the database; if so, prevent user from continuing
-//        final Student alreadyExists = db.getStudent(email);
         final Student alreadyExists = DbAdapter.getStudent(email);
 
         load.setVisibility(View.VISIBLE);
@@ -137,19 +136,10 @@ public class SignUpActivity extends AppCompatActivity {
                         }
                     });
             missingInfoDialog.show();
-
-
         }else{
-
             createAccountButton.setText("Success!");
-
             //Send information to next activity
             String[] identity = {firstName, surname, email, password, course};
-
-            //TEMPORARY STATEMENT (To be changed later)
-//            Student newStudent = new Student(firstName, surname, email, password, null);
-            //TEMPORARY STATEMENT (To be changed later)
-
             Intent personalIntent = new Intent(this, PersonalizeActivity.class);
             personalIntent.putExtra("identity", identity);
             startActivity(personalIntent);
