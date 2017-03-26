@@ -243,6 +243,12 @@ public class MainActivity extends AppCompatActivity
                     myCoursesIsOpen = false;
                 }
                 break;
+            case R.id.nav_my_courses:
+                fragment = new MyCoursesFragment();
+                fragment.setArguments(bundle);
+                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_add_circle_white_48dp));
+                myCoursesIsOpen = true;
+                break;
             case R.id.nav_help:
                 miscIntent = new Intent(this, HelpActivity.class);
                 miscIntent.putExtra("identity", newStudentID);
@@ -261,11 +267,7 @@ public class MainActivity extends AppCompatActivity
                 miscIntent = new Intent(this, ChangePasswordActivity.class);
                 miscIntent.putExtra("identity", newStudentID);
                 startActivity(miscIntent);
-            case R.id.nav_my_courses:
-                fragment = new MyCoursesFragment();
-                fragment.setArguments(bundle);
-                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_add_circle_white_48dp));
-                myCoursesIsOpen = true;
+                break;
         }
 
         //replacing the fragment
