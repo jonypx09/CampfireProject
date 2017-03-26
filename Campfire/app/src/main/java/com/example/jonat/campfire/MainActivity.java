@@ -96,9 +96,17 @@ public class MainActivity extends AppCompatActivity
         TextView courseHeader = (TextView) headerView.findViewById(R.id.courseHeader);
         emailHeader.setText(uEmail);
         nameHeader.setText(uName);
+
         List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
         currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
         courseHeader.setText("Current Course: " + currentCourse.getCourseCode());
+
+//         ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
+//         if (enrolledCourses.size() == 1) {
+//             courseHeader.setText("Current Course: " + enrolledCourses.get(0));
+//         } else {
+//             courseHeader.setText("Current Course: " + enrolledCourses.get(1));
+//         }
 
         displaySelectedScreen(R.id.nav_home);
 

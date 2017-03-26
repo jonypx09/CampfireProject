@@ -76,7 +76,7 @@ public class TinderCard {
                 stuLangs.add(" " + s);
             }
         }
-        userHobbieTextView.setText(" Favourite Hobbie: " + student.getHobbies().get(new Random().nextInt(student.getHobbies().size())));
+        userHobbieTextView.setText(" Favourite Hobby: " + student.getHobbies().get(new Random().nextInt(student.getHobbies().size())));
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.mContext, R.layout.criteria_list_item, stuLangs);
         userInfoListView.setAdapter(adapter);
 

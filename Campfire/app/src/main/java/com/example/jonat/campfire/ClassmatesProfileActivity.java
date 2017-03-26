@@ -70,7 +70,10 @@ public class ClassmatesProfileActivity extends AppCompatActivity {
 
         View view = findViewById(R.id.userInfo);
         TextView userEmail = (TextView) view.findViewById(R.id.emailTextview);
-        userEmail.setText("Your Email:   " + uEmail);
+        userEmail.setText("Student's Email:   " + uEmail);
+
+        TextView greeting = (TextView) view.findViewById(R.id.aboutStudentTextview);
+        greeting.append(" " + myStudent.getFname() + ":");
 
         pythonCheckbox = (CheckBox) findViewById(R.id.pythonCheckboxP);
         javaCheckbox = (CheckBox) findViewById(R.id.javaCheckboxP);
