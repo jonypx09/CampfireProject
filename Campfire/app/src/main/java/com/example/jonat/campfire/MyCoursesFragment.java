@@ -70,7 +70,6 @@ public class MyCoursesFragment extends Fragment {
         getActivity().setTitle("My Courses");
 
         //Connect to the database & Obtain Student Object
-        db = new DatabaseAdapter(getActivity());
         uStudent = DbAdapter.getStudent(uEmail);
 
         loadingUsersDialog = new MaterialDialog.Builder(getActivity())

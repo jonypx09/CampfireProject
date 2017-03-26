@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity
     private EditText editSearch;
     private boolean searchInProgress = false;
     private boolean myCoursesIsOpen = false;
+    private boolean myCampfireIsOpen = false;
 
     ArrayList<Student> studentsInCourse;
     private Course currentCourse;
@@ -222,12 +223,15 @@ public class MainActivity extends AppCompatActivity
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
                 myCoursesIsOpen = false;
+                myCampfireIsOpen = false;
                 break;
             case R.id.nav_my_campfire:
                 fragment = new MyCampfireFragment();
+                bundle.putString("currentCourse", currentCourse.getCourseCode());
                 fragment.setArguments(bundle);
-                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
+                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_add_box_white_48dp));
                 myCoursesIsOpen = false;
+                myCampfireIsOpen = true;
                 break;
             case R.id.nav_discover:
                 fragment = new DiscoverFragment();
@@ -238,6 +242,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_home:
                 fragment = new HomeFragment();
                 fragment.setArguments(bundle);
+                myCampfireIsOpen = false;
                 if (myCoursesIsOpen){
                     mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
                     myCoursesIsOpen = false;
@@ -248,6 +253,7 @@ public class MainActivity extends AppCompatActivity
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_add_circle_white_48dp));
                 myCoursesIsOpen = true;
+                myCampfireIsOpen = false;
                 break;
             case R.id.nav_help:
                 miscIntent = new Intent(this, HelpActivity.class);
@@ -337,8 +343,10 @@ public class MainActivity extends AppCompatActivity
 
         } else { //open the search entry or course adder
 
-            if (myCoursesIsOpen){
+            if (myCoursesIsOpen) {
                 addCourse();
+            }else if (myCampfireIsOpen){
+                addGroup();
             }else{
                 action.setDisplayShowCustomEnabled(true); //enable it to display a
                 // custom view in the action bar.
@@ -447,5 +455,55 @@ public class MainActivity extends AppCompatActivity
 
     public void loadUsers(ArrayList<Student> users){
         this.studentsInCourse = users;
+    }
+
+    public void addGroup(){
+        new MaterialDialog.Builder(this)
+                .title("Add Group")
+                .content("Enter a group name:")
+                .inputType(InputType.TYPE_TEXT_VARIATION_NORMAL)
+                .inputRange(2, 50)
+                .input("Assignment 1", "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        String userInput = input.toString();
+                        addGroupSize(userInput);
+                    }
+                }).show();
+    }
+
+    public void addGroupSize(String name){
+        final String groupName = name;
+        new MaterialDialog.Builder(this)
+                .title("Specify Size")
+                .content("Enter the size of this group:")
+                .inputType(InputType.TYPE_CLASS_NUMBER)
+                .inputRange(1, 1)
+                .input("", "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        String userInput = input.toString();
+                        int size = Integer.parseInt(userInput);
+                        if (size != 0){
+                            uStudent.createGroup(currentCourse, groupName, size);
+                            DbAdapter.updateStudent(uStudent);
+                            refreshGroupList();
+                        }else{
+                            Toast.makeText(MainActivity.this, "Invalid Number", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).show();
+    }
+
+    public void refreshGroupList(){
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("identity", newStudentID);
+        bundle.putString("currentCourse", currentCourse.getCourseCode());
+        Fragment fragment = null;
+        fragment = new MyCampfireFragment();
+        fragment.setArguments(bundle);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
     }
 }

@@ -213,6 +213,7 @@ public class LoginActivity extends AppCompatActivity {
         if ((foundStudent != null) && (password.equals(foundStudent.getPass()))){
             load.setVisibility(View.INVISIBLE);
             loginButton.setText("Success!");
+            loginButton.setEnabled(false);
             correctLogin.setVisibility(View.VISIBLE);
             Intent mainIntent = new Intent(this, MainActivity.class);
 

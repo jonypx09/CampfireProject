@@ -79,6 +79,8 @@ public class HomeFragment extends Fragment {
 
         db = new DatabaseAdapter(getContext());
         allStudents = DbAdapter.getAllStudents();
+
+        //This should change to a generic course instead so that swtiching courses is possible
         csc301 = DbAdapter.getCourse("CSC301H1");
         students301 = db.getStudentsInCourse("csc301h1");
 

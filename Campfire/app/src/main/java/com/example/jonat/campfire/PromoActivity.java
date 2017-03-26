@@ -5,11 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import backend.database.DatabaseAdapter;
 
 public class PromoActivity extends AppCompatActivity {
-
-    DatabaseAdapter database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +18,21 @@ public class PromoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_promo);
         setTitle("");
 
-        //Connect to the database
-        database = new DatabaseAdapter(this);
+        //Checks for internet connection
+//        Context context = getApplicationContext();
+//        ConnectivityManager cm =
+//                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+//
+//        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+//        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+//
+//        if (!isConnected){
+//            new MaterialDialog.Builder(this)
+//                    .title("No Internet Connection")
+//                    .content("This app requires an internet connection!")
+//                    .positiveText("Close App")
+//                    .show();
+//        }
     }
 
     public void toLoginScreen(View view){
