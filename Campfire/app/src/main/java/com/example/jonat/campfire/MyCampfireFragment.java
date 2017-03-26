@@ -40,8 +40,7 @@ public class MyCampfireFragment extends Fragment {
 
     // TODO: Needs to be changed, doesn't actually pull from database, just temp for video.
     public static ArrayList<Student> campfireStudents = new ArrayList<>();
-
-
+    
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
