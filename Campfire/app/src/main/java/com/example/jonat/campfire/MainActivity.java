@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity
     private boolean myCoursesIsOpen = false;
 
     ArrayList<Student> studentsInCourse;
+    private Course currentCourse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,6 @@ public class MainActivity extends AppCompatActivity
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
         uEmail = newStudentID[2];
-//        uStudent = db.getStudent(uEmail);
         uStudent = DbAdapter.getStudent(uEmail);
         uName = uStudent.getFname() + " " + uStudent.getLname();
 
@@ -97,7 +97,8 @@ public class MainActivity extends AppCompatActivity
         emailHeader.setText(uEmail);
         nameHeader.setText(uName);
         List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-        courseHeader.setText("Current Course: " + enrolledCourses.get(0));
+        currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
+        courseHeader.setText("Current Course: " + currentCourse.getCourseCode());
 
         displaySelectedScreen(R.id.nav_home);
 
@@ -412,8 +413,12 @@ public class MainActivity extends AppCompatActivity
                     public void onInput(MaterialDialog dialog, CharSequence input) {
                         String userInput = input.toString();
                         Course newCourse = new Course(userInput, "", "");
-                        db.addCourse(newCourse);
-                        db.addToTaking(userInput, uEmail);
+                        try{
+                            DbAdapter.addCourse(newCourse);
+                        }catch(Exception e){
+
+                        }
+                        DbAdapter.enrolStudentInCourse(uEmail, userInput);
                         refreshCourseList();
                     }
                 }).show();
