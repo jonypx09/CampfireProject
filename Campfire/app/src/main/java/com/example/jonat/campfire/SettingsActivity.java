@@ -188,22 +188,20 @@ public class SettingsActivity extends AppCompatActivity {
                     public void onItemSelected(int position, String item) {
                         Intent moreInfo = new Intent(Intent.ACTION_VIEW);
                         String url = null;
-                        switch (position){
-                            case 0:
-                                url = "https://github.com/acapparelli";
-                            case 1:
-                                url = "https://github.com/vladchapurny";
-                            case 2:
-                                url = "https://github.com/quinndaneyko";
-                            case 3:
-                                url = "https://github.com/AndrewGoupil";
-                            case 4:
-                                url = "https://github.com/RodAli";
-                            case 5:
-                                url = "https://github.com/jonypx19";
-                            case 6:
-                                url = "https://github.com/Fullchee";
-
+                        if (position == 0){
+                            url = "https://github.com/acapparelli";
+                        }else if (position == 1){
+                            url = "https://github.com/vladchapurny";
+                        }else if (position == 2){
+                            url = "https://github.com/quinndaneyko";
+                        }else if (position == 3){
+                            url = "https://github.com/AndrewGoupil";
+                        }else if (position == 4){
+                            url = "https://github.com/RodAli";
+                        }else if (position == 5){
+                            url = "https://github.com/jonypx19";
+                        }else{
+                            url = "https://github.com/Fullchee";
                         }
                         moreInfo.setData(Uri.parse(url));
                         startActivity(moreInfo);
