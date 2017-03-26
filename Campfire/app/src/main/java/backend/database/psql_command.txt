@@ -1,0 +1,1 @@
+psql --host=campfiredb.crno8vrpqmdl.ca-central-1.rds.amazonaws.com --port=5432 --username=camper --password=fireplace123 --dbname=campfiredb

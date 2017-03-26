@@ -22,10 +22,10 @@ import java.util.HashMap;
 
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
 
 public class MyProfileActivity extends AppCompatActivity {
 
-    DatabaseAdapter db;
     private Student myStudent;
     private String uEmail;
     private ArrayList<String> programmingLanguages;
@@ -118,12 +118,9 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
-        //Connect to the database
-        db = new DatabaseAdapter(this);
-
         Intent intent = getIntent();
         uEmail = intent.getExtras().getString("userEmail");
-        myStudent = db.getStudent(uEmail);
+        myStudent = DbAdapter.getStudent(uEmail);
         setTitle(myStudent.getFname() + " " + myStudent.getLname());
 
         View view = findViewById(R.id.userInfo);
@@ -179,7 +176,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 openFridaySchedule();
             }
         });
-        saturdayCheckbox = (CheckBox) findViewById((R.id.saturdayCheckbox));
+        saturdayCheckbox = (CheckBox) findViewById(R.id.saturdayCheckbox);
         saturdayCheckbox.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 saturdayCheckbox.setChecked(true);
@@ -215,57 +212,38 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         }
 
-        String headerCS = ("Previous CSC Courses:\n");
-        String csCourses = "";
-        for (String course: previousCSCourses){
-            csCourses += "- " + course;
-            if (!previousCSCourses.get(previousCSCourses.size() - 1).equals(course)){
-                csCourses += "\n";
-            }
-        }
-        previousCSCourse.setText(headerCS + csCourses);
-
-        String headerE = ("Previous CSC Courses:\n");
-        String electiveCourses = "";
-        for (String course: previousElectiveCourses){
-            electiveCourses += "- " + course;
-            if (!previousElectiveCourses.get(previousElectiveCourses.size() - 1).equals(course)){
-                electiveCourses += "\n";
-            }
-        }
-        previousElective.setText(headerE + electiveCourses);
-
-        String headerO = ("Previous CSC Courses:\n");
-        String hobbies = "";
-        for (String hobby: hobbiesList){
-            hobbies += "- " + hobby;
-            if (!hobbiesList.get(hobbiesList.size() - 1).equals(hobby)){
-                hobbies += "\n";
-            }
-        }
-        hobbyTextview.setText(headerO + hobbies);
+        updateCSCCourses();
+        updateElectiveCourses();
+        updateHobbies();
 
         for (String day : schedule.keySet()){
             if (day.equals("Sunday") && schedule.get(day).size() != 0){
                 sundayCheckbox.setChecked(true);
+                sundayCheckbox.setEnabled(true);
                 sundayCheckbox.setText("Sunday (Tap to open details)");
             }else if (day.equals("Monday") && schedule.get(day).size() != 0){
                 mondayCheckbox.setChecked(true);
+                mondayCheckbox.setEnabled(true);
                 mondayCheckbox.setText("Monday (Tap to open details)");
             }else if (day.equals("Tuesday") && schedule.get(day).size() != 0){
                 tuesdayCheckbox.setChecked(true);
+                tuesdayCheckbox.setEnabled(true);
                 tuesdayCheckbox.setText("Tuesday (Tap to open details)");
             }else if (day.equals("Wednesday") && schedule.get(day).size() != 0){
                 wednesdayCheckbox.setChecked(true);
+                wednesdayCheckbox.setEnabled(true);
                 wednesdayCheckbox.setText("Wednesday (Tap to open details)");
             }else if (day.equals("Thursday") && schedule.get(day).size() != 0){
                 thursdayCheckbox.setChecked(true);
+                thursdayCheckbox.setEnabled(true);
                 thursdayCheckbox.setText("Thursday (Tap to open details)");
             }else if (day.equals("Friday") && schedule.get(day).size() != 0){
                 fridayCheckbox.setChecked(true);
+                fridayCheckbox.setEnabled(true);
                 fridayCheckbox.setText("Friday (Tap to open details)");
             }else if (day.equals("Saturday") && schedule.get(day).size() != 0){
                 saturdayCheckbox.setChecked(true);
+                saturdayCheckbox.setEnabled(true);
                 saturdayCheckbox.setText("Saturday (Tap to open details)");
             }
         }
@@ -274,18 +252,7 @@ public class MyProfileActivity extends AppCompatActivity {
 
     public void openSundaySchedule(){
         if (sundayCheckbox.isChecked()){
-            ArrayList<String> times = this.schedule.get("Sunday");
-            AlertDialog scheduleDialog = new AlertDialog.Builder(this).create();
-            scheduleDialog.setTitle("Details for: Sunday");
-            scheduleDialog.setMessage("Something1 \n");
-            scheduleDialog.setMessage("Something2 \n");
-            scheduleDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Close",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            scheduleDialog.show();
+            scheduleDialog("Sunday");
         }
     }
 
@@ -363,6 +330,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
                     @Override
                     public void onTextInputConfirmed(String text) {
+                        DbAdapter.updateStudent(myStudent);
                         Toast.makeText(MyProfileActivity.this, "Changes Saved", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -391,8 +359,9 @@ public class MyProfileActivity extends AppCompatActivity {
                 .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
                     @Override
                     public void onTextInputConfirmed(String text) {
-                        //TODO: Change this and follow up with update to textfield
-                        db.getStudent(uEmail).getCSCCourses().add(text);
+//                        previousCSCourses.add(text);
+                        myStudent.getCSCCourses().add(text);
+                        updateCSCCourses();
                         //This doesn't update the student's information in the db!!!
                         Toast.makeText(MyProfileActivity.this, "Course Added", Toast.LENGTH_SHORT).show();
                     }
@@ -421,7 +390,8 @@ public class MyProfileActivity extends AppCompatActivity {
                 .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
                     @Override
                     public void onTextInputConfirmed(String text) {
-
+                        myStudent.getElectives().add(text);
+                        updateElectiveCourses();
                         Toast.makeText(MyProfileActivity.this, "Course Added", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -449,7 +419,8 @@ public class MyProfileActivity extends AppCompatActivity {
                 .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
                     @Override
                     public void onTextInputConfirmed(String text) {
-                        db.getStudent(uEmail).getCSCCourses().add(text);
+                        myStudent.getHobbies().add(text);
+                        updateHobbies();
                         Toast.makeText(MyProfileActivity.this, "Hobby Added", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -461,5 +432,41 @@ public class MyProfileActivity extends AppCompatActivity {
                 })
                 .setInputType(InputType.TYPE_CLASS_TEXT)
                 .show();
+    }
+
+    public void updateCSCCourses(){
+        String headerCS = ("Previous CSC Courses:\n");
+        String csCourses = "";
+        for (String course: previousCSCourses){
+            csCourses += "- " + course;
+            if (!previousCSCourses.get(previousCSCourses.size() - 1).equals(course)){
+                csCourses += "\n";
+            }
+        }
+        previousCSCourse.setText(headerCS + csCourses);
+    }
+
+    public void updateElectiveCourses(){
+        String headerE = ("Previous Elective Courses:\n");
+        String electiveCourses = "";
+        for (String course: previousElectiveCourses){
+            electiveCourses += "- " + course;
+            if (!previousElectiveCourses.get(previousElectiveCourses.size() - 1).equals(course)){
+                electiveCourses += "\n";
+            }
+        }
+        previousElective.setText(headerE + electiveCourses);
+    }
+
+    public void updateHobbies(){
+        String headerO = ("Your Hobbies:\n");
+        String hobbies = "";
+        for (String hobby: hobbiesList){
+            hobbies += "- " + hobby;
+            if (!hobbiesList.get(hobbiesList.size() - 1).equals(hobby)){
+                hobbies += "\n";
+            }
+        }
+        hobbyTextview.setText(headerO + hobbies);
     }
 }

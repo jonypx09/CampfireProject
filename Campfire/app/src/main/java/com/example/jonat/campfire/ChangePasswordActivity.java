@@ -16,11 +16,11 @@ import android.widget.ProgressBar;
 
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
 
 public class ChangePasswordActivity extends AppCompatActivity {
 
     private String[] newStudentID;
-    DatabaseAdapter db;
     private String uEmail;
     private Student currentStudent;
 
@@ -42,13 +42,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_change_password);
         setTitle("Change Password");
 
-        //Connect to the database
-        db = new DatabaseAdapter(this);
-
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
         uEmail = newStudentID[2];
-        currentStudent = db.getStudent(uEmail);
+        currentStudent = DbAdapter.getStudent(uEmail);
 
         oldPasswordField = (EditText) findViewById(R.id.oldPasswordTextField);
         newPasswordField = (EditText) findViewById(R.id.newPasswordTextField);
@@ -167,11 +164,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                         });
                 mismatchPassDialog.show();
             }else{
-
-                //>>>>>>>>>>>>>>>>>>>>>>>>>CHANGE PASSWORD THOURGH DATABASE AS WELL BY OBTAINING STUDENT <<<<<<<<<<<<<<<<<<
                 currentStudent.setPass(newPassword);
-                newStudentID[3] = newPassword;
-                //>>>>>>>>>>>>>>>>>>>>>>>>>CHANGE PASSWORD THOURGH DATABASE AS WELL BY OBTAINING STUDENT <<<<<<<<<<<<<<<<<<
+                DbAdapter.updateStudent(currentStudent);
 
                 changePasswordButton.setText("Password Changed!");
                 passwordChangedIcon.setVisibility(View.VISIBLE);

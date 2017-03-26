@@ -10,6 +10,9 @@ public class CSCCoursesCriteria extends ArrayCriteria<String>{
 	private static final long serialVersionUID = 1952358793540268673L;
 	private final String ID = "Previous CSC Courses";
 
+	/*
+	 * Calls super to get the ArrayCriteria and then overrides the methods.
+	 */
 	public CSCCoursesCriteria(ArrayList<String> checks) {
 		super(checks);
 	}

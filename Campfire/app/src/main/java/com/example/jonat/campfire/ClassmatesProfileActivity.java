@@ -22,10 +22,10 @@ import java.util.HashMap;
 
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
 
 public class ClassmatesProfileActivity extends AppCompatActivity {
 
-    DatabaseAdapter db;
     private Student myStudent;
     private String uEmail;
     private ArrayList<String> programmingLanguages;
@@ -63,15 +63,10 @@ public class ClassmatesProfileActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Connect to the database
-        db = new DatabaseAdapter(this);
-
         Intent intent = getIntent();
-        uEmail = intent.getExtras().getString("studentEmail");
-        myStudent = db.getStudent(uEmail);
-        System.out.println(myStudent.getCSCCourses());
+        uEmail = intent.getExtras().getString("userEmail");
+        myStudent = DbAdapter.getStudent(uEmail);
         setTitle(myStudent.getFname() + " " + myStudent.getLname());
-
 
         View view = findViewById(R.id.userInfo);
         TextView userEmail = (TextView) view.findViewById(R.id.emailTextview);
@@ -129,7 +124,7 @@ public class ClassmatesProfileActivity extends AppCompatActivity {
                 openFridaySchedule();
             }
         });
-        saturdayCheckbox = (CheckBox) findViewById((R.id.saturdayCheckbox));
+        saturdayCheckbox = (CheckBox) findViewById(R.id.saturdayCheckbox);
         saturdayCheckbox.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 saturdayCheckbox.setChecked(true);
@@ -165,17 +160,9 @@ public class ClassmatesProfileActivity extends AppCompatActivity {
             }
         }
 
-        for (String course: previousCSCourses){
-            previousCSCourse.setText("Previous CSC Course:   " + course);
-        }
-
-        for (String course: previousElectiveCourses){
-            previousElective.setText("Previous Elective Course:   " + course);
-        }
-
-        for (String hobby: hobbiesList){
-            hobbyTextview.setText("Student's Hobbies:   " + hobby);
-        }
+        updateCSCCourses();
+        updateElectiveCourses();
+        updateHobbies();
 
         for (String day : schedule.keySet()){
             if (day.equals("Sunday") && schedule.get(day).size() != 0){
@@ -209,22 +196,11 @@ public class ClassmatesProfileActivity extends AppCompatActivity {
             }
         }
 
- }
+    }
 
     public void openSundaySchedule(){
         if (sundayCheckbox.isChecked()){
-            ArrayList<String> times = this.schedule.get("Sunday");
-            AlertDialog scheduleDialog = new AlertDialog.Builder(this).create();
-            scheduleDialog.setTitle("Details for: Sunday");
-            scheduleDialog.setMessage("Something1 \n");
-            scheduleDialog.setMessage("Something2 \n");
-            scheduleDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Close",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            scheduleDialog.show();
+            scheduleDialog("Sunday");
         }
     }
 
@@ -285,6 +261,42 @@ public class ClassmatesProfileActivity extends AppCompatActivity {
                     }
                 });
         scheduleDialog.show();
+    }
+
+    public void updateCSCCourses(){
+        String headerCS = ("Previous CSC Courses:\n");
+        String csCourses = "";
+        for (String course: previousCSCourses){
+            csCourses += "- " + course;
+            if (!previousCSCourses.get(previousCSCourses.size() - 1).equals(course)){
+                csCourses += "\n";
+            }
+        }
+        previousCSCourse.setText(headerCS + csCourses);
+    }
+
+    public void updateElectiveCourses(){
+        String headerE = ("Previous Elective Courses:\n");
+        String electiveCourses = "";
+        for (String course: previousElectiveCourses){
+            electiveCourses += "- " + course;
+            if (!previousElectiveCourses.get(previousElectiveCourses.size() - 1).equals(course)){
+                electiveCourses += "\n";
+            }
+        }
+        previousElective.setText(headerE + electiveCourses);
+    }
+
+    public void updateHobbies(){
+        String headerO = ("Your Hobbies:\n");
+        String hobbies = "";
+        for (String hobby: hobbiesList){
+            hobbies += "- " + hobby;
+            if (!hobbiesList.get(hobbiesList.size() - 1).equals(hobby)){
+                hobbies += "\n";
+            }
+        }
+        hobbyTextview.setText(headerO + hobbies);
     }
 }
 

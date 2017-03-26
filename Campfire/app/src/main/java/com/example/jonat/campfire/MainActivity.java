@@ -33,12 +33,15 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import backend.algorithms.Course;
 import backend.algorithms.Student;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DiscoverFragment.usersLoadedListener{
 
     private String[] newStudentID;
     DatabaseAdapter db;
@@ -54,6 +57,9 @@ public class MainActivity extends AppCompatActivity
     private EditText editSearch;
     private boolean searchInProgress = false;
     private boolean myCoursesIsOpen = false;
+
+    ArrayList<Student> studentsInCourse;
+    private Course currentCourse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +78,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
         uEmail = newStudentID[2];
-        uStudent = db.getStudent(uEmail);
+        uStudent = DbAdapter.getStudent(uEmail);
         uName = uStudent.getFname() + " " + uStudent.getLname();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -90,14 +96,17 @@ public class MainActivity extends AppCompatActivity
         TextView courseHeader = (TextView) headerView.findViewById(R.id.courseHeader);
         emailHeader.setText(uEmail);
         nameHeader.setText(uName);
-        ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
 
-        if (enrolledCourses.size() == 1) {
-            courseHeader.setText("Current Course: " + enrolledCourses.get(0));
-        } else {
-            courseHeader.setText("Current Course: " + enrolledCourses.get(1));
-        }
+        List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+        currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
+        courseHeader.setText("Current Course: " + currentCourse.getCourseCode());
 
+//         ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
+//         if (enrolledCourses.size() == 1) {
+//             courseHeader.setText("Current Course: " + enrolledCourses.get(0));
+//         } else {
+//             courseHeader.setText("Current Course: " + enrolledCourses.get(1));
+//         }
 
         displaySelectedScreen(R.id.nav_home);
 
@@ -212,16 +221,19 @@ public class MainActivity extends AppCompatActivity
                 fragment = new MessagesFragment();
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
+                myCoursesIsOpen = false;
                 break;
             case R.id.nav_my_campfire:
                 fragment = new MyCampfireFragment();
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
+                myCoursesIsOpen = false;
                 break;
             case R.id.nav_discover:
                 fragment = new DiscoverFragment();
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
+                myCoursesIsOpen = false;
                 break;
             case R.id.nav_home:
                 fragment = new HomeFragment();
@@ -230,6 +242,12 @@ public class MainActivity extends AppCompatActivity
                     mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
                     myCoursesIsOpen = false;
                 }
+                break;
+            case R.id.nav_my_courses:
+                fragment = new MyCoursesFragment();
+                fragment.setArguments(bundle);
+                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_add_circle_white_48dp));
+                myCoursesIsOpen = true;
                 break;
             case R.id.nav_help:
                 miscIntent = new Intent(this, HelpActivity.class);
@@ -249,11 +267,7 @@ public class MainActivity extends AppCompatActivity
                 miscIntent = new Intent(this, ChangePasswordActivity.class);
                 miscIntent.putExtra("identity", newStudentID);
                 startActivity(miscIntent);
-            case R.id.nav_my_courses:
-                fragment = new MyCoursesFragment();
-                fragment.setArguments(bundle);
-                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_add_circle_white_48dp));
-                myCoursesIsOpen = true;
+                break;
         }
 
         //replacing the fragment
@@ -364,8 +378,9 @@ public class MainActivity extends AppCompatActivity
                 .setAction("Action", null).show();
 
         ArrayList<String> searchResults = new ArrayList<String>();
-        ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
-        ArrayList<Student> classmates = db.getStudentsInCourse(enrolledCourses.get(0));
+        List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+        ArrayList<Student> classmates = uStudent.getallOtherCourseStudents(DbAdapter.getCourse(enrolledCourses.get(0)));
+
         for (Student s : classmates) {
             if ((!s.getEmail().equals(uEmail)) && (s.getFname().contains(query))){
                 searchResults.add(s.getEmail());
@@ -383,8 +398,9 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
+
         closeKeyboard();
-        navigationView.getMenu().getItem(3).setChecked(true);
+        navigationView.getMenu().getItem(4).setChecked(true);
         searchInProgress = true;
         isSearchOpened = true;
     }
@@ -401,11 +417,35 @@ public class MainActivity extends AppCompatActivity
                 .title("Add Course")
                 .content("Enter a course code:")
                 .inputType(InputType.TYPE_TEXT_VARIATION_NORMAL)
+                .inputRange(8, 8)
                 .input("CSC108H1", "", new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                        // Do something
+                        String userInput = input.toString();
+                        Course newCourse = new Course(userInput, "", "");
+                        try{
+                            DbAdapter.addCourse(newCourse);
+                        }catch(Exception e){
+
+                        }
+                        DbAdapter.enrolStudentInCourse(uEmail, userInput);
+                        refreshCourseList();
                     }
                 }).show();
+    }
+
+    public void refreshCourseList(){
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("identity", newStudentID);
+        Fragment fragment = null;
+        fragment = new MyCoursesFragment();
+        fragment.setArguments(bundle);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
+    }
+
+    public void loadUsers(ArrayList<Student> users){
+        this.studentsInCourse = users;
     }
 }
