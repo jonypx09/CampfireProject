@@ -26,7 +26,6 @@ import backend.database.DbAdapter;
 
 public class MyProfileActivity extends AppCompatActivity {
 
-    DatabaseAdapter db;
     private Student myStudent;
     private String uEmail;
     private ArrayList<String> programmingLanguages;
@@ -119,12 +118,8 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         });
 
-        //Connect to the database
-        db = new DatabaseAdapter(this);
-
         Intent intent = getIntent();
         uEmail = intent.getExtras().getString("userEmail");
-//        myStudent = db.getStudent(uEmail);
         myStudent = DbAdapter.getStudent(uEmail);
         setTitle(myStudent.getFname() + " " + myStudent.getLname());
 
@@ -217,35 +212,9 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         }
 
-        String headerCS = ("Previous CSC Courses:\n");
-        String csCourses = "";
-        for (String course: previousCSCourses){
-            csCourses += "- " + course;
-            if (!previousCSCourses.get(previousCSCourses.size() - 1).equals(course)){
-                csCourses += "\n";
-            }
-        }
-        previousCSCourse.setText(headerCS + csCourses);
-
-        String headerE = ("Previous Elective Courses:\n");
-        String electiveCourses = "";
-        for (String course: previousElectiveCourses){
-            electiveCourses += "- " + course;
-            if (!previousElectiveCourses.get(previousElectiveCourses.size() - 1).equals(course)){
-                electiveCourses += "\n";
-            }
-        }
-        previousElective.setText(headerE + electiveCourses);
-
-        String headerO = ("Your Hobbies:\n");
-        String hobbies = "";
-        for (String hobby: hobbiesList){
-            hobbies += "- " + hobby;
-            if (!hobbiesList.get(hobbiesList.size() - 1).equals(hobby)){
-                hobbies += "\n";
-            }
-        }
-        hobbyTextview.setText(headerO + hobbies);
+        updateCSCCourses();
+        updateElectiveCourses();
+        updateHobbies();
 
         for (String day : schedule.keySet()){
             if (day.equals("Sunday") && schedule.get(day).size() != 0){
@@ -361,6 +330,7 @@ public class MyProfileActivity extends AppCompatActivity {
                 .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
                     @Override
                     public void onTextInputConfirmed(String text) {
+                        DbAdapter.updateStudent(myStudent);
                         Toast.makeText(MyProfileActivity.this, "Changes Saved", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -389,8 +359,9 @@ public class MyProfileActivity extends AppCompatActivity {
                 .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
                     @Override
                     public void onTextInputConfirmed(String text) {
-                        //TODO: Change this and follow up with update to textfield
-                        db.getStudent(uEmail).getCSCCourses().add(text);
+//                        previousCSCourses.add(text);
+                        myStudent.getCSCCourses().add(text);
+                        updateCSCCourses();
                         //This doesn't update the student's information in the db!!!
                         Toast.makeText(MyProfileActivity.this, "Course Added", Toast.LENGTH_SHORT).show();
                     }
@@ -419,7 +390,8 @@ public class MyProfileActivity extends AppCompatActivity {
                 .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
                     @Override
                     public void onTextInputConfirmed(String text) {
-
+                        myStudent.getElectives().add(text);
+                        updateElectiveCourses();
                         Toast.makeText(MyProfileActivity.this, "Course Added", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -447,7 +419,8 @@ public class MyProfileActivity extends AppCompatActivity {
                 .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
                     @Override
                     public void onTextInputConfirmed(String text) {
-                        db.getStudent(uEmail).getCSCCourses().add(text);
+                        myStudent.getHobbies().add(text);
+                        updateHobbies();
                         Toast.makeText(MyProfileActivity.this, "Hobby Added", Toast.LENGTH_SHORT).show();
                     }
                 })
@@ -459,5 +432,41 @@ public class MyProfileActivity extends AppCompatActivity {
                 })
                 .setInputType(InputType.TYPE_CLASS_TEXT)
                 .show();
+    }
+
+    public void updateCSCCourses(){
+        String headerCS = ("Previous CSC Courses:\n");
+        String csCourses = "";
+        for (String course: previousCSCourses){
+            csCourses += "- " + course;
+            if (!previousCSCourses.get(previousCSCourses.size() - 1).equals(course)){
+                csCourses += "\n";
+            }
+        }
+        previousCSCourse.setText(headerCS + csCourses);
+    }
+
+    public void updateElectiveCourses(){
+        String headerE = ("Previous Elective Courses:\n");
+        String electiveCourses = "";
+        for (String course: previousElectiveCourses){
+            electiveCourses += "- " + course;
+            if (!previousElectiveCourses.get(previousElectiveCourses.size() - 1).equals(course)){
+                electiveCourses += "\n";
+            }
+        }
+        previousElective.setText(headerE + electiveCourses);
+    }
+
+    public void updateHobbies(){
+        String headerO = ("Your Hobbies:\n");
+        String hobbies = "";
+        for (String hobby: hobbiesList){
+            hobbies += "- " + hobby;
+            if (!hobbiesList.get(hobbiesList.size() - 1).equals(hobby)){
+                hobbies += "\n";
+            }
+        }
+        hobbyTextview.setText(headerO + hobbies);
     }
 }

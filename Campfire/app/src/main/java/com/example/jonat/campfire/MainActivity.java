@@ -41,7 +41,7 @@ import backend.database.DatabaseAdapter;
 import backend.database.DbAdapter;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DiscoverFragment.usersLoadedListener{
 
     private String[] newStudentID;
     DatabaseAdapter db;
@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity
     private EditText editSearch;
     private boolean searchInProgress = false;
     private boolean myCoursesIsOpen = false;
+
+    ArrayList<Student> studentsInCourse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -426,5 +428,9 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
+    }
+
+    public void loadUsers(ArrayList<Student> users){
+        this.studentsInCourse = users;
     }
 }

@@ -46,6 +46,27 @@ public class DiscoverFragment extends Fragment {
     private MaterialDialog loadingUsersDialog;
     private boolean firstTimeLoading = true;
 
+    usersLoadedListener mCallback;
+
+    // Container Activity must implement this interface
+    public interface usersLoadedListener {
+        public void loadUsers(ArrayList<Student> users);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (usersLoadedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -115,6 +136,7 @@ public class DiscoverFragment extends Fragment {
 
         List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
         ArrayList<Student> classmates = uStudent.getallOtherCourseStudents(DbAdapter.getCourse(enrolledCourses.get(0)));
+        mCallback.loadUsers(classmates);
 
         int classSize;
         if (searchResults == null){

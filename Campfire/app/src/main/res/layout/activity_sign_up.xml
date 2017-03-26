@@ -124,7 +124,7 @@
         android:layout_below="@+id/passwordField"
         android:layout_marginTop="27dp"
         android:fontFamily="serif"
-        android:text="Course Code (i.e. CSC207):"
+        android:text="Course Code (i.e. CSC207H1):"
         android:textColor="@android:color/white" />
 
     <EditText
