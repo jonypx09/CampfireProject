@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
@@ -54,6 +56,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<String> c1;
     private ArrayList<String> c2;
     public static List<Student> loadedStudents = new ArrayList<Student>();
+    private MaterialDialog loadingUsersDialog;
     ArrayList<Comparable> crit;
     DatabaseAdapter db;
     Course csc301;
@@ -78,87 +81,108 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         db = new DatabaseAdapter(getContext());
-        allStudents = DbAdapter.getAllStudents();
 
-        //This should change to a generic course instead so that swtiching courses is possible
-        csc301 = DbAdapter.getCourse("CSC301H1");
-        students301 = db.getStudentsInCourse("csc301h1");
+        loadingUsersDialog = new MaterialDialog.Builder(getActivity())
+                .title("Loading Matches")
+                .content("Please wait...")
+                .progress(true, 0)
+                .show();
 
-        uStudent = ((MainActivity) getActivity()).getCurrentStudent();
-        //TODO: Does not work, includes current student.
-        otherStudents301 = uStudent.getallOtherCourseStudents(csc301);
-
-        getActivity().setTitle("Home");
-        mSwipeView = (SwipePlaceHolderView) getActivity().findViewById(R.id.swipeView);
-
-        mContext = getActivity().getApplicationContext();
-        //TODO: Probably not the best way of doing margin adjustments
-        int bottomMargin = Utils.dpToPx(180);
-        int sideMargin = Utils.dpToPx(32);
-        Point windowSize = Utils.getDisplaySize(getActivity().getWindowManager());
-        mSwipeView.getBuilder()
-                .setDisplayViewCount(3)
-                .setHeightSwipeDistFactor(10)
-                .setWidthSwipeDistFactor(5)
-                .setSwipeDecor(new SwipeDecor()
-                        .setViewWidth(windowSize.x - sideMargin)
-                        .setViewHeight(windowSize.y - bottomMargin)
-                        .setViewGravity(Gravity.TOP)
-                        .setPaddingTop(20)
-                        .setRelativeScale(0.01f)
-                        .setSwipeInMsgLayoutId(R.layout.tinder_swipe_in_msg_view)
-                        .setSwipeOutMsgLayoutId(R.layout.tinder_swipe_out_msg_view));
-
-        // Change swipeOn to:
-        //     - allStudents for every student in db.
-        //     - otherStudents301 for all other students in csc301h1. (Currently unavailable)
-        //     - students301 for all students in csc301h1.
-
-        ArrayList<Student> swipeOn = otherStudents301;
-        if (swipeOn.isEmpty()) {
-            Toast.makeText(getContext(), "No available matches.", Toast.LENGTH_LONG).show();
-        }
-        else {
-            for (Student s : swipeOn) {
-                if (!inCampfire(s) && !swipedYet(s)) {
-                    mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s));
-                }
+        CountDownTimer loading = new CountDownTimer(1000, 200){
+            public void onFinish(){
+                loadCards();
+                loadingUsersDialog.dismiss();
             }
-        }
-        getActivity().findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeView.doSwipe(false);
-            }
-        });
 
-        getActivity().findViewById(R.id.acceptBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeView.doSwipe(true);
-            }
-        });
+            public void onTick(long millisUntilFinished){
 
-        getActivity().findViewById(R.id.infoBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent profileIntent = new Intent(getActivity(), ClassmatesProfileActivity.class);
-                profileIntent.putExtra("studentEmail", loadedStudents.get(0).getEmail());
-                startActivity(profileIntent);
             }
-            });
+        };
+        loading.start();
+   }
 
-        if (prefs.getBoolean("firstrun", true)) {
-            new AlertDialog.Builder(getActivity())
-                    .setTitle("Welcome to Campfire!")
-                    .setMessage("Get ready to start building a great team!")
-                    .setNeutralButton("Join the Campfire", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    })
-                    .show();
-            prefs.edit().putBoolean("firstrun", false).commit();
-        }
+   public void loadCards(){
+       allStudents = DbAdapter.getAllStudents();
+
+       //This should change to a generic course instead so that swtiching courses is possible
+       csc301 = DbAdapter.getCourse("CSC301H1");
+       students301 = db.getStudentsInCourse("csc301h1");
+
+       uStudent = ((MainActivity) getActivity()).getCurrentStudent();
+       //TODO: Does not work, includes current student.
+       otherStudents301 = uStudent.getallOtherCourseStudents(csc301);
+
+       getActivity().setTitle("Home");
+       mSwipeView = (SwipePlaceHolderView) getActivity().findViewById(R.id.swipeView);
+
+       mContext = getActivity().getApplicationContext();
+       //TODO: Probably not the best way of doing margin adjustments
+       int bottomMargin = Utils.dpToPx(180);
+       int sideMargin = Utils.dpToPx(32);
+       Point windowSize = Utils.getDisplaySize(getActivity().getWindowManager());
+       mSwipeView.getBuilder()
+               .setDisplayViewCount(3)
+               .setHeightSwipeDistFactor(10)
+               .setWidthSwipeDistFactor(5)
+               .setSwipeDecor(new SwipeDecor()
+                       .setViewWidth(windowSize.x - sideMargin)
+                       .setViewHeight(windowSize.y - bottomMargin)
+                       .setViewGravity(Gravity.TOP)
+                       .setPaddingTop(20)
+                       .setRelativeScale(0.01f)
+                       .setSwipeInMsgLayoutId(R.layout.tinder_swipe_in_msg_view)
+                       .setSwipeOutMsgLayoutId(R.layout.tinder_swipe_out_msg_view));
+
+       // Change swipeOn to:
+       //     - allStudents for every student in db.
+       //     - otherStudents301 for all other students in csc301h1. (Currently unavailable)
+       //     - students301 for all students in csc301h1.
+
+       ArrayList<Student> swipeOn = otherStudents301;
+       if (swipeOn.isEmpty()) {
+           Toast.makeText(getContext(), "No available matches.", Toast.LENGTH_LONG).show();
+       }
+       else {
+           for (Student s : swipeOn) {
+               if (!inCampfire(s) && !swipedYet(s)) {
+                   mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s));
+               }
+           }
+       }
+       getActivity().findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               mSwipeView.doSwipe(false);
+           }
+       });
+
+       getActivity().findViewById(R.id.acceptBtn).setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               mSwipeView.doSwipe(true);
+           }
+       });
+
+       getActivity().findViewById(R.id.infoBtn).setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               Intent profileIntent = new Intent(getActivity(), ClassmatesProfileActivity.class);
+               profileIntent.putExtra("studentEmail", loadedStudents.get(0).getEmail());
+               startActivity(profileIntent);
+           }
+       });
+
+       if (prefs.getBoolean("firstrun", true)) {
+           new AlertDialog.Builder(getActivity())
+                   .setTitle("Welcome to Campfire!")
+                   .setMessage("Get ready to start building a great team!")
+                   .setNeutralButton("Join the Campfire", new DialogInterface.OnClickListener() {
+                       public void onClick(DialogInterface dialog, int which) {
+                       }
+                   })
+                   .show();
+           prefs.edit().putBoolean("firstrun", false).commit();
+       }
    }
 
     //Temporary helper for finding if student is in campfire.
