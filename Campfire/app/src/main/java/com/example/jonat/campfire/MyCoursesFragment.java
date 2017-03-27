@@ -9,6 +9,7 @@ import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,12 +131,27 @@ public class MyCoursesFragment extends Fragment {
                         })
                         .setNeutralButton("Switch Course", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-
+                                switchCourse(names[i]);
                                 //Switch course here by refreshing tinder cards
                             }
                         })
                         .show();
             }
         });
+    }
+
+    public void switchCourse(String courseCode){
+        Snackbar.make(getView(), "Switched to " +
+                courseCode, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("identity", newStudentID);
+        Fragment fragment = null;
+        fragment = new HomeFragment();
+        fragment.setArguments(bundle);
+        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
+
     }
 }
