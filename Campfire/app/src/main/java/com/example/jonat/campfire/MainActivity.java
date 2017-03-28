@@ -68,8 +68,9 @@ public class MainActivity extends AppCompatActivity
     private boolean myCoursesIsOpen = false;
     private boolean myCampfireIsOpen = false;
 
-    ArrayList<Student> studentsInCourse;
+    private ArrayList<Student> studentsInCourse;
     private Course currentCourse;
+    private List<String> enrolledCourses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +125,9 @@ public class MainActivity extends AppCompatActivity
         courseNames = courseNamesList.toArray(courseNames);
         courseInstructors = new String[courseInstructorList.size()];
         courseInstructors = courseInstructorList.toArray(courseInstructors);
+
+        enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+        studentsInCourse = uStudent.getallOtherCourseStudents(DbAdapter.getCourse(enrolledCourses.get(0)));
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -379,6 +383,8 @@ public class MainActivity extends AppCompatActivity
                 Bundle bundle = new Bundle();
                 bundle.putStringArray("identity", newStudentID);
                 bundle.putStringArray("search", null);
+                bundle.putStringArray("classmatesNames", classmatesNames);
+                bundle.putStringArray("classmatesEmails", classmatesEmails);
                 Fragment fragment = null;
                 fragment = new DiscoverFragment();
                 fragment.setArguments(bundle);
@@ -433,10 +439,8 @@ public class MainActivity extends AppCompatActivity
                 .setAction("Action", null).show();
 
         ArrayList<String> searchResults = new ArrayList<String>();
-        List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-        ArrayList<Student> classmates = uStudent.getallOtherCourseStudents(DbAdapter.getCourse(enrolledCourses.get(0)));
 
-        for (Student s : classmates) {
+        for (Student s : studentsInCourse) {
             if ((!s.getEmail().equals(uEmail)) && (s.getFname().contains(query))){
                 searchResults.add(s.getEmail());
             }
