@@ -80,8 +80,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        db = new DatabaseAdapter(getContext());
-
         loadingUsersDialog = new MaterialDialog.Builder(getActivity())
                 .title("Loading Matches")
                 .content("Please wait...")
@@ -102,11 +100,13 @@ public class HomeFragment extends Fragment {
    }
 
    public void loadCards(){
-       allStudents = DbAdapter.getAllStudents();
+//       allStudents = DbAdapter.getAllStudents();
 
        //This should change to a generic course instead so that swtiching courses is possible
        csc301 = DbAdapter.getCourse("CSC301H1");
-       students301 = db.getStudentsInCourse("csc301h1");
+//       students301 = db.getStudentsInCourse("csc301h1");
+       uStudent = DbAdapter.getStudent(newStudentID[2]);
+       students301 = uStudent.getallOtherCourseStudents(csc301);
 
        uStudent = ((MainActivity) getActivity()).getCurrentStudent();
        //TODO: Does not work, includes current student.

@@ -43,6 +43,8 @@ public class DiscoverFragment extends Fragment {
 
     private ArrayList<Student> uClassmates;
     private String[] searchResults;
+    private String[] classmatesNames;
+    private String[] classmatesEmails;
 
     private MaterialDialog loadingUsersDialog;
     private boolean firstTimeLoading = true;
@@ -74,6 +76,8 @@ public class DiscoverFragment extends Fragment {
 
         newStudentID = getArguments().getStringArray("identity");
         searchResults = getArguments().getStringArray("search");
+        classmatesNames = getArguments().getStringArray("classmatesNames");
+        classmatesEmails = getArguments().getStringArray("classmatesEmails");
         uEmail = newStudentID[2];
 
         //returning our layout file
@@ -87,29 +91,134 @@ public class DiscoverFragment extends Fragment {
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Discover");
 
-        //Connect to the database & Obtain Student Object
-        uStudent = DbAdapter.getStudent(uEmail);
-
-        if (firstTimeLoading){
-            loadingUsersDialog = new MaterialDialog.Builder(getActivity())
-                    .title("Loading Users")
-                    .content("Please wait...")
-                    .progress(true, 0)
-                    .show();
-
-            CountDownTimer loading = new CountDownTimer(1000, 200){
-                public void onFinish(){
-                    firstTimeLoading = false;
-                    loadUsers();
-                    loadingUsersDialog.dismiss();
-                }
-
-                public void onTick(long millisUntilFinished){
-
-                }
-            };
-            loading.start();
+        int classSize;
+        if (searchResults == null){
+            classSize = classmatesNames.length;
+        }else{
+            classSize = searchResults.length;
         }
+        names = new String[classSize];
+        images = new Integer[classSize];
+        emails = new String[classSize];
+        previousElectives = new String[classSize];
+        pastimes = new String[classSize];
+
+        if (searchResults == null){
+            //Display all results
+//            int i = 0;
+//            for (Student s : classmates) {
+//                if (!s.getEmail().equals(uEmail)){
+//                    names[i] = s.getFname() + " " + s.getLname();
+//                    emails[i] = s.getEmail();
+//                    if (s.getElectives() == null || s.getElectives().size() == 0){
+//                        previousElectives[i] = "No previous electives.";
+//                    }else{
+//                        previousElectives[i] = s.getElectives().get(0);
+//                    }
+//                    if (s.getHobbies() == null || s.getHobbies().size() == 0){
+//                        pastimes[i] = "No previous hobbies.";
+//                    }else{
+//                        pastimes[i] = s.getHobbies().get(0);
+//                    }
+//                    images[i] = sampleImage;
+//                    i++;
+//                }
+//            }
+            for (int i = 0; i < classmatesNames.length; i++){
+                names[i] = classmatesNames[i];
+                emails[i] = classmatesEmails[i];
+                previousElectives[i] = "";
+                pastimes[i] = "";
+                images[i] = sampleImage;
+            }
+        }else{
+            //Display search results
+            for (int i = 0; i < searchResults.length; i++){
+                Student result = DbAdapter.getStudent(searchResults[i]);
+                names[i] = result.getFname() + " " + result.getLname();
+                emails[i] = result.getEmail();
+                if (result.getElectives() != null && result.getElectives().size() != 0) {
+                    previousElectives[i] = result.getElectives().get(0);
+                }
+                pastimes[i] = result.getHobbies().get(0);
+                images[i] = sampleImage;
+            }
+        }
+
+        MyCampfireListAdapter customList = new MyCampfireListAdapter(getActivity(), names, emails, images);
+
+        listView = (ListView) getView().findViewById(R.id.allUsersList);
+        listView.setAdapter(customList);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
+                new android.app.AlertDialog.Builder(getActivity())
+                        .setTitle(names[i])
+                        .setMessage("Email: " + emails[i] + "\n\n" +
+                                "Previous Elective Course: " + previousElectives[i] + "\n\n" +
+                                "Favourite Pastime: " + pastimes[i])
+                        .setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setNeutralButton("Add to Campfire", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Should be if (!uStudent.getCampfire().contains(emails[i])) {
+                                if (!inCampfire(DbAdapter.getStudent(emails[i]))) {
+                                    // TODO: Doesn't save to database.
+//                                    uStudent.addToCampfire(db.getStudent(emails[i]));
+                                    campfireStudents.add(DbAdapter.getStudent(emails[i]));
+                                    Snackbar.make(getView(), "Successfully added " +
+                                            names[i].substring(0, names[i].indexOf(" ")) +
+                                            " to your Campfire", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                }
+                                else {
+                                    Snackbar.make(getView(), "Already added " +
+                                            names[i].substring(0, names[i].indexOf(" ")) +
+                                            " to your Campfire", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                }
+                            }
+                        })
+                        .setNegativeButton("View Profile", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent profileIntent = new Intent(getActivity(), ClassmatesProfileActivity.class);
+                                profileIntent.putExtra("studentEmail", emails[i]);
+                                startActivity(profileIntent);
+                            }
+                        })
+                        .setIcon(images[i])
+                        .show();
+            }
+        });
+        hideKeyboard(getActivity());
+
+//        loadUsers();
+        //Connect to the database & Obtain Student Object
+//        uStudent = DbAdapter.getStudent(uEmail);
+
+//        if (firstTimeLoading){
+//            loadingUsersDialog = new MaterialDialog.Builder(getActivity())
+//                    .title("Loading Users")
+//                    .content("Please wait...")
+//                    .progress(true, 0)
+//                    .show();
+//
+//            CountDownTimer loading = new CountDownTimer(1000, 200){
+//                public void onFinish(){
+//                    firstTimeLoading = false;
+//                    loadUsers();
+//                    loadingUsersDialog.dismiss();
+//                }
+//
+//                public void onTick(long millisUntilFinished){
+//
+//                }
+//            };
+//            loading.start();
+//        }
     }
 
     public static void hideKeyboard(Activity activity) {
@@ -135,13 +244,13 @@ public class DiscoverFragment extends Fragment {
 
     public void loadUsers(){
 
-        List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-        ArrayList<Student> classmates = uStudent.getallOtherCourseStudents(DbAdapter.getCourse(enrolledCourses.get(0)));
-        mCallback.loadUsers(classmates);
+//        List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+//        ArrayList<Student> classmates = uStudent.getallOtherCourseStudents(DbAdapter.getCourse(enrolledCourses.get(0)));
+//        mCallback.loadUsers(classmates);
 
         int classSize;
         if (searchResults == null){
-            classSize = classmates.size() - 1;
+            classSize = classmatesNames.length;
         }else{
             classSize = searchResults.length;
         }
@@ -153,24 +262,28 @@ public class DiscoverFragment extends Fragment {
 
         if (searchResults == null){
             //Display all results
-            int i = 0;
-            for (Student s : classmates) {
-                if (!s.getEmail().equals(uEmail)){
-                    names[i] = s.getFname() + " " + s.getLname();
-                    emails[i] = s.getEmail();
-                    if (s.getElectives() == null || s.getElectives().size() == 0){
-                        previousElectives[i] = "No previous electives.";
-                    }else{
-                        previousElectives[i] = s.getElectives().get(0);
-                    }
-                    if (s.getHobbies() == null || s.getHobbies().size() == 0){
-                        pastimes[i] = "No previous hobbies.";
-                    }else{
-                        pastimes[i] = s.getHobbies().get(0);
-                    }
-                    images[i] = sampleImage;
-                    i++;
-                }
+//            int i = 0;
+//            for (Student s : classmates) {
+//                if (!s.getEmail().equals(uEmail)){
+//                    names[i] = s.getFname() + " " + s.getLname();
+//                    emails[i] = s.getEmail();
+//                    if (s.getElectives() == null || s.getElectives().size() == 0){
+//                        previousElectives[i] = "No previous electives.";
+//                    }else{
+//                        previousElectives[i] = s.getElectives().get(0);
+//                    }
+//                    if (s.getHobbies() == null || s.getHobbies().size() == 0){
+//                        pastimes[i] = "No previous hobbies.";
+//                    }else{
+//                        pastimes[i] = s.getHobbies().get(0);
+//                    }
+//                    images[i] = sampleImage;
+//                    i++;
+//                }
+//            }
+            for (int i = 0; i < classmatesNames.length; i++){
+                names[i] = classmatesNames[i];
+                emails[i] = classmatesEmails[i];
             }
         }else{
             //Display search results

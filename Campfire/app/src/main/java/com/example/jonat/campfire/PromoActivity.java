@@ -31,7 +31,7 @@ public class PromoActivity extends AppCompatActivity {
                 connection.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.CONNECTING ||
                 connection.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTING ||
                 connection.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.CONNECTED ) {
-            Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Connected to Database", Toast.LENGTH_SHORT).show();
         } else if (
                 connection.getNetworkInfo(0).getState() == android.net.NetworkInfo.State.DISCONNECTED ||
                         connection.getNetworkInfo(1).getState() == android.net.NetworkInfo.State.DISCONNECTED  ) {

@@ -25,6 +25,7 @@
         </activity>
         <activity
             android:name=".PromoActivity"
+            android:parentActivityName=".PromoActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity"

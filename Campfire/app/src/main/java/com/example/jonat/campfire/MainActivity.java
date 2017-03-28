@@ -51,6 +51,15 @@ public class MainActivity extends AppCompatActivity
     private String uEmail;
     private String uName;
     private Student uStudent;
+    private String[] currentStudentID = new String[4];
+    private String[] currentStringCriteria;
+
+    //Transferable data between fragments
+    private String[] classmatesNames;
+    private String[] classmatesEmails;
+    private String[] courseCodes;
+    private String[] courseNames;
+    private String[] courseInstructors;
 
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
@@ -74,13 +83,48 @@ public class MainActivity extends AppCompatActivity
          * 1. Connect to the Database
          * 2. Begin matching and display results in the form of cards
          */
-        db = new DatabaseAdapter(this);
-
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
         uEmail = newStudentID[2];
         uStudent = DbAdapter.getStudent(uEmail);
         uName = uStudent.getFname() + " " + uStudent.getLname();
+        List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+        currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
+
+        currentStudentID[0] = uStudent.getFname();
+        currentStudentID[1] = uStudent.getLname();
+        currentStudentID[2] = uStudent.getEmail();
+        currentStudentID[3] = uStudent.getPass();
+
+        ArrayList<Student> tempList = uStudent.getallOtherCourseStudents(currentCourse);
+        ArrayList<String> classmatesNamesList = new ArrayList<String>();
+        ArrayList<String> classmatesEmailsList = new ArrayList<String>();
+        for (Student s: tempList){
+            classmatesNamesList.add(s.getFname() + " " + s.getLname());
+            classmatesEmailsList.add(s.getEmail());
+        }
+        classmatesNames = new String[classmatesNamesList.size()];
+        classmatesNames = classmatesNamesList.toArray(classmatesNames);
+        classmatesEmails = new String[classmatesEmailsList.size()];
+        classmatesEmails = classmatesEmailsList.toArray(classmatesEmails);
+
+        List<String> coursesTemp = DbAdapter.allStudentsCourses(uEmail);
+        ArrayList<String> courseCodesList = new ArrayList<String>();
+        ArrayList<String> courseNamesList = new ArrayList<String>();
+        ArrayList<String> courseInstructorList = new ArrayList<String>();
+        for (String code: coursesTemp){
+            Course current = DbAdapter.getCourse(code);
+            courseCodesList.add(code);
+            courseNamesList.add(current.getName());
+            courseInstructorList.add(current.getInstructor());
+        }
+        courseCodes = new String[courseCodesList.size()];
+        courseCodes = courseCodesList.toArray(courseCodes);
+        courseNames = new String[courseNamesList.size()];
+        courseNames = courseNamesList.toArray(courseNames);
+        courseInstructors = new String[courseInstructorList.size()];
+        courseInstructors = courseInstructorList.toArray(courseInstructors);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -98,8 +142,6 @@ public class MainActivity extends AppCompatActivity
         emailHeader.setText(uEmail);
         nameHeader.setText(uName);
 
-        List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-        currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
         courseHeader.setText("Current Course: " + currentCourse.getCourseCode());
 
 //         ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
@@ -235,6 +277,8 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_discover:
                 fragment = new DiscoverFragment();
+                bundle.putStringArray("classmatesNames", classmatesNames);
+                bundle.putStringArray("classmatesEmails", classmatesEmails);
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
                 myCoursesIsOpen = false;
@@ -250,6 +294,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_my_courses:
                 fragment = new MyCoursesFragment();
+                bundle.putStringArray("courseCodes", courseCodes);
+                bundle.putStringArray("courseNames", courseNames);
+                bundle.putStringArray("courseInstructors", courseInstructors);
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_add_circle_white_48dp));
                 myCoursesIsOpen = true;
