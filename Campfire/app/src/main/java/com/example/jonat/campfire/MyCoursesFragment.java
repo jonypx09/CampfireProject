@@ -37,6 +37,7 @@ public class MyCoursesFragment extends Fragment {
     DatabaseAdapter db;
     private String uEmail;
     private Student uStudent;
+    private String currentCourseCode;
 
     private ListView coursesListView;
     private String[] names;
@@ -44,6 +45,7 @@ public class MyCoursesFragment extends Fragment {
     private Integer[] images;
     private Integer sampleImage = R.drawable.ic_class_white_48dp;
     private Integer courseImage = R.drawable.ic_class_black_48dp;
+    private Integer openCourseImage = R.drawable.ic_import_contacts_white_48dp;
 
     private ArrayList<Student> uClassmates;
     private String[] searchResults;
@@ -61,6 +63,8 @@ public class MyCoursesFragment extends Fragment {
         courseCodes = getArguments().getStringArray("courseCodes");
         courseNames = getArguments().getStringArray("courseNames");
         courseInstructors = getArguments().getStringArray("courseInstructors");
+        currentCourseCode = getArguments().getString("currentCourseCode");
+
         uEmail = newStudentID[2];
 
         //returning our layout file
@@ -85,7 +89,11 @@ public class MyCoursesFragment extends Fragment {
         for (int i = 0; i < courseCodes.length; i++){
             names[i] = courseCodes[i];
             description[i] = courseNames[i];
-            images[i] = sampleImage;
+            if (courseCodes[i].equals(currentCourseCode)){
+                images[i] = openCourseImage;
+            }else{
+                images[i] = sampleImage;
+            }
         }
         MyCoursesListAdapter customList = new MyCoursesListAdapter(getActivity(), names, description, images);
         coursesListView = (ListView) getView().findViewById(R.id.allUsersList);
@@ -120,6 +128,7 @@ public class MyCoursesFragment extends Fragment {
                 .setAction("Action", null).show();
         Bundle bundle = new Bundle();
         bundle.putStringArray("identity", newStudentID);
+        bundle.putString("currentCourse", courseCode);
         Fragment fragment = null;
         fragment = new HomeFragment();
         fragment.setArguments(bundle);

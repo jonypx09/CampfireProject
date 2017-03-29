@@ -52,14 +52,16 @@ public class HomeFragment extends Fragment {
     private Student uStudent;
     private List<Student> allStudents;
     private ArrayList<Student> otherStudents301;
+    private ArrayList<Student> otherStudents;
     private ArrayList<Student> students301;
     private ArrayList<String> c1;
     private ArrayList<String> c2;
     public static List<Student> loadedStudents = new ArrayList<Student>();
     private MaterialDialog loadingUsersDialog;
     ArrayList<Comparable> crit;
-    DatabaseAdapter db;
     Course csc301;
+    Course currentCourse;
+    String currentCourseCode;
 
     SharedPreferences prefs = null;
 
@@ -71,6 +73,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
         newStudentID = getArguments().getStringArray("identity");
+        currentCourseCode = getArguments().getString("currentCourse");
         prefs = getContext().getSharedPreferences("come.example.jonat.campfire", MODE_PRIVATE);
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
@@ -103,14 +106,16 @@ public class HomeFragment extends Fragment {
 //       allStudents = DbAdapter.getAllStudents();
 
        //This should change to a generic course instead so that swtiching courses is possible
-       csc301 = DbAdapter.getCourse("CSC301H1");
+//       csc301 = DbAdapter.getCourse("CSC301H1");
+       currentCourse = DbAdapter.getCourse(currentCourseCode);
 //       students301 = db.getStudentsInCourse("csc301h1");
        uStudent = DbAdapter.getStudent(newStudentID[2]);
-       students301 = uStudent.getallOtherCourseStudents(csc301);
+       students301 = uStudent.getallOtherCourseStudents(currentCourse);
 
        uStudent = ((MainActivity) getActivity()).getCurrentStudent();
        //TODO: Does not work, includes current student.
-       otherStudents301 = uStudent.getallOtherCourseStudents(csc301);
+//       otherStudents301 = uStudent.getallOtherCourseStudents(currentCourse);
+       otherStudents = uStudent.getallOtherCourseStudents(currentCourse);
 
        getActivity().setTitle("Home");
        mSwipeView = (SwipePlaceHolderView) getActivity().findViewById(R.id.swipeView);
@@ -138,7 +143,7 @@ public class HomeFragment extends Fragment {
        //     - otherStudents301 for all other students in csc301h1. (Currently unavailable)
        //     - students301 for all students in csc301h1.
 
-       ArrayList<Student> swipeOn = otherStudents301;
+       ArrayList<Student> swipeOn = otherStudents;
        if (swipeOn.isEmpty()) {
            Toast.makeText(getContext(), "No available matches.", Toast.LENGTH_LONG).show();
        }
