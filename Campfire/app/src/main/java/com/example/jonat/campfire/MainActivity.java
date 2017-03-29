@@ -81,10 +81,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Campfire");
 
         /**
          * 1. Connect to the Database
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        renderData();
+                        renderData(toolbar);
                         progressDialog.dismiss();
                     }
                 });
@@ -151,9 +152,7 @@ public class MainActivity extends AppCompatActivity
         }).start();
     }
 
-    public void renderData(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public void renderData(Toolbar toolbar){
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -305,6 +304,7 @@ public class MainActivity extends AppCompatActivity
                 myCoursesIsOpen = false;
                 break;
             case R.id.nav_home:
+                setTitle("Home");
                 fragment = new HomeFragment();
                 bundle.putString("currentCourse", currentCourse.getCourseCode());
                 fragment.setArguments(bundle);
@@ -366,6 +366,10 @@ public class MainActivity extends AppCompatActivity
 
     public Student getCurrentStudent() {
         return this.uStudent;
+    }
+
+    public Course getCurrentCourse(){
+        return this.currentCourse;
     }
 
     public void logout(){
@@ -575,5 +579,27 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
+    }
+
+    public void updateCourse(String courseCode){
+        final String newCourseCode = courseCode;
+        final Course newCourse = DbAdapter.getCourse(newCourseCode);
+        currentCourse = newCourse;
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        TextView courseHeader = (TextView) headerView.findViewById(R.id.courseHeader);
+        courseHeader.setText("Current Course: " + currentCourse.getCourseCode());
+        studentsInCourse = uStudent.getallOtherCourseStudents(currentCourse);
+        ArrayList<String> classmatesNamesList = new ArrayList<String>();
+        ArrayList<String> classmatesEmailsList = new ArrayList<String>();
+        for (Student s: studentsInCourse){
+            classmatesNamesList.add(s.getFname() + " " + s.getLname());
+            classmatesEmailsList.add(s.getEmail());
+        }
+        classmatesNames = new String[classmatesNamesList.size()];
+        classmatesNames = classmatesNamesList.toArray(classmatesNames);
+        classmatesEmails = new String[classmatesEmailsList.size()];
+        classmatesEmails = classmatesEmailsList.toArray(classmatesEmails);
     }
 }

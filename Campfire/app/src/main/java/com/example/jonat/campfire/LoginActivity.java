@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import backend.algorithms.CSCCoursesCriteria;
@@ -37,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
     ImageView incorrectLogin;
     ImageView incorrectEmailIcon;
     ImageView incorrectPasswordIcon;
+
+    private Handler handler;
+    private List<Student> allStudents;
 
     private String[] possDescriptions = {"I like hardware!",
                                          "Team up with me if you wanna have loads of fun :)",
@@ -151,6 +156,21 @@ public class LoginActivity extends AppCompatActivity {
         incorrectLogin = (ImageView) findViewById(R.id.unsuccessfulLogin);
         incorrectEmailIcon = (ImageView) findViewById(R.id.incorrectEmailIcon);
         incorrectPasswordIcon = (ImageView) findViewById(R.id.incorrectPasswordIcon);
+
+
+        handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                allStudents = DbAdapter.getAllStudents();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                });
+            }
+        }).start();
     }
 
     public void checkFields(View view){
@@ -190,7 +210,7 @@ public class LoginActivity extends AppCompatActivity {
             final String emailCopy = email;
             final String passwordCopy = password;
 
-            new CountDownTimer(2000, 1000){
+            new CountDownTimer(1000, 500){
                 public void onFinish(){
                     authenticate(emailCopy, passwordCopy);
                 }
@@ -207,8 +227,12 @@ public class LoginActivity extends AppCompatActivity {
     public void authenticate(String email, String password){
 
         //Perform validation here
-        Student foundStudent;
-        foundStudent = DbAdapter.getStudent(email);
+        Student foundStudent = null;
+        for (Student s: allStudents){
+            if (s.getEmail().equals(email)){
+                foundStudent = s;
+            }
+        }
 
         if ((foundStudent != null) && (password.equals(foundStudent.getPass()))){
             load.setVisibility(View.INVISIBLE);

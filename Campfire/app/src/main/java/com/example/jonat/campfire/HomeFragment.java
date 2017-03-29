@@ -82,17 +82,16 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Home");
         loadCards();
    }
 
    public void loadCards(){
-//       allStudents = DbAdapter.getAllStudents();
+       MainActivity main = (MainActivity) getActivity();
 
-       //This should change to a generic course instead so that swtiching courses is possible
-//       csc301 = DbAdapter.getCourse("CSC301H1");
-       currentCourse = DbAdapter.getCourse(currentCourseCode);
-//       students301 = db.getStudentsInCourse("csc301h1");
-       uStudent = DbAdapter.getStudent(newStudentID[2]);
+       uStudent = main.getCurrentStudent();
+       currentCourse = main.getCurrentCourse();
+
        students301 = uStudent.getallOtherCourseStudents(currentCourse);
 
        uStudent = ((MainActivity) getActivity()).getCurrentStudent();
@@ -100,7 +99,6 @@ public class HomeFragment extends Fragment {
 //       otherStudents301 = uStudent.getallOtherCourseStudents(currentCourse);
        otherStudents = uStudent.getallOtherCourseStudents(currentCourse);
 
-       getActivity().setTitle("Home");
        mSwipeView = (SwipePlaceHolderView) getActivity().findViewById(R.id.swipeView);
 
        mContext = getActivity().getApplicationContext();

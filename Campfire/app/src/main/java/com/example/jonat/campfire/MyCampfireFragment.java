@@ -48,6 +48,8 @@ public class MyCampfireFragment extends Fragment {
     private Integer sampleImage = R.drawable.ic_group_white_48dp;
     private MaterialDialog loadingGroupsDialog;
 
+    MainActivity main;
+
     // TODO: Needs to be changed, doesn't actually pull from database, just temp for video.
     public static ArrayList<Student> campfireStudents = new ArrayList<>();
     
@@ -66,32 +68,13 @@ public class MyCampfireFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("My Campfire");
-
-//        uStudent = ((MainActivity) getActivity()).getCurrentStudent();
-        uStudent = DbAdapter.getStudent(uEmail);
-//        Course csc301 = DbAdapter.getCourse("CSC301H1");
-
-        loadingGroupsDialog = new MaterialDialog.Builder(getActivity())
-                .title("Loading Groups")
-                .content("Please wait...")
-                .progress(true, 0)
-                .show();
-
-        CountDownTimer loading = new CountDownTimer(1000, 200){
-            public void onFinish(){
-                loadGroups();
-                loadingGroupsDialog.dismiss();
-            }
-
-            public void onTick(long millisUntilFinished){
-
-            }
-        };
-        loading.start();
+        main = (MainActivity) getActivity();
+        uStudent = main.getCurrentStudent();
+        loadGroups();
     }
 
     public void loadGroups(){
-        currentCourse = DbAdapter.getCourse(currentCourseString);
+        currentCourse = main.getCurrentCourse();
         studentCampfires = uStudent.getCampfires();
         campfiresForCurrentCourse = studentCampfires.get(currentCourse);
 

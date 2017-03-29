@@ -1,11 +1,13 @@
 package com.example.jonat.campfire;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -54,6 +56,8 @@ public class MyCoursesFragment extends Fragment {
     private String[] courseNames;
     private String[] courseInstructors;
 
+    private Handler handler;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,6 +70,7 @@ public class MyCoursesFragment extends Fragment {
         currentCourseCode = getArguments().getString("currentCourseCode");
 
         uEmail = newStudentID[2];
+        handler = new Handler();
 
         //returning our layout file
         return inflater.inflate(R.layout.fragment_discover, container, false);
@@ -113,8 +118,8 @@ public class MyCoursesFragment extends Fragment {
                         })
                         .setNeutralButton("Switch Course", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                switchCourse(names[i]);
                                 //Switch course here by refreshing tinder cards
+                                switchCourse(names[i]);
                             }
                         })
                         .show();
@@ -123,18 +128,44 @@ public class MyCoursesFragment extends Fragment {
     }
 
     public void switchCourse(String courseCode){
-        Snackbar.make(getView(), "Switched to " +
-                courseCode, Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-        Bundle bundle = new Bundle();
-        bundle.putStringArray("identity", newStudentID);
-        bundle.putString("currentCourse", courseCode);
-        Fragment fragment = null;
-        fragment = new HomeFragment();
-        fragment.setArguments(bundle);
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, fragment);
-        ft.commit();
+        if (courseCode.equals(currentCourseCode)){
+            new MaterialDialog.Builder(getActivity())
+                    .title("Warning")
+                    .content("You are already in this course! Choose another one.")
+                    .positiveText("Ok")
+                    .show();
+        }else{
+            final MainActivity main = (MainActivity) getActivity();
+            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+            final String newCourseCode = courseCode;
+            progressDialog.setMessage("Please wait....");
+            progressDialog.setTitle("Switching Courses");
+            progressDialog.show();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    main.updateCourse(newCourseCode);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                            Snackbar.make(getView(), "Switched to " +
+                                    newCourseCode, Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                            Bundle bundle = new Bundle();
+                            bundle.putStringArray("identity", newStudentID);
+                            bundle.putString("currentCourse", newCourseCode);
+                            Fragment fragment = null;
+                            fragment = new HomeFragment();
+                            fragment.setArguments(bundle);
+                            FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.content_frame, fragment);
+                            ft.commit();
+                        }
+                    });
+                }
+            }).start();
+        }
 
     }
 }
