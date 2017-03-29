@@ -82,24 +82,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        loadingUsersDialog = new MaterialDialog.Builder(getActivity())
-                .title("Loading Matches")
-                .content("Please wait...")
-                .progress(true, 0)
-                .show();
-
-        CountDownTimer loading = new CountDownTimer(1000, 200){
-            public void onFinish(){
-                loadCards();
-                loadingUsersDialog.dismiss();
-            }
-
-            public void onTick(long millisUntilFinished){
-
-            }
-        };
-        loading.start();
+        loadCards();
    }
 
    public void loadCards(){

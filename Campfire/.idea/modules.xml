@@ -3,10 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Campfire.iml" filepath="$PROJECT_DIR$/Campfire.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Campfire.iml" filepath="$PROJECT_DIR$/Campfire.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/postgresql-42.0.0.jre7/postgresql-42.0.0.jre7.iml" filepath="$PROJECT_DIR$/postgresql-42.0.0.jre7/postgresql-42.0.0.jre7.iml" />
       <module fileurl="file://$PROJECT_DIR$/postgresql-42.0.0.jre7/postgresql-42.0.0.jre7.iml" filepath="$PROJECT_DIR$/postgresql-42.0.0.jre7/postgresql-42.0.0.jre7.iml" />
     </modules>
   </component>
