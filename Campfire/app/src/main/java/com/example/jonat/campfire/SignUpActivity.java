@@ -35,9 +35,6 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
         setTitle("Sign Up");
 
-        //Connect to the database
-        db = new DatabaseAdapter(this);
-
         load = (ProgressBar) findViewById(R.id.signupProgress);
         createAccountButton = (Button) findViewById(R.id.changePasswordButton);
     }

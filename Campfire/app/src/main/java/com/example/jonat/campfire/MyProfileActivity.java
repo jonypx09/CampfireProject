@@ -194,57 +194,65 @@ public class MyProfileActivity extends AppCompatActivity {
         hobbiesList = myStudent.getHobbies();
         schedule = myStudent.getCalendar();
 
-        for (String language : programmingLanguages) {
-            if (language == null){
-                break;
-            }else if (language.equals("Python")){
-                pythonCheckbox.setChecked(true);
-            }else if (language.equals("Java")){
-                javaCheckbox.setChecked(true);
-            }else if (language.equals("C")){
-                cCheckbox.setChecked(true);
-            }else if (language.equals("HTML")){
-                htmlCheckbox.setChecked(true);
-            }else if (language.equals("Javascript")){
-                javascriptCheckbox.setChecked(true);
-            }else {
-                sqlCheckbox.setChecked(true);
+        if (programmingLanguages != null){
+            for (String language : programmingLanguages) {
+                if (language == null){
+                    break;
+                }else if (language.equals("Python")){
+                    pythonCheckbox.setChecked(true);
+                }else if (language.equals("Java")){
+                    javaCheckbox.setChecked(true);
+                }else if (language.equals("C")){
+                    cCheckbox.setChecked(true);
+                }else if (language.equals("HTML")){
+                    htmlCheckbox.setChecked(true);
+                }else if (language.equals("Javascript")){
+                    javascriptCheckbox.setChecked(true);
+                }else {
+                    sqlCheckbox.setChecked(true);
+                }
             }
         }
-
-        updateCSCCourses();
-        updateElectiveCourses();
-        updateHobbies();
-
-        for (String day : schedule.keySet()){
-            if (day.equals("Sunday") && schedule.get(day).size() != 0){
-                sundayCheckbox.setChecked(true);
-                sundayCheckbox.setEnabled(true);
-                sundayCheckbox.setText("Sunday (Tap to open details)");
-            }else if (day.equals("Monday") && schedule.get(day).size() != 0){
-                mondayCheckbox.setChecked(true);
-                mondayCheckbox.setEnabled(true);
-                mondayCheckbox.setText("Monday (Tap to open details)");
-            }else if (day.equals("Tuesday") && schedule.get(day).size() != 0){
-                tuesdayCheckbox.setChecked(true);
-                tuesdayCheckbox.setEnabled(true);
-                tuesdayCheckbox.setText("Tuesday (Tap to open details)");
-            }else if (day.equals("Wednesday") && schedule.get(day).size() != 0){
-                wednesdayCheckbox.setChecked(true);
-                wednesdayCheckbox.setEnabled(true);
-                wednesdayCheckbox.setText("Wednesday (Tap to open details)");
-            }else if (day.equals("Thursday") && schedule.get(day).size() != 0){
-                thursdayCheckbox.setChecked(true);
-                thursdayCheckbox.setEnabled(true);
-                thursdayCheckbox.setText("Thursday (Tap to open details)");
-            }else if (day.equals("Friday") && schedule.get(day).size() != 0){
-                fridayCheckbox.setChecked(true);
-                fridayCheckbox.setEnabled(true);
-                fridayCheckbox.setText("Friday (Tap to open details)");
-            }else if (day.equals("Saturday") && schedule.get(day).size() != 0){
-                saturdayCheckbox.setChecked(true);
-                saturdayCheckbox.setEnabled(true);
-                saturdayCheckbox.setText("Saturday (Tap to open details)");
+        if (previousCSCourses != null){
+            updateCSCCourses();
+        }
+        if (previousElectiveCourses != null){
+            updateElectiveCourses();
+        }
+        if (hobbiesList != null){
+            updateHobbies();
+        }
+        if (schedule != null){
+            for (String day : schedule.keySet()){
+                if (day.equals("Sunday") && schedule.get(day).size() != 0){
+                    sundayCheckbox.setChecked(true);
+                    sundayCheckbox.setEnabled(true);
+                    sundayCheckbox.setText("Sunday (Tap to open details)");
+                }else if (day.equals("Monday") && schedule.get(day).size() != 0){
+                    mondayCheckbox.setChecked(true);
+                    mondayCheckbox.setEnabled(true);
+                    mondayCheckbox.setText("Monday (Tap to open details)");
+                }else if (day.equals("Tuesday") && schedule.get(day).size() != 0){
+                    tuesdayCheckbox.setChecked(true);
+                    tuesdayCheckbox.setEnabled(true);
+                    tuesdayCheckbox.setText("Tuesday (Tap to open details)");
+                }else if (day.equals("Wednesday") && schedule.get(day).size() != 0){
+                    wednesdayCheckbox.setChecked(true);
+                    wednesdayCheckbox.setEnabled(true);
+                    wednesdayCheckbox.setText("Wednesday (Tap to open details)");
+                }else if (day.equals("Thursday") && schedule.get(day).size() != 0){
+                    thursdayCheckbox.setChecked(true);
+                    thursdayCheckbox.setEnabled(true);
+                    thursdayCheckbox.setText("Thursday (Tap to open details)");
+                }else if (day.equals("Friday") && schedule.get(day).size() != 0){
+                    fridayCheckbox.setChecked(true);
+                    fridayCheckbox.setEnabled(true);
+                    fridayCheckbox.setText("Friday (Tap to open details)");
+                }else if (day.equals("Saturday") && schedule.get(day).size() != 0){
+                    saturdayCheckbox.setChecked(true);
+                    saturdayCheckbox.setEnabled(true);
+                    saturdayCheckbox.setText("Saturday (Tap to open details)");
+                }
             }
         }
 
@@ -359,11 +367,14 @@ public class MyProfileActivity extends AppCompatActivity {
                 .setConfirmButton(android.R.string.ok, new LovelyTextInputDialog.OnTextInputConfirmListener() {
                     @Override
                     public void onTextInputConfirmed(String text) {
-//                        previousCSCourses.add(text);
-                        myStudent.getCSCCourses().add(text);
-                        updateCSCCourses();
-                        //This doesn't update the student's information in the db!!!
-                        Toast.makeText(MyProfileActivity.this, "Course Added", Toast.LENGTH_SHORT).show();
+                        if (myStudent.getCSCCourses() == null){
+
+                        }else{
+                            myStudent.getCSCCourses().add(text);
+                            updateCSCCourses();
+                            //This doesn't update the student's information in the db!!!
+                            Toast.makeText(MyProfileActivity.this, "Course Added", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
                 .setNegativeButton("Cancel", new View.OnClickListener() {

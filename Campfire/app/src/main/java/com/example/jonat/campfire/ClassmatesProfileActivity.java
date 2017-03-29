@@ -64,7 +64,7 @@ public class ClassmatesProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        uEmail = intent.getExtras().getString("userEmail");
+        uEmail = intent.getExtras().getString("studentEmail");
         myStudent = DbAdapter.getStudent(uEmail);
         setTitle(myStudent.getFname() + " " + myStudent.getLname());
 

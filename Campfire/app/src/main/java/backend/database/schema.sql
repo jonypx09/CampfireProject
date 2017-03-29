@@ -81,10 +81,32 @@ INSERT INTO student VALUES ('fullchee@mail.com', 'Fullchee', 'Zhang', 'pass5', '
 INSERT INTO student VALUES ('quinn@mail.com', 'Quinn', 'Daneyko', 'pass6', 'I like working in android studio', null);
 INSERT INTO student VALUES ('andrew@mail.com', 'Andrew', 'Goupil', 'pass7', 'I like linear algebra', null);
 
-INSERT INTO course VALUES ('CSC108', 'Intro to Programming', 'Diane Horton');
-INSERT INTO course VALUES ('CSC148', 'Intro to Computer Science', 'Danny Heap');
-INSERT INTO course VALUES ('CSC207', 'Intro to Java and Object Oriented Design', 'Paul Gries');
-INSERT INTO course VALUES ('CSC309', 'Web Devolopment and Design', 'Karen Reid');
+INSERT INTO course VALUES ('CSC108H1', 'Intro to Programming', 'Diane Horton');
+INSERT INTO course VALUES ('CSC148H1', 'Intro to Computer Science', 'Danny Heap');
+INSERT INTO course VALUES ('CSC207H1', 'Intro to Java and Object Oriented Design', 'Paul Gries');
+INSERT INTO course VALUES ('CSC309H1', 'Web Devolopment and Design', 'Karen Reid');
+
+INSERT INTO course VALUES ('CSC209H1', 'Software Tools and Systems Programming', 'Karen Reid');
+INSERT INTO course VALUES ('CSC302H1', 'Engineering Large Software Systems', 'Renee Miller');
+INSERT INTO course VALUES ('CSC304H1', 'Algorithmic Game Theory and Mechanism Design', 'Tom Fairgrieve');
+INSERT INTO course VALUES ('CSC310H1', 'Information Theory', 'David Liu');
+INSERT INTO course VALUES ('CSC318H1', 'The Design of Interactive Computational Media', 'Ilona Posner');
+INSERT INTO course VALUES ('CSC320H1', 'Introduction to Visual Computing', 'Allan Jepson');
+INSERT INTO course VALUES ('CSC324H1', 'Principles of Programming Languages', 'Gary Baumgartner');
+INSERT INTO course VALUES ('CSC343H1', 'Introduction to Databases', 'Diane Horton');
+INSERT INTO course VALUES ('CSC367H1', 'Parallel Programming', 'Tom Fairgrieve');
+INSERT INTO course VALUES ('CSC369H1', 'Operating systems', 'Bogdan Simion');
+INSERT INTO course VALUES ('CSC373H1', 'Algorithm Design, Analysis & Complexity', 'Allan Jepson');
+INSERT INTO course VALUES ('CSC384H1', 'Introduction to Artificial Intelligence', 'David Liu');
+INSERT INTO course VALUES ('CSC401H1', 'Natural Language Computing', 'David Liu');
+INSERT INTO course VALUES ('CSC404H1', 'Introduction to Video Game Design', 'Peter Marbach');
+INSERT INTO course VALUES ('CSC410H1', 'Software Testing and Verification', 'Greg Wilson');
+INSERT INTO course VALUES ('CSC411H1', 'Machine Learning and Data Mining', 'Jacqueline Smith');
+INSERT INTO course VALUES ('CSC420H1', 'Introduction to Image Understanding', 'Anna Bretscher');
+INSERT INTO course VALUES ('CSC428H1', 'Human-Computer Interaction', 'Velian Pandeliev');
+INSERT INTO course VALUES ('CSC443H1', 'Database System Technology', 'Diane Horton');
+
+
 
 INSERT INTO taking VALUES ('rod@mail.com', 'CSC108');
 INSERT INTO taking VALUES ('adam@mail.com', 'CSC108');

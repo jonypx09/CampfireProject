@@ -43,6 +43,8 @@ public class DiscoverFragment extends Fragment {
 
     private ArrayList<Student> uClassmates;
     private String[] searchResults;
+    private String[] classmatesNames;
+    private String[] classmatesEmails;
 
     private MaterialDialog loadingUsersDialog;
     private boolean firstTimeLoading = true;
@@ -74,6 +76,8 @@ public class DiscoverFragment extends Fragment {
 
         newStudentID = getArguments().getStringArray("identity");
         searchResults = getArguments().getStringArray("search");
+        classmatesNames = getArguments().getStringArray("classmatesNames");
+        classmatesEmails = getArguments().getStringArray("classmatesEmails");
         uEmail = newStudentID[2];
 
         //returning our layout file
@@ -87,61 +91,9 @@ public class DiscoverFragment extends Fragment {
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Discover");
 
-        //Connect to the database & Obtain Student Object
-        uStudent = DbAdapter.getStudent(uEmail);
-
-        if (firstTimeLoading){
-            loadingUsersDialog = new MaterialDialog.Builder(getActivity())
-                    .title("Loading Users")
-                    .content("Please wait...")
-                    .progress(true, 0)
-                    .show();
-
-            CountDownTimer loading = new CountDownTimer(1000, 200){
-                public void onFinish(){
-                    firstTimeLoading = false;
-                    loadUsers();
-                    loadingUsersDialog.dismiss();
-                }
-
-                public void onTick(long millisUntilFinished){
-
-                }
-            };
-            loading.start();
-        }
-    }
-
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    //Temporary helper for finding if student is in campfire.
-    private boolean inCampfire(Student s) {
-        for (Student stu : campfireStudents) {
-            if (stu.getEmail().equals(s.getEmail())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void loadUsers(){
-
-        List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-        ArrayList<Student> classmates = uStudent.getallOtherCourseStudents(DbAdapter.getCourse(enrolledCourses.get(0)));
-        mCallback.loadUsers(classmates);
-
         int classSize;
         if (searchResults == null){
-            classSize = classmates.size() - 1;
+            classSize = classmatesNames.length;
         }else{
             classSize = searchResults.length;
         }
@@ -153,24 +105,12 @@ public class DiscoverFragment extends Fragment {
 
         if (searchResults == null){
             //Display all results
-            int i = 0;
-            for (Student s : classmates) {
-                if (!s.getEmail().equals(uEmail)){
-                    names[i] = s.getFname() + " " + s.getLname();
-                    emails[i] = s.getEmail();
-                    if (s.getElectives() == null || s.getElectives().size() == 0){
-                        previousElectives[i] = "No previous electives.";
-                    }else{
-                        previousElectives[i] = s.getElectives().get(0);
-                    }
-                    if (s.getHobbies() == null || s.getHobbies().size() == 0){
-                        pastimes[i] = "No previous hobbies.";
-                    }else{
-                        pastimes[i] = s.getHobbies().get(0);
-                    }
-                    images[i] = sampleImage;
-                    i++;
-                }
+            for (int i = 0; i < classmatesNames.length; i++){
+                names[i] = classmatesNames[i];
+                emails[i] = classmatesEmails[i];
+                previousElectives[i] = "";
+                pastimes[i] = "";
+                images[i] = sampleImage;
             }
         }else{
             //Display search results
@@ -181,7 +121,11 @@ public class DiscoverFragment extends Fragment {
                 if (result.getElectives() != null && result.getElectives().size() != 0) {
                     previousElectives[i] = result.getElectives().get(0);
                 }
-                pastimes[i] = result.getHobbies().get(0);
+                if (result.getHobbies() != null){
+                    pastimes[i] = result.getHobbies().get(0);
+                }else{
+                    pastimes[i] = "";
+                }
                 images[i] = sampleImage;
             }
         }
@@ -235,5 +179,26 @@ public class DiscoverFragment extends Fragment {
             }
         });
         hideKeyboard(getActivity());
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    //Temporary helper for finding if student is in campfire.
+    private boolean inCampfire(Student s) {
+        for (Student stu : campfireStudents) {
+            if (stu.getEmail().equals(s.getEmail())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

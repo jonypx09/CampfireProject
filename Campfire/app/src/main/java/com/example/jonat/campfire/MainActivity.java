@@ -1,11 +1,15 @@
 package com.example.jonat.campfire;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -51,36 +55,104 @@ public class MainActivity extends AppCompatActivity
     private String uEmail;
     private String uName;
     private Student uStudent;
+    private String[] currentStudentID = new String[4];
+    private String[] currentStringCriteria;
+
+    //Transferable data between fragments
+    private String[] classmatesNames;
+    private String[] classmatesEmails;
+    private String[] courseCodes;
+    private String[] courseNames;
+    private String[] courseInstructors;
 
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
     private EditText editSearch;
     private boolean searchInProgress = false;
     private boolean myCoursesIsOpen = false;
+    private boolean myCampfireIsOpen = false;
 
-    ArrayList<Student> studentsInCourse;
+    private ArrayList<Student> studentsInCourse;
     private Course currentCourse;
+    private List<String> enrolledCourses;
+
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("Campfire");
 
         /**
          * 1. Connect to the Database
          * 2. Begin matching and display results in the form of cards
          */
-        db = new DatabaseAdapter(this);
-
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
         uEmail = newStudentID[2];
-        uStudent = DbAdapter.getStudent(uEmail);
-        uName = uStudent.getFname() + " " + uStudent.getLname();
 
+        handler = new Handler();
+        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setMessage("Please wait....");
+        progressDialog.setTitle("Retrieving Data");
+        progressDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                uStudent = DbAdapter.getStudent(uEmail);
+                uName = uStudent.getFname() + " " + uStudent.getLname();
+                List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
+
+                currentStudentID[0] = uStudent.getFname();
+                currentStudentID[1] = uStudent.getLname();
+                currentStudentID[2] = uStudent.getEmail();
+                currentStudentID[3] = uStudent.getPass();
+
+                //Defaults to first course
+                studentsInCourse = uStudent.getallOtherCourseStudents(currentCourse);
+                ArrayList<String> classmatesNamesList = new ArrayList<String>();
+                ArrayList<String> classmatesEmailsList = new ArrayList<String>();
+                for (Student s: studentsInCourse){
+                    classmatesNamesList.add(s.getFname() + " " + s.getLname());
+                    classmatesEmailsList.add(s.getEmail());
+                }
+                classmatesNames = new String[classmatesNamesList.size()];
+                classmatesNames = classmatesNamesList.toArray(classmatesNames);
+                classmatesEmails = new String[classmatesEmailsList.size()];
+                classmatesEmails = classmatesEmailsList.toArray(classmatesEmails);
+
+                ArrayList<String> courseCodesList = new ArrayList<String>();
+                ArrayList<String> courseNamesList = new ArrayList<String>();
+                ArrayList<String> courseInstructorList = new ArrayList<String>();
+                for (String code: enrolledCourses){
+                    Course current = DbAdapter.getCourse(code);
+                    courseCodesList.add(code);
+                    courseNamesList.add(current.getName());
+                    courseInstructorList.add(current.getInstructor());
+                }
+                courseCodes = new String[courseCodesList.size()];
+                courseCodes = courseCodesList.toArray(courseCodes);
+                courseNames = new String[courseNamesList.size()];
+                courseNames = courseNamesList.toArray(courseNames);
+                courseInstructors = new String[courseInstructorList.size()];
+                courseInstructors = courseInstructorList.toArray(courseInstructors);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        renderData(toolbar);
+                        progressDialog.dismiss();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void renderData(Toolbar toolbar){
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -97,16 +169,7 @@ public class MainActivity extends AppCompatActivity
         emailHeader.setText(uEmail);
         nameHeader.setText(uName);
 
-        List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-        currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
         courseHeader.setText("Current Course: " + currentCourse.getCourseCode());
-
-//         ArrayList<String> enrolledCourses = db.enrolledIn(uEmail);
-//         if (enrolledCourses.size() == 1) {
-//             courseHeader.setText("Current Course: " + enrolledCourses.get(0));
-//         } else {
-//             courseHeader.setText("Current Course: " + enrolledCourses.get(1));
-//         }
 
         displaySelectedScreen(R.id.nav_home);
 
@@ -222,22 +285,30 @@ public class MainActivity extends AppCompatActivity
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
                 myCoursesIsOpen = false;
+                myCampfireIsOpen = false;
                 break;
             case R.id.nav_my_campfire:
                 fragment = new MyCampfireFragment();
+                bundle.putString("currentCourse", currentCourse.getCourseCode());
                 fragment.setArguments(bundle);
-                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
+                mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_add_box_white_48dp));
                 myCoursesIsOpen = false;
+                myCampfireIsOpen = true;
                 break;
             case R.id.nav_discover:
                 fragment = new DiscoverFragment();
+                bundle.putStringArray("classmatesNames", classmatesNames);
+                bundle.putStringArray("classmatesEmails", classmatesEmails);
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
                 myCoursesIsOpen = false;
                 break;
             case R.id.nav_home:
+                setTitle("Home");
                 fragment = new HomeFragment();
+                bundle.putString("currentCourse", currentCourse.getCourseCode());
                 fragment.setArguments(bundle);
+                myCampfireIsOpen = false;
                 if (myCoursesIsOpen){
                     mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));
                     myCoursesIsOpen = false;
@@ -245,9 +316,14 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_my_courses:
                 fragment = new MyCoursesFragment();
+                bundle.putStringArray("courseCodes", courseCodes);
+                bundle.putStringArray("courseNames", courseNames);
+                bundle.putStringArray("courseInstructors", courseInstructors);
+                bundle.putString("currentCourseCode", currentCourse.getCourseCode());
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_add_circle_white_48dp));
                 myCoursesIsOpen = true;
+                myCampfireIsOpen = false;
                 break;
             case R.id.nav_help:
                 miscIntent = new Intent(this, HelpActivity.class);
@@ -292,6 +368,10 @@ public class MainActivity extends AppCompatActivity
         return this.uStudent;
     }
 
+    public Course getCurrentCourse(){
+        return this.currentCourse;
+    }
+
     public void logout(){
         //Pressing the back button on the Android device will log the user off
         Toast.makeText(getApplicationContext(), "You have logged out!", Toast.LENGTH_SHORT).show();
@@ -326,6 +406,8 @@ public class MainActivity extends AppCompatActivity
                 Bundle bundle = new Bundle();
                 bundle.putStringArray("identity", newStudentID);
                 bundle.putStringArray("search", null);
+                bundle.putStringArray("classmatesNames", classmatesNames);
+                bundle.putStringArray("classmatesEmails", classmatesEmails);
                 Fragment fragment = null;
                 fragment = new DiscoverFragment();
                 fragment.setArguments(bundle);
@@ -337,8 +419,10 @@ public class MainActivity extends AppCompatActivity
 
         } else { //open the search entry or course adder
 
-            if (myCoursesIsOpen){
+            if (myCoursesIsOpen) {
                 addCourse();
+            }else if (myCampfireIsOpen){
+                addGroup();
             }else{
                 action.setDisplayShowCustomEnabled(true); //enable it to display a
                 // custom view in the action bar.
@@ -378,10 +462,8 @@ public class MainActivity extends AppCompatActivity
                 .setAction("Action", null).show();
 
         ArrayList<String> searchResults = new ArrayList<String>();
-        List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-        ArrayList<Student> classmates = uStudent.getallOtherCourseStudents(DbAdapter.getCourse(enrolledCourses.get(0)));
 
-        for (Student s : classmates) {
+        for (Student s : studentsInCourse) {
             if ((!s.getEmail().equals(uEmail)) && (s.getFname().contains(query))){
                 searchResults.add(s.getEmail());
             }
@@ -447,5 +529,77 @@ public class MainActivity extends AppCompatActivity
 
     public void loadUsers(ArrayList<Student> users){
         this.studentsInCourse = users;
+    }
+
+    public void addGroup(){
+        new MaterialDialog.Builder(this)
+                .title("Add Group")
+                .content("Enter a group name:")
+                .inputType(InputType.TYPE_TEXT_VARIATION_NORMAL)
+                .inputRange(2, 50)
+                .input("Assignment 1", "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        String userInput = input.toString();
+                        addGroupSize(userInput);
+                    }
+                }).show();
+    }
+
+    public void addGroupSize(String name){
+        final String groupName = name;
+        new MaterialDialog.Builder(this)
+                .title("Specify Size")
+                .content("Enter the size of this group:")
+                .inputType(InputType.TYPE_CLASS_NUMBER)
+                .inputRange(1, 1)
+                .input("", "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        String userInput = input.toString();
+                        int size = Integer.parseInt(userInput);
+                        if (size != 0){
+                            uStudent.createGroup(currentCourse, groupName, size);
+                            DbAdapter.updateStudent(uStudent);
+                            refreshGroupList();
+                        }else{
+                            Toast.makeText(MainActivity.this, "Invalid Number", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }).show();
+    }
+
+    public void refreshGroupList(){
+        Bundle bundle = new Bundle();
+        bundle.putStringArray("identity", newStudentID);
+        bundle.putString("currentCourse", currentCourse.getCourseCode());
+        Fragment fragment = null;
+        fragment = new MyCampfireFragment();
+        fragment.setArguments(bundle);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content_frame, fragment);
+        ft.commit();
+    }
+
+    public void updateCourse(String courseCode){
+        final String newCourseCode = courseCode;
+        final Course newCourse = DbAdapter.getCourse(newCourseCode);
+        currentCourse = newCourse;
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+        TextView courseHeader = (TextView) headerView.findViewById(R.id.courseHeader);
+        courseHeader.setText("Current Course: " + currentCourse.getCourseCode());
+        studentsInCourse = uStudent.getallOtherCourseStudents(currentCourse);
+        ArrayList<String> classmatesNamesList = new ArrayList<String>();
+        ArrayList<String> classmatesEmailsList = new ArrayList<String>();
+        for (Student s: studentsInCourse){
+            classmatesNamesList.add(s.getFname() + " " + s.getLname());
+            classmatesEmailsList.add(s.getEmail());
+        }
+        classmatesNames = new String[classmatesNamesList.size()];
+        classmatesNames = classmatesNamesList.toArray(classmatesNames);
+        classmatesEmails = new String[classmatesEmailsList.size()];
+        classmatesEmails = classmatesEmailsList.toArray(classmatesEmails);
     }
 }
