@@ -3,6 +3,7 @@ package com.example.jonat.campfire;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,6 +107,18 @@ public class AdminActivity extends AppCompatActivity {
 //        NotificationManager mNotifyMgr =
 //                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 //        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+    }
+
+    @Override
+    public void onBackPressed() {
+        logout();
+    }
+
+    public void logout(){
+        //Pressing the back button on the Android device will log the user off
+        Toast.makeText(getApplicationContext(), "You have logged out!", Toast.LENGTH_SHORT).show();
+        Intent promoIntent = new Intent(this, PromoActivity.class);
+        startActivity(promoIntent);
     }
 
     //-------------------------------- USER MANAGEMENT ---------------------------------------
