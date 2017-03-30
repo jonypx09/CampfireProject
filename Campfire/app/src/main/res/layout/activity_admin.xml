@@ -15,11 +15,48 @@
         android:layout_weight="1"
         android:background="@color/colorPrimaryDark">
 
+        <LinearLayout
+            android:id="@+id/AdminHomeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:paddingLeft="8dp">
+
+            <TextView
+                android:id="@+id/adminExplainTextview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:paddingTop="10dp"
+                android:text="Welcome to Administrator mode! Here you can check the status of every user as well as perform any admin-related activities, including user deletion."
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/userCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:paddingTop="20dp"
+                android:text="Current User Count:"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/courseCount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:paddingTop="15dp"
+                android:text="Current Course Count:"
+                android:textColor="@color/colorAccent" />
+        </LinearLayout>
+
         <ListView
             android:id="@+id/listOfOptions"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="10dp" />
+            android:paddingTop="10dp"
+            android:visibility="invisible" />
 
     </FrameLayout>
 

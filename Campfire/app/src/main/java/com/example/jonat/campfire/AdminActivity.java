@@ -14,9 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,9 @@ public class AdminActivity extends AppCompatActivity {
     private Handler handler;
     private ListView mainListView;
     private View view;
+    private LinearLayout homeLayout;
+    private TextView userCount;
+    private TextView courseCount;
 
     private List<Student> lockedStudents;
 
@@ -53,14 +59,20 @@ public class AdminActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     mainListView.setVisibility(View.INVISIBLE);
+                    homeLayout.setVisibility(View.VISIBLE);
+                    setTitle("Home");
                     return true;
                 case R.id.navigation_all_users:
                     mainListView.setVisibility(View.VISIBLE);
+                    homeLayout.setVisibility(View.INVISIBLE);
                     displayAllUsers(allStudents);
+                    setTitle("Manage Users");
                     return true;
                 case R.id.navigation_all_courses:
                     mainListView.setVisibility(View.VISIBLE);
+                    homeLayout.setVisibility(View.INVISIBLE);
                     displayAllCourses(allCourses);
+                    setTitle("Manage Courses");
                     return true;
             }
             return false;
@@ -74,6 +86,10 @@ public class AdminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin);
         mainListView = (ListView) findViewById(R.id.listOfOptions);
         view = (View) findViewById(R.id.container);
+        homeLayout = (LinearLayout) findViewById(R.id.AdminHomeLayout);
+        userCount = (TextView) findViewById(R.id.userCount);
+        courseCount = (TextView) findViewById(R.id.courseCount);
+        setTitle("Home");
 
         handler = new Handler();
         final ProgressDialog progressDialog = new ProgressDialog(AdminActivity.this);
@@ -88,6 +104,8 @@ public class AdminActivity extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        userCount.setText("Current User Count: " + allStudents.size());
+                        courseCount.setText("Current Course Count: " + allCourses.size());
                         progressDialog.dismiss();
                     }
                 });
