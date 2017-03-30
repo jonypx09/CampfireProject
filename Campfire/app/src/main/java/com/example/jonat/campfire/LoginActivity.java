@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -226,68 +227,74 @@ public class LoginActivity extends AppCompatActivity {
     //Checks whether the user exists in the database; if so, check that the password is correct
     public void authenticate(String email, String password){
 
-        //Perform validation here
-        Student foundStudent = null;
-        for (Student s: allStudents){
-            if (s.getEmail().equals(email)){
-                foundStudent = s;
-            }
-        }
-
-        if ((foundStudent != null) && (password.equals(foundStudent.getPass()))){
-            load.setVisibility(View.INVISIBLE);
-            loginButton.setText("Success!");
-            loginButton.setEnabled(false);
-            correctLogin.setVisibility(View.VISIBLE);
-            Intent mainIntent = new Intent(this, MainActivity.class);
-
-            /**
-             * For devs: Details of the newStudentID package are as follows:
-             * newStudentID[0]: First name
-             * newStudentID[1]: Last name
-             * newStudentID[2]: Email Address
-             * newStudentID[3]: Password
-             * newStudentID[4]: Course
-             * newStudentID[5]: Previous Course Taken
-             * newStudentID[6]: Elective Course Taken
-             * newStudentID[7]: Favourite Pastime Activity
-             */
-            String[] newStudentID = {foundStudent.getFname(), foundStudent.getLname(),
-                                        foundStudent.getEmail(), foundStudent.getPass()};
-            mainIntent.putExtra("identity", newStudentID);
-            startActivity(mainIntent);
-
-
+        if (email.equals("admin@campfire.com") && (password.equals("bonfire301"))){
+            Toast.makeText(LoginActivity.this, "Superuser Enabled", Toast.LENGTH_LONG).show();
+            Intent adminIntent = new Intent(this, AdminActivity.class);
+            startActivity(adminIntent);
         }else{
-            load.setVisibility(View.INVISIBLE);
-            loginButton.setText("Log In");
+            //Perform validation here
+            Student foundStudent = null;
+            for (Student s: allStudents){
+                if (s.getEmail().equals(email)){
+                    foundStudent = s;
+                }
+            }
 
-            incorrectLogin.setVisibility(View.VISIBLE);
-            loginButton.setEnabled(true);
-            //This notifies the user that there needs to be an email in the field
-            AlertDialog missingEmailDialog = new AlertDialog.Builder(LoginActivity.this).create();
-            missingEmailDialog.setTitle("Authentication Failed");
-            if (foundStudent != null){
-                if (!password.equals(foundStudent.getPass())){
-                    missingEmailDialog.setMessage("Incorrect Password");
-                    incorrectPasswordIcon.setVisibility(View.VISIBLE);
+            if ((foundStudent != null) && (password.equals(foundStudent.getPass()))){
+                load.setVisibility(View.INVISIBLE);
+                loginButton.setText("Success!");
+                loginButton.setEnabled(false);
+                correctLogin.setVisibility(View.VISIBLE);
+                Intent mainIntent = new Intent(this, MainActivity.class);
+
+                /**
+                 * For devs: Details of the newStudentID package are as follows:
+                 * newStudentID[0]: First name
+                 * newStudentID[1]: Last name
+                 * newStudentID[2]: Email Address
+                 * newStudentID[3]: Password
+                 * newStudentID[4]: Course
+                 * newStudentID[5]: Previous Course Taken
+                 * newStudentID[6]: Elective Course Taken
+                 * newStudentID[7]: Favourite Pastime Activity
+                 */
+                String[] newStudentID = {foundStudent.getFname(), foundStudent.getLname(),
+                        foundStudent.getEmail(), foundStudent.getPass()};
+                mainIntent.putExtra("identity", newStudentID);
+                startActivity(mainIntent);
+
+
+            }else{
+                load.setVisibility(View.INVISIBLE);
+                loginButton.setText("Log In");
+
+                incorrectLogin.setVisibility(View.VISIBLE);
+                loginButton.setEnabled(true);
+                //This notifies the user that there needs to be an email in the field
+                AlertDialog missingEmailDialog = new AlertDialog.Builder(LoginActivity.this).create();
+                missingEmailDialog.setTitle("Authentication Failed");
+                if (foundStudent != null){
+                    if (!password.equals(foundStudent.getPass())){
+                        missingEmailDialog.setMessage("Incorrect Password");
+                        incorrectPasswordIcon.setVisibility(View.VISIBLE);
+                    }else{
+                        missingEmailDialog.setMessage("This account does not exist. Please Try Again.");
+                        incorrectEmailIcon.setVisibility(View.VISIBLE);
+                    }
                 }else{
                     missingEmailDialog.setMessage("This account does not exist. Please Try Again.");
                     incorrectEmailIcon.setVisibility(View.VISIBLE);
                 }
-            }else{
-                missingEmailDialog.setMessage("This account does not exist. Please Try Again.");
-                incorrectEmailIcon.setVisibility(View.VISIBLE);
+                missingEmailDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Try Again",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                correctLogin.setVisibility(View.INVISIBLE);
+                                incorrectLogin.setVisibility(View.INVISIBLE);
+                                dialog.dismiss();
+                            }
+                        });
+                missingEmailDialog.show();
             }
-            missingEmailDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Try Again",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            correctLogin.setVisibility(View.INVISIBLE);
-                            incorrectLogin.setVisibility(View.INVISIBLE);
-                            dialog.dismiss();
-                        }
-                    });
-            missingEmailDialog.show();
         }
 
     }
