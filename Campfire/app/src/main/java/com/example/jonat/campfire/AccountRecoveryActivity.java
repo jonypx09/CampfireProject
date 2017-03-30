@@ -10,5 +10,7 @@ public class AccountRecoveryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_recovery);
         setTitle("Account Recovery");
+
+        
     }
 }
