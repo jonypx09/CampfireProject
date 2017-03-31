@@ -1,7 +1,10 @@
 package backend.algorithms;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /*
  * A student using the app.
@@ -28,6 +31,7 @@ public class Student {
 	////
 	private HashMap<String, HashMap<Student, Holder>> matchvalues = new HashMap<String, HashMap<Student, Holder>>();
 	private HashMap<String, ArrayList<Student>> availablematches = new HashMap<String, ArrayList<Student>>();
+	private Map<String, List<Student>> matchedStudents = new HashMap<>();
 	
 	//Data structures for a Course to Assignment to Student mapping
 	private HashMap<String, HashMap<Assignment, AssignmentGroup>> groupsForAssignment = new HashMap<>();
@@ -61,7 +65,6 @@ public class Student {
 		return lname;
 	}
 
-
 	public String getEmail() {
 		return email;
 	}
@@ -82,6 +85,12 @@ public class Student {
 		this.description = description;
 	}
 	
+	
+	
+
+	public Map<String, List<Student>> getMatchedStudents() {
+		return matchedStudents;
+	}
 
 	/*
 	 * Gets the Hashmap of students to compatibility values for Course course.
@@ -119,6 +128,7 @@ public class Student {
 	 * Extracts the criteria from comparable and returns it as an ArrayList 
 	 * For further information see test case - extractComparables
 	 */
+	@SuppressWarnings("unchecked")
 	public ArrayList<String> findArrayComparable(String search){
 		for(Comparable criteria: this.getCriteria()){
 			if(criteria.getID() == search){
@@ -128,6 +138,7 @@ public class Student {
 		return null;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public HashMap<String, ArrayList<String>> findMapComparable(String search){
 		for(Comparable criteria: this.getCriteria()){
 			if(criteria.getID() == search){
@@ -154,11 +165,9 @@ public class Student {
 	public ArrayList<Student> getallOtherCourseStudents(Course course){
 		ArrayList<Student>tmpStudents = new ArrayList<Student>();
 		for (Student stu : course.getStudents()){
-			if (!stu.getEmail().equals(this.email)){
-				tmpStudents.add(stu);
-			}
+			tmpStudents.add(stu);
 		}
-//		tmpStudents.remove(this);
+		tmpStudents.remove(this);
 		return tmpStudents;
 	}
 	
@@ -270,9 +279,9 @@ public class Student {
 	}
 	
 	// Better Campfire //
-	public void createGroup(Course course, String name, int size){
+	public void createGroup(Course course, String name, int size, int groupID){
 		
-		CampfireGroup group = new CampfireGroup(name, new ArrayList<Student>(), size);
+		CampfireGroup group = new CampfireGroup(name, new ArrayList<Student>(), size, groupID);
 		if(campfires.get(course) == null){
 			this.campfires.put(course, new ArrayList<CampfireGroup>());
 		}
@@ -306,6 +315,7 @@ public class Student {
 		return null;
 	}
 	
+	//A student adds another student to his group.
 	public void unionMembers(Course crs, String name, Student newMember){
 		//Added the new member to all the members in that group already.
 		for(Student oldMember : this.getGroup(crs, name).getMembers()){
@@ -319,7 +329,7 @@ public class Student {
 		}
 		
 		//Fill his group up with all his new member(s)
-		newMember.createGroup(crs, name, this.getGroup(crs, name).getSize());
+		newMember.createGroup(crs, name, this.getGroup(crs, name).getSize(), this.getGroup(crs, name).getGroupID());
 		for(Student allMembers : this.getGroup(crs, name).getMembers()){
 			newMember.getGroup(crs, name).addMember(allMembers);
 		}
@@ -329,6 +339,7 @@ public class Student {
 		newMember.getGroup(crs, name).addMember(this);
 	}
 	
+	//Student kicks a student out of the group
 	public void kickMember(Course crs, String name, Student removeMember){
 		
 		//To avoid errors, first remove the kicked member from students group
@@ -339,7 +350,7 @@ public class Student {
 			oldMember.getGroup(crs, name).removeMember(removeMember);
 		}
 		
-		//Remove all kicked members old group members from his group
+		//Remove all kicked members, old group members from his group
 		for(Student allMembers : this.getGroup(crs, name).getMembers()){
 			removeMember.getGroup(crs, name).removeMember(allMembers);
 		}
@@ -350,6 +361,32 @@ public class Student {
 		//Remove the group from the kicked members menu
 		removeMember.getCampfires().get(crs).remove(this.getGroup(crs, name));
 		
+	}
+	
+	//Student leaves the group
+	public void leaveGroup(Course crs, String name){
+		
+		//All the other students see the student leave the group.
+		for(Student oldMember : this.getGroup(crs, name).getMembers()){
+			oldMember.getGroup(crs, name).removeMember(this);
+		}
+		
+		//Remove all old group members from leaving persons group
+		for(Student allMembers : this.getGroup(crs, name).getMembers()){
+			this.getGroup(crs, name).removeMember(allMembers);
+		}
+		
+		//Remove the group from the leaving members campfires menu
+		this.getCampfires().get(crs).remove(this.getGroup(crs, name));
+	}
+	
+	//Student leaves ALL groups he is in for a specific course.
+	public void byebyeCruelWorld(Course course){
+		ArrayList<CampfireGroup> temp = new ArrayList<CampfireGroup>(this.getCampfires().get(course));
+		for(CampfireGroup group : temp){
+				this.leaveGroup(course, group.getName());
+				
+			}
 	}
 	
 	///////////////////////////////////////////////////////////////
@@ -408,5 +445,78 @@ public class Student {
 		return curAssignmentForCourse;
 	}
 	
+	/////////////////////////////////////////////////////////////
+	////////////////Get a sorted list of matches for the class///
+	public Map<Student, Holder> getSortedMatches(Course course){
+		Map<Student, Holder> sortedMatches = new TreeMap<Student, Holder>(new MatchComparator(this.matchvalues.get(course.getName())));
+		sortedMatches.putAll(this.matchvalues.get(course.getName()));
+		return sortedMatches;
+		
+	}
+	
+	public List<Student> sortedStudents(Course course){
+		Map<Student, Holder> tmp = this.getSortedMatches(course);
+		Student[] sortedStudents = tmp.keySet().toArray(new Student[0]);
+		List<Student> students = new ArrayList<Student>();
+		for (Student s : sortedStudents){
+			students.add(s);
+		}
+		return students;
+	}
+	
+	public List<Student> validSortedStudents(Course course){
+		List<Student> students = sortedStudents(course);
+		for (Student s : students){
+			if (!this.getAvailablematches().get(course.getName()).contains(s)){
+				students.remove(s);
+			}
+		}
+		return students;
+	}
+	
+	/*
+	 * Removes all references to course from this student
+	 * and all references to this student from anything
+	 * to do with course.
+	 */
+	public void leaveCourse(Course course){
+		
+		//Leave all groups for course if there are groups
+		if(this.campfires.containsKey(course)){
+			byebyeCruelWorld(course);
+		}
+		
+		
+		//Remove course from all maps
+		this.campfires.remove(course);
+		this.matchvalues.remove(course.getName());
+		this.availablematches.remove(course.getName());
+		
+		//Remove student from the course's list of students
+		course.getStudents().remove(this);
+		
+		//For every other student in the course remove this 
+		//student from their available matches and matchvalues.
+		for (Student s: course.getStudents()){
+			s.getAvailablematches().get(course.getName()).remove(this);
+			s.getMatchvalues().get(course.getName()).remove(this);
+		}
+		
+		
+	}
+	
+	public void match(Course course, Student s){
+		if (!this.matchedStudents.containsKey(course.getName())){
+			this.matchedStudents.put(course.getName(), new ArrayList<Student>());
+		}
+		this.matchedStudents.get(course.getName()).add(s);
+		this.availablematches.get(course.getName()).remove(s);
+		
+		if (!s.getMatchedStudents().containsKey(course.getName())){
+			s.getMatchedStudents().put(course.getName(), new ArrayList<Student>());
+		}
+		s.getMatchedStudents().get(course.getName()).add(this);
+		s.getAvailablematches().get(course.getName()).remove(this);
+	}
 	
 }

@@ -31,6 +31,14 @@ public class MyCampfire {
 	public void removeMember(Student stu){
 		this.group.remove(stu);
 	}
+
+	public Student getHost() {
+		return host;
+	}
+
+	public String getID() {
+		return ID;
+	}
 	
 }
 
