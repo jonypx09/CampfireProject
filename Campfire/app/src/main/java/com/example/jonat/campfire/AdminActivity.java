@@ -1,9 +1,11 @@
 package com.example.jonat.campfire;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -11,6 +13,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.w3c.dom.Text;
 
@@ -42,6 +47,7 @@ public class AdminActivity extends AppCompatActivity {
     private Integer accountImageDark = R.drawable.ic_account_circle_black_48dp;
     private Integer courseImage = R.drawable.ic_class_white_48dp;
     private Integer courseImageDark = R.drawable.ic_class_black_48dp;
+    private Integer warningImage = R.drawable.ic_warning_white_48dp;
     private Handler handler;
     private ListView mainListView;
     private View view;
@@ -107,24 +113,33 @@ public class AdminActivity extends AppCompatActivity {
                         userCount.setText("Current User Count: " + allStudents.size());
                         courseCount.setText("Current Course Count: " + allCourses.size());
                         progressDialog.dismiss();
+
+                        boolean existsUsersThatCannotLogin = false;
+                        for (Student s: allStudents){
+                            if (s.getPass().endsWith("*")){
+                                existsUsersThatCannotLogin = true;
+                            }
+                        }
+                        if (existsUsersThatCannotLogin){
+                            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(AdminActivity.this);
+                            mBuilder.setSmallIcon(R.drawable.ic_warning_black_48dp)
+                                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_account_circle_black_48dp))
+                                    .setContentTitle("Attention")
+                                    .setContentText("There are users that are unable to login to Campfire")
+                                    .setDefaults(Notification.DEFAULT_ALL)
+                                    .setPriority(Notification.PRIORITY_HIGH);
+                            int mNotificationId = 001;
+
+                            NotificationManager mNotifyMgr =
+                                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                            mNotifyMgr.notify(mNotificationId, mBuilder.build());
+                        }
                     }
                 });
             }
         }).start();
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        //////////////  Notification Example (To be used later) ///////////
-//        NotificationCompat.Builder mBuilder =
-//                new NotificationCompat.Builder(this)
-//                        .setSmallIcon(R.drawable.ic_account_circle_black_48dp)
-//                        .setContentTitle("My notification")
-//                        .setContentText("Hello World!");
-//        int mNotificationId = 001;
-//
-//        NotificationManager mNotifyMgr =
-//                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//        mNotifyMgr.notify(mNotificationId, mBuilder.build());
     }
 
     @Override
@@ -149,7 +164,11 @@ public class AdminActivity extends AppCompatActivity {
         for (int i = 0; i < allStudents.size(); i++){
             names[i] = allStudents.get(i).getFname() + " " + allStudents.get(i).getLname();
             description[i] = allStudents.get(i).getEmail();
-            images[i] = accountImage;
+            if (allStudents.get(i).getPass().endsWith("*")){
+                images[i] = warningImage;
+            }else{
+                images[i] = accountImage;
+            }
         }
         MyCoursesListAdapter mainList = new MyCoursesListAdapter(AdminActivity.this, names, description, images);
         mainListView.setAdapter(mainList);
@@ -157,22 +176,86 @@ public class AdminActivity extends AppCompatActivity {
         mainListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                new android.app.AlertDialog.Builder(AdminActivity.this)
-                        .setTitle(names[i])
-                        .setMessage(description[i])
-                        .setIcon(accountImageDark)
-                        .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .setNeutralButton("Delete User", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                confirmDeleteUser(names[i], description[i]);
-                            }
-                        })
-                        .show();
+                if (images[i] == warningImage){
+                    new android.app.AlertDialog.Builder(AdminActivity.this)
+                            .setTitle(names[i])
+                            .setMessage(description[i])
+                            .setIcon(accountImageDark)
+                            .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setNeutralButton("Change Password", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    openChangePasswordDialog(description[i]);
+                                }
+                            })
+                            .show();
+                }else{
+                    new android.app.AlertDialog.Builder(AdminActivity.this)
+                            .setTitle(names[i])
+                            .setMessage(description[i])
+                            .setIcon(accountImageDark)
+                            .setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            })
+                            .setNeutralButton("Delete User", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    confirmDeleteUser(names[i], description[i]);
+                                }
+                            })
+                            .show();
+                }
             }
         });
+    }
+
+    public void openChangePasswordDialog(String email){
+        final String emailCopy = email;
+        new MaterialDialog.Builder(this)
+                .title("Password Change")
+                .content("Enter a new password:")
+                .inputRange(8, 50)
+                .inputType(InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                .input("", "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        String userInput = input.toString();
+                        changePassword(userInput, emailCopy);
+                    }
+                }).show();
+    }
+
+    public void changePassword(String newPassword, String email){
+        final String emailCopy = email;
+        final ProgressDialog progressDialog = new ProgressDialog(AdminActivity.this);
+        progressDialog.setMessage("Please wait....");
+        progressDialog.setTitle("Changing Password");
+        progressDialog.show();
+        handler = new Handler();
+        final String newPassCopy = newPassword;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final Student currentStudent = DbAdapter.getStudent(emailCopy);
+                currentStudent.setPass(newPassCopy);
+                DbAdapter.updateStudent(currentStudent);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        Toast.makeText(AdminActivity.this, "Password Changed", Toast.LENGTH_LONG).show();
+                        for (Student s: allStudents){
+                            if (s.getEmail().equals(currentStudent.getEmail())){
+                                s.setPass(currentStudent.getPass());
+                            }
+                        }
+                        displayAllUsers(allStudents);
+                    }
+                });
+            }
+        }).start();
     }
 
     public void confirmDeleteUser(String name, String email){
