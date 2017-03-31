@@ -62,6 +62,7 @@ public class HomeFragment extends Fragment {
     Course csc301;
     Course currentCourse;
     String currentCourseCode;
+    private String uEmail;
 
     SharedPreferences prefs = null;
 
@@ -75,6 +76,7 @@ public class HomeFragment extends Fragment {
         newStudentID = getArguments().getStringArray("identity");
         currentCourseCode = getArguments().getString("currentCourse");
         prefs = getContext().getSharedPreferences("come.example.jonat.campfire", MODE_PRIVATE);
+        uEmail = newStudentID[2];
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -131,7 +133,7 @@ public class HomeFragment extends Fragment {
        else {
            for (Student s : swipeOn) {
                if (!inCampfire(s) && !swipedYet(s)) {
-                   mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s));
+                   mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s, uEmail));
                }
            }
        }

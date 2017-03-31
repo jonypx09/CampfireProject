@@ -78,6 +78,7 @@
             android:name=".AdminActivity"
             android:label="@string/title_activity_admin"></activity>
     </application>
+
     <uses-sdk
         android:minSdkVersion="13"
         tools:overrideLibrary="android.support.v13"/>

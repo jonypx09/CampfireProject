@@ -11,10 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import backend.algorithms.Student;
+import backend.database.Chat;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
 
+import static backend.database.DbAdapter.getAllChatsForUser;
 import static com.example.jonat.campfire.HomeFragment.swipedRight;
 
 /**
@@ -37,18 +41,18 @@ public class MessagesFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        System.out.println(swipedRight);
         newStudentID = getArguments().getStringArray("identity");
         uEmail = newStudentID[2];
 
-        //TODO: Change this from local to integrated with database.
-        ArrayList<Student> peopleToMessage = swipedRight;
-        messengers = new String[peopleToMessage.size()];
-        display = new String[peopleToMessage.size()];
-        imageid = new Integer[peopleToMessage.size()];
+        List<Chat> chats = getAllChatsForUser(uEmail);
+        messengers = new String[chats.size()];
+        display = new String[chats.size()];
+        imageid = new Integer[chats.size()];
+
         int i = 0;
-        for (Student s : peopleToMessage) {
-            messengers[i] = s.getFname();
+        for (Chat c : chats) {
+            messengers[i] = String.valueOf(c.getChatID());
             display[i] = "";
             imageid[i] = R.drawable.person_icon;
             i++;
