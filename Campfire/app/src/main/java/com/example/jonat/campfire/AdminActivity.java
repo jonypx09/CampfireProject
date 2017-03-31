@@ -55,8 +55,6 @@ public class AdminActivity extends AppCompatActivity {
     private TextView userCount;
     private TextView courseCount;
 
-    private List<Student> lockedStudents;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -110,6 +108,7 @@ public class AdminActivity extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        //Any code in this area is executed upon completion of the above Db calls
                         userCount.setText("Current User Count: " + allStudents.size());
                         courseCount.setText("Current Course Count: " + allCourses.size());
                         progressDialog.dismiss();

@@ -57,6 +57,8 @@ public class AccountRecoveryActivity extends AppCompatActivity {
         checkCredentialsButton = (Button) findViewById(R.id.checkCredentialsButton);
         requestPermissionButton = (Button) findViewById(R.id.requestPermissionButton);
 
+        //It is vital to create a thread when performing a DbAdapter call to avoid any delays with the
+        //app
         handler = new Handler();
         new Thread(new Runnable() {
             @Override
@@ -72,10 +74,10 @@ public class AccountRecoveryActivity extends AppCompatActivity {
     }
 
     public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
+        //Is there a radio button that's been checked?
         boolean checked = ((RadioButton) view).isChecked();
 
-        // Check which radio button was clicked
+        // Radiobutton functionality (clicking one would uncheck the other)
         switch(view.getId()) {
             case R.id.credentialsRButton:
                 permissionRButton.setChecked(false);
