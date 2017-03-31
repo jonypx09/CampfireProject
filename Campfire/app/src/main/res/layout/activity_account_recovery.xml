@@ -1,10 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
+    android:paddingLeft="5dp"
     tools:context="com.example.jonat.campfire.AccountRecoveryActivity">
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/emailPrompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lastNameEditText"
+        android:enabled="false"
+        android:fontFamily="serif"
+        android:text="Enter your email address"
+        android:textColor="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/lastNamePrompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:fontFamily="serif"
+        android:text="Enter your last name:"
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@+id/firstNameEditText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:id="@+id/lastNameEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/lastNamePrompt"
+        android:ems="10"
+        android:enabled="false"
+        android:fontFamily="serif"
+        android:inputType="text"
+        android:maxLength="20"
+        android:textColor="@color/colorAccent" />
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/emailPrompt"
+        android:ems="10"
+        android:enabled="false"
+        android:fontFamily="serif"
+        android:inputType="textEmailAddress"
+        android:maxLength="20"
+        android:textColor="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/recoveryExplanation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="18dp"
+        android:fontFamily="serif"
+        android:text="Choose a method to recover your account:"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <RadioButton
+        android:id="@+id/permissionRButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/credentialsRButton"
+        android:fontFamily="serif"
+        android:onClick="onRadioButtonClicked"
+        android:text="Allow an adminstrator to reset your account"
+        android:textColor="@color/white" />
+
+    <RadioButton
+        android:id="@+id/credentialsRButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/recoveryExplanation"
+        android:layout_marginTop="14dp"
+        android:fontFamily="serif"
+        android:onClick="onRadioButtonClicked"
+        android:text="Enter your account credentials"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/fNamePrompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/permissionRButton"
+        android:layout_marginTop="20dp"
+        android:enabled="false"
+        android:fontFamily="serif"
+        android:text="Enter your first name:"
+        android:textColor="@color/colorPrimary" />
+
+    <EditText
+        android:id="@+id/firstNameEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/fNamePrompt"
+        android:ems="10"
+        android:enabled="false"
+        android:fontFamily="serif"
+        android:inputType="text"
+        android:maxLength="20"
+        android:textColor="@color/colorAccent" />
+
+    <View
+        android:id="@+id/bottomDivider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/checkCredentialsButton"
+        android:background="@color/white" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/permissionRButton"
+        android:background="@color/white" />
+
+    <Button
+        android:id="@+id/checkCredentialsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/emailEditText"
+        android:layout_centerHorizontal="true"
+        android:enabled="false"
+        android:onClick="checkCredentials"
+        android:text="Check Credentials" />
+
+    <TextView
+        android:id="@+id/permissionExplanation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bottomDivider"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:enabled="false"
+        android:fontFamily="serif"
+        android:paddingLeft="5dp"
+        android:text="Use this option only if you are unable to enter your credentials correctly."
+        android:textColor="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/requestPermissionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/permissionExplanation"
+        android:layout_centerHorizontal="true"
+        android:enabled="false"
+        android:onClick="enterEmail"
+        android:text="Send Request to Admin" />
+
+</RelativeLayout>

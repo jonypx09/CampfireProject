@@ -38,7 +38,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".HelpActivity"
             android:parentActivityName=".MainActivity" />
@@ -61,17 +61,21 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ScheduleActivity"
-            android:parentActivityName=".PersonalizeActivity"></activity>
+            android:parentActivityName=".PersonalizeActivity" />
         <activity
             android:name=".ChangePasswordActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".AccountRecoveryActivity"
-            android:parentActivityName=".LoginActivity"></activity>
+            android:parentActivityName=".LoginActivity" />
         <activity
             android:name=".ClassmatesProfileActivity"
             android:label="@string/title_activity_my_profile"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AdminActivity"
+            android:label="@string/title_activity_admin"></activity>
     </application>
+
 </manifest>

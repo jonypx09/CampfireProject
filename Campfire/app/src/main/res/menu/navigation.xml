@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_all_users"
+        android:icon="@drawable/ic_security_black_48dp"
+        android:title="Manage Users" />
+
+    <item
+        android:id="@+id/navigation_all_courses"
+        android:icon="@drawable/ic_class_black_48dp"
+        android:title="Manage Courses" />
+
+</menu>

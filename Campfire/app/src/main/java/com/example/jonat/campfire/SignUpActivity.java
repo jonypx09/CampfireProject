@@ -36,11 +36,11 @@ public class SignUpActivity extends AppCompatActivity {
         setTitle("Sign Up");
 
         load = (ProgressBar) findViewById(R.id.signupProgress);
-        createAccountButton = (Button) findViewById(R.id.changePasswordButton);
+        createAccountButton = (Button) findViewById(R.id.createAccountButton);
     }
 
     public void obtainFields(View view){
-        EditText fNameField = (EditText) findViewById(R.id.oldPasswordTextField);
+        EditText fNameField = (EditText) findViewById(R.id.firstNameEditText);
         EditText sNameField = (EditText) findViewById(R.id.newPasswordTextField);
         EditText emailField = (EditText) findViewById(R.id.confirmPassTextField);
         EditText passwordField = (EditText) findViewById(R.id.passwordField);

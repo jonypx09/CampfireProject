@@ -517,14 +517,50 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void refreshCourseList(){
-        Bundle bundle = new Bundle();
-        bundle.putStringArray("identity", newStudentID);
-        Fragment fragment = null;
-        fragment = new MyCoursesFragment();
-        fragment.setArguments(bundle);
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_frame, fragment);
-        ft.commit();
+        handler = new Handler();
+        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setMessage("Please wait....");
+        progressDialog.setTitle("Adding Course");
+        progressDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+                ArrayList<String> courseCodesList = new ArrayList<String>();
+                ArrayList<String> courseNamesList = new ArrayList<String>();
+                ArrayList<String> courseInstructorList = new ArrayList<String>();
+                for (String code: enrolledCourses){
+                    Course current = DbAdapter.getCourse(code);
+                    courseCodesList.add(code);
+                    courseNamesList.add(current.getName());
+                    courseInstructorList.add(current.getInstructor());
+                }
+                courseCodes = new String[courseCodesList.size()];
+                courseCodes = courseCodesList.toArray(courseCodes);
+                courseNames = new String[courseNamesList.size()];
+                courseNames = courseNamesList.toArray(courseNames);
+                courseInstructors = new String[courseInstructorList.size()];
+                courseInstructors = courseInstructorList.toArray(courseInstructors);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        Bundle bundle = new Bundle();
+                        bundle.putStringArray("identity", newStudentID);
+                        bundle.putStringArray("courseCodes", courseCodes);
+                        bundle.putStringArray("courseNames", courseNames);
+                        bundle.putStringArray("courseInstructors", courseInstructors);
+                        bundle.putString("currentCourseCode", currentCourse.getCourseCode());
+                        Fragment fragment = null;
+                        fragment = new MyCoursesFragment();
+                        fragment.setArguments(bundle);
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.content_frame, fragment);
+                        ft.commit();
+                    }
+                });
+            }
+        }).start();
     }
 
     public void loadUsers(ArrayList<Student> users){
