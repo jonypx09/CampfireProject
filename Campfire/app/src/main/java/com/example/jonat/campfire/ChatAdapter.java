@@ -22,15 +22,19 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class ChatAdapter extends ArrayAdapter<ChatMessage> {
+import backend.database.Message;
+
+public class ChatAdapter extends ArrayAdapter<Message> {
 
     private Activity activity;
-    private List<ChatMessage> messages;
+    private List<Message> messages;
+    private String uEmail;
 
-    public ChatAdapter(Activity context, int resource, List<ChatMessage> objects) {
+    public ChatAdapter(Activity context, int resource, List<Message> objects, String uEmail) {
         super(context, resource, objects);
         this.activity = context;
         this.messages = objects;
+        this.uEmail = uEmail;
     }
 
     @Override
@@ -39,10 +43,10 @@ public class ChatAdapter extends ArrayAdapter<ChatMessage> {
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
         int layoutResource = 0; // determined by view type
-        ChatMessage chatMessage = getItem(position);
+        Message chatMessage = getItem(position);
         int viewType = getItemViewType(position);
 
-        if (chatMessage.isMine()) {
+        if (chatMessage.getSender_email().equals(uEmail)) {
             layoutResource = R.layout.in_message_bg;
         } else {
             layoutResource = R.layout.out_message_bg;
@@ -57,7 +61,7 @@ public class ChatAdapter extends ArrayAdapter<ChatMessage> {
         }
 
         //set message content
-        holder.msg.setText(chatMessage.getContent());
+        holder.msg.setText(chatMessage.getText());
 
         return convertView;
     }
