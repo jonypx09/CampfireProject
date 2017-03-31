@@ -18,33 +18,33 @@
         android:enabled="false"
         android:fontFamily="serif"
         android:text="Enter your email address"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/lastNamePrompt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/lastNameEditText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:enabled="false"
         android:fontFamily="serif"
         android:text="Enter your last name:"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/colorPrimary"
+        android:layout_below="@+id/firstNameEditText"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:id="@+id/lastNameEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
         android:ems="10"
         android:enabled="false"
         android:fontFamily="serif"
         android:inputType="textPassword"
         android:maxLength="20"
-        android:textColor="@color/colorAccent" />
+        android:textColor="@color/colorAccent"
+        android:layout_below="@+id/lastNamePrompt"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:id="@+id/emailEditText"
@@ -81,6 +81,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/credentialsRButton"
         android:fontFamily="serif"
+        android:onClick="onRadioButtonClicked"
         android:text="Allow an adminstrator to reset your account"
         android:textColor="@color/white" />
 
@@ -93,6 +94,7 @@
         android:layout_below="@+id/recoveryExplanation"
         android:layout_marginTop="14dp"
         android:fontFamily="serif"
+        android:onClick="onRadioButtonClicked"
         android:text="Enter your account credentials"
         android:textColor="@color/white" />
 
@@ -107,7 +109,7 @@
         android:enabled="false"
         android:fontFamily="serif"
         android:text="Enter your first name:"
-        android:textColor="@android:color/white" />
+        android:textColor="@color/colorPrimary" />
 
     <EditText
         android:id="@+id/firstNameEditText"
@@ -126,15 +128,15 @@
     <View
         android:id="@+id/bottomDivider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:layout_below="@+id/checkCredentialsButton"
-        android:background="@color/colorPrimary" />
+        android:background="@color/white" />
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="2dp"
         android:layout_below="@+id/permissionRButton"
-        android:background="@color/colorPrimary" />
+        android:background="@color/white" />
 
     <Button
         android:id="@+id/checkCredentialsButton"
@@ -149,14 +151,14 @@
         android:id="@+id/permissionExplanation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/bottomDivider"
-        android:layout_marginTop="21dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
         android:enabled="false"
         android:fontFamily="serif"
+        android:paddingLeft="5dp"
         android:text="Use this option only if you are unable to enter your credentials correctly."
-        android:textColor="@color/white" />
+        android:textColor="@color/colorPrimary" />
 
     <Button
         android:id="@+id/requestPermissionButton"

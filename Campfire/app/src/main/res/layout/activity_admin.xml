@@ -28,7 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="serif"
-                android:paddingTop="10dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="15dp"
                 android:text="Welcome to Administrator mode! Here you can check the status of every user as well as perform any admin-related activities, including user deletion."
                 android:textColor="@color/white" />
 
@@ -39,7 +40,8 @@
                 android:fontFamily="serif"
                 android:paddingTop="20dp"
                 android:text="Current User Count:"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/courseCount"
@@ -48,7 +50,8 @@
                 android:fontFamily="serif"
                 android:paddingTop="15dp"
                 android:text="Current Course Count:"
-                android:textColor="@color/colorAccent" />
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <ListView
