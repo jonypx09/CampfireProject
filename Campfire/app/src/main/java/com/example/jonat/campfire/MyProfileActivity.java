@@ -9,7 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import backend.algorithms.Student;
-import backend.database.DatabaseAdapter;
 import backend.database.DbAdapter;
 
 public class MyProfileActivity extends AppCompatActivity {

@@ -1,9 +1,12 @@
 package com.example.jonat.campfire;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -11,6 +14,7 @@ import android.widget.RatingBar;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import backend.algorithms.CSCCoursesCriteria;
 import backend.algorithms.Comparable;
@@ -27,6 +31,7 @@ import static com.example.jonat.campfire.R.id.programmingLanguages;
 public class RatingActivity extends AppCompatActivity {
 
     private String[] newStudentID;
+    private String[] programmingLanguages;
     String uEmail;
     HashMap<String, ArrayList<String>> schedule = new HashMap<>();
 
@@ -45,15 +50,18 @@ public class RatingActivity extends AppCompatActivity {
     private Button btnSubmit;
     private int critLang, critCs, critElec, critHob, critSched;
 
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_rating);
         setTitle("Select Matching Criteria");
 
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
+        programmingLanguages = intent.getExtras().getStringArray("programmingLanguages");
         schedule = (HashMap<String,ArrayList<String>>) intent.getSerializableExtra("schedule");
         uEmail = newStudentID[2];
 
@@ -178,17 +186,35 @@ public class RatingActivity extends AppCompatActivity {
 //                db.addStudent(newStudent);
 //                db.addCourse(newCourse);
 //                db.addToTaking(newStudentID[4], newStudentID[2]);
-                DbAdapter.addStudent(newStudent);
-                try{
-                    DbAdapter.addCourse(newCourse);
-                }catch(Exception e){
+                handler = new Handler();
+                final ProgressDialog progressDialog = new ProgressDialog(RatingActivity.this);
+                progressDialog.setMessage("Please wait....");
+                progressDialog.setTitle("Creating User");
+                progressDialog.show();
+                final Student newStudentCopy = newStudent;
+                final Course newCourseCopy = newCourse;
+                final View vCopy = v;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DbAdapter.addStudent(newStudentCopy);
+                        try{
+                            DbAdapter.addCourse(newCourseCopy);
+                        }catch(Exception e){
 
-                }
-                DbAdapter.enrolStudentInCourse(newStudentID[2], newStudentID[4]);
-
-                Intent mainIntent = new Intent(v.getContext(), MainActivity.class);
-                mainIntent.putExtra("identity", newStudentID);
-                startActivity(mainIntent);
+                        }
+                        DbAdapter.enrolStudentInCourse(newStudentID[2], newStudentID[4]);
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressDialog.dismiss();
+                                Intent mainIntent = new Intent(vCopy.getContext(), MainActivity.class);
+                                mainIntent.putExtra("identity", newStudentID);
+                                startActivity(mainIntent);
+                            }
+                        });
+                    }
+                }).start();
             }
 
         });

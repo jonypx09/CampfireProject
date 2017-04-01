@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import backend.database.DatabaseAdapter;
-
 public class SettingsActivity extends AppCompatActivity {
 
     private String[] newStudentID;

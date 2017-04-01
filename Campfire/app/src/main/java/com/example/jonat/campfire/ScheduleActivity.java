@@ -2,9 +2,9 @@ package com.example.jonat.campfire;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -17,20 +17,14 @@ import java.util.HashMap;
 
 import backend.algorithms.CSCCoursesCriteria;
 import backend.algorithms.Comparable;
-import backend.algorithms.Course;
 import backend.algorithms.ElectivesCriteria;
 import backend.algorithms.HobbiesCriteria;
 import backend.algorithms.ProgrammingLanguagesCriteria;
-import backend.algorithms.ScheduleCriteria;
-import backend.algorithms.Student;
-import backend.database.DatabaseAdapter;
-import backend.database.DbAdapter;
 
 public class ScheduleActivity extends AppCompatActivity implements View.OnClickListener{
 
     private String[] newStudentID;
     private String[] programmingLanguages;
-    DatabaseAdapter db;
 
     private ArrayList<Comparable> newStudentCriteria = new ArrayList<Comparable>();
     private ProgrammingLanguagesCriteria newStudentLanguages;
@@ -64,9 +58,6 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         for (String day: days) {
             schedule.put(day, new ArrayList<String>());
         }
-
-        //Connect to the database
-        db = new DatabaseAdapter(this);
 
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
@@ -155,6 +146,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
             case R.id.submit:
                 Intent mainIntent = new Intent(this, RatingActivity.class);
                 mainIntent.putExtra("identity", newStudentID);
+                mainIntent.putExtra("programmingLanguages", programmingLanguages);
                 mainIntent.putExtra("schedule", schedule);
                 startActivity(mainIntent);
             case R.id.next:

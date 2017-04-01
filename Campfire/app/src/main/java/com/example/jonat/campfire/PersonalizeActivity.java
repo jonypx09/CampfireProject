@@ -13,15 +13,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import backend.algorithms.CSCCoursesCriteria;
-import backend.algorithms.ElectivesCriteria;
-import backend.algorithms.HobbiesCriteria;
-import backend.algorithms.ProgrammingLanguagesCriteria;
-import backend.database.DatabaseAdapter;
-
 public class PersonalizeActivity extends AppCompatActivity {
 
-    DatabaseAdapter db;
     private String[] newStudentID;
     private String[] programmingLanguages = {null, null, null, null, null, null};
 
@@ -39,9 +32,6 @@ public class PersonalizeActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_personalize);
         setTitle("Personalize");
-
-        //Connect to the database
-        db = new DatabaseAdapter(this);
 
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");

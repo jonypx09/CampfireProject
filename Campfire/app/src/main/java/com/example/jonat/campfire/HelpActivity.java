@@ -5,8 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import backend.database.DatabaseAdapter;
-
 public class HelpActivity extends AppCompatActivity {
 
     private String[] newStudentID;

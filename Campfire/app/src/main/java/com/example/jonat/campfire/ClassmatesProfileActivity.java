@@ -3,25 +3,18 @@ package com.example.jonat.campfire;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.CheckedTextView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import backend.algorithms.Student;
-import backend.database.DatabaseAdapter;
 import backend.database.DbAdapter;
 
 public class ClassmatesProfileActivity extends AppCompatActivity {

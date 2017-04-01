@@ -1,12 +1,8 @@
 package com.example.jonat.campfire;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -16,27 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import backend.algorithms.Course;
 import backend.algorithms.Student;
-import backend.database.DatabaseAdapter;
-import backend.database.DbAdapter;
-
-import static com.example.jonat.campfire.MyCampfireFragment.campfireStudents;
 
 public class MyCoursesFragment extends Fragment {
 
     private String[] newStudentID;
-    DatabaseAdapter db;
     private String uEmail;
     private Student uStudent;
     private String currentCourseCode;

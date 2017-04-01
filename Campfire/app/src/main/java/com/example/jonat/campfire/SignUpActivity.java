@@ -14,12 +14,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import backend.algorithms.Student;
-import backend.database.DatabaseAdapter;
 import backend.database.DbAdapter;
 
 public class SignUpActivity extends AppCompatActivity {
-
-    DatabaseAdapter db;
 
     ProgressBar load;
     Button createAccountButton;

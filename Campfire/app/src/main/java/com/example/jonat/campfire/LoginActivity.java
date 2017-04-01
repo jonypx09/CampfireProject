@@ -19,17 +19,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
-import backend.algorithms.CSCCoursesCriteria;
 import backend.algorithms.Comparable;
-import backend.algorithms.Course;
-import backend.algorithms.ElectivesCriteria;
-import backend.algorithms.HobbiesCriteria;
-import backend.algorithms.ProgrammingLanguagesCriteria;
-import backend.algorithms.ScheduleCriteria;
 import backend.algorithms.Student;
-import backend.database.DatabaseAdapter;
 import backend.database.DbAdapter;
 
 public class LoginActivity extends AppCompatActivity {

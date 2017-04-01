@@ -12,18 +12,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import backend.database.Chat;
-import backend.database.DatabaseAdapter;
 import backend.database.Message;
 
 import static backend.database.DbAdapter.getChat;
 
 public class MessengerActivity extends AppCompatActivity {
 
-    DatabaseAdapter db;
     private String[] newStudentID;
     private String uEmail;
     private Chat curChat;
@@ -39,9 +36,6 @@ public class MessengerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messenger);
-
-        //Connect to the database
-        db = new DatabaseAdapter(this);
 
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
