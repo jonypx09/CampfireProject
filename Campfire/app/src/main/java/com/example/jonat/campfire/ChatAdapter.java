@@ -50,6 +50,7 @@ public class ChatAdapter extends ArrayAdapter<Message> {
         }
 
         int viewType = getItemViewType(position);
+
         if (chatMessage.getSender_email().equals(uEmail)) {
             layoutResource = R.layout.in_message_bg;
         } else {
