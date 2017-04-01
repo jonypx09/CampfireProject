@@ -25,6 +25,8 @@ import java.util.Random;
 import backend.algorithms.Student;
 
 
+
+import static backend.database.DbAdapter.newChat;
 import static com.example.jonat.campfire.HomeFragment.loadedStudents;
 import static com.example.jonat.campfire.HomeFragment.swipedRight;
 
@@ -52,11 +54,13 @@ public class TinderCard {
     private Context mContext;
     private SwipePlaceHolderView mSwipeView;
     private Student student;
+    private String uEmail;
 
-    public TinderCard(Context context, SwipePlaceHolderView swipeView, Student student) {
+    public TinderCard(Context context, SwipePlaceHolderView swipeView, Student student, String uEmail) {
         this.mContext = context;
         this.mSwipeView = swipeView;
         this.student = student;
+        this.uEmail = uEmail;
 
         if (!(student.equals(null))) {
             loadedStudents.add(student);
@@ -104,6 +108,8 @@ public class TinderCard {
     private void onSwipeIn(){
         if (!swipedYet(this.student)) {
             swipedRight.add(this.student);
+
+            newChat(uEmail,this.student.getEmail());
         }
         Log.d("EVENT", "onSwipedIn");
     }

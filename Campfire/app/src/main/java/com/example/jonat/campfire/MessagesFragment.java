@@ -11,10 +11,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import backend.algorithms.Student;
+import backend.database.Chat;
 import backend.database.DatabaseAdapter;
+import backend.database.DbAdapter;
+import backend.database.Message;
 
+import static backend.database.DbAdapter.getAllChatsForUser;
 import static com.example.jonat.campfire.HomeFragment.swipedRight;
 
 /**
@@ -28,6 +33,7 @@ public class MessagesFragment extends Fragment{
     private String uEmail;
     private ListView listView;
     private String messengers[];
+    private List<Chat> chats;
 
     private String display[];
 
@@ -41,26 +47,30 @@ public class MessagesFragment extends Fragment{
         newStudentID = getArguments().getStringArray("identity");
         uEmail = newStudentID[2];
 
-        //TODO: Change this from local to integrated with database.
-        ArrayList<Student> peopleToMessage = swipedRight;
-        messengers = new String[peopleToMessage.size()];
-        display = new String[peopleToMessage.size()];
-        imageid = new Integer[peopleToMessage.size()];
+        chats = getAllChatsForUser(uEmail);
+        messengers = new String[chats.size()];
+        display = new String[chats.size()];
+        imageid = new Integer[chats.size()];
+
+        //TODO: need to get messenger name from the chat even if there exists no messages
         int i = 0;
-        for (Student s : peopleToMessage) {
-            messengers[i] = s.getFname();
-            display[i] = "";
+        for (Chat c : chats) {
+            if (c.getMessages().size() != 0) {
+                for (Message m : c.getMessages()) {
+                    if (m.getSender_email() != uEmail) {
+                        //messengers[i] = String.valueOf(m.getSender_email());
+                        messengers[i] = String.valueOf(c.getChatID());
+                        break;
+                    }
+                }
+                display[i] = String.valueOf(c.getMessages().get(c.getMessages().size() - 1).getText());
+            } else {
+                display[i] = "";
+                messengers[i] = String.valueOf(c.getChatID());
+            }
             imageid[i] = R.drawable.person_icon;
             i++;
         }
-        //Temporary until we get messages.
-        if (display.length > 0) {
-            display[0] = "Hey! Are you looking for someone good at Web Dev?";
-        }
-        if (display.length > 1) {
-            display[1] = "Yo, what's up dude?";
-        }
-
         //returning our layout file
         return inflater.inflate(R.layout.fragment_messages, container, false);
     }
@@ -80,6 +90,7 @@ public class MessagesFragment extends Fragment{
                 Intent intent = new Intent(getActivity(), MessengerActivity.class);
                 //intent.putExtra(); for when we are passing which messages to look at
                 intent.putExtra("identity", newStudentID);
+                intent.putExtra("chatid", messengers[i]);
                 startActivity(intent);
             }
         });
