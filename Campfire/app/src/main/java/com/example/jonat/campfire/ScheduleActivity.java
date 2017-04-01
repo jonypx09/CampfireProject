@@ -154,7 +154,7 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         switch(v.getId())
         {
             case R.id.submit:
-
+                //TODO: Change
                 /**
                  * 1. Create the comparables associated with the student's preferences (Refer to
                  *    the comment above to determine which index of newStudentID to use.
@@ -164,26 +164,26 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
                  */
                 Course newCourse = new Course(newStudentID[3], "Some Course Name", "Some Instructor");
                 ArrayList<String> programmingLang = new ArrayList(Arrays.asList(programmingLanguages));
-                newStudentLanguages = new ProgrammingLanguagesCriteria(programmingLang);
+                newStudentLanguages = new ProgrammingLanguagesCriteria(programmingLang, 1);
 
                 ArrayList<String> previousCourses = new ArrayList<String>();
                 previousCourses.add(0, newStudentID[5]);
-                newStudentPreviousCourses = new CSCCoursesCriteria(previousCourses);
+                newStudentPreviousCourses = new CSCCoursesCriteria(previousCourses, 1);
 
                 ArrayList<String> electiveCourses = new ArrayList<String>();
                 electiveCourses.add(0, newStudentID[6]);
-                newStudentElectives = new ElectivesCriteria(electiveCourses);
+                newStudentElectives = new ElectivesCriteria(electiveCourses, 1);
 
                 ArrayList<String> pastime = new ArrayList<String>();
                 pastime.add(0, newStudentID[7]);
-                newStudentHobbies = new HobbiesCriteria(pastime);
+                newStudentHobbies = new HobbiesCriteria(pastime, 1);
 
                 newStudentCriteria.add(newStudentLanguages);
                 newStudentCriteria.add(newStudentPreviousCourses);
                 newStudentCriteria.add(newStudentElectives);
                 newStudentCriteria.add(newStudentHobbies);
                 
-                ScheduleCriteria sc = new ScheduleCriteria(schedule);
+                ScheduleCriteria sc = new ScheduleCriteria(schedule, 1);
                 newStudentCriteria.add(sc);
 
                 /**

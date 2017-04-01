@@ -10,8 +10,8 @@ public class ProgrammingLanguagesCriteria extends ArrayCriteria<String>{
 	private static final long serialVersionUID = 1952358793540268673L;
 	private final String ID = "Programming Languages";
 
-	public ProgrammingLanguagesCriteria(ArrayList<String> checks) {
-		super(checks);
+	public ProgrammingLanguagesCriteria(ArrayList<String> checks, int preference) {
+		super(checks, preference);
 	}
 
 	

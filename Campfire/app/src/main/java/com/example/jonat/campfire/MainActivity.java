@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -38,6 +39,8 @@ import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.Random;
 
 import backend.algorithms.Course;
 import backend.algorithms.Student;
@@ -595,7 +598,14 @@ public class MainActivity extends AppCompatActivity
                         String userInput = input.toString();
                         int size = Integer.parseInt(userInput);
                         if (size != 0){
-                            uStudent.createGroup(currentCourse, groupName, size);
+                            // TODO: Should generate actual distinct ID, instead of using rand.
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                uStudent.createGroup(currentCourse, groupName, size, ThreadLocalRandom.current().nextInt(0, 1000000000));
+                            }
+                            else {
+                                Random rand = new Random();
+                                uStudent.createGroup(currentCourse, groupName, size, rand.nextInt(1000000000));
+                            }
                             DbAdapter.updateStudent(uStudent);
                             refreshGroupList();
                         }else{

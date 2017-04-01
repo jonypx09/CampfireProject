@@ -13,13 +13,12 @@ public class CSCCoursesCriteria extends ArrayCriteria<String>{
 	/*
 	 * Calls super to get the ArrayCriteria and then overrides the methods.
 	 */
-	public CSCCoursesCriteria(ArrayList<String> checks) {
-		super(checks);
+	public CSCCoursesCriteria(ArrayList<String> checks, int preference) {
+		super(checks, preference);
 	}
 
 	@Override
 	public String getID() {
-		
 		return this.ID;
 	}
 	

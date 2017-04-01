@@ -2,7 +2,7 @@ package backend.algorithms;
 
 import java.util.ArrayList;
 
-public class HobbiesCriteria extends ArrayCriteria {
+public class HobbiesCriteria extends ArrayCriteria<String> {
 	
 	/**
 	 * ID was matched
@@ -10,9 +10,8 @@ public class HobbiesCriteria extends ArrayCriteria {
 	private static final long serialVersionUID = 1952358793540268673L;
 	public final String ID = "Hobbies";
 
-	public HobbiesCriteria(ArrayList<String> checks) {
-		super(checks);
-		
+	public HobbiesCriteria(ArrayList<String> checks, int preference) {
+		super(checks, preference);	
 	}
 
 	@Override
