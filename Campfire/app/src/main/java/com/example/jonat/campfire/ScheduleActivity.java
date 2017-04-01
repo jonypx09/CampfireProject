@@ -92,7 +92,6 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         nextButton.setOnClickListener(this);
         submitButton = (Button) findViewById(R.id.submit);
         submitButton.setOnClickListener(this);
-        submitButton.setBackgroundColor(Color.GREEN);
         twelveam = (Button) findViewById(R.id.twelveam);
         twelveam.setOnClickListener(this);
         oneam = (Button) findViewById(R.id.oneam);
@@ -154,56 +153,9 @@ public class ScheduleActivity extends AppCompatActivity implements View.OnClickL
         switch(v.getId())
         {
             case R.id.submit:
-                //TODO: Change
-                /**
-                 * 1. Create the comparables associated with the student's preferences (Refer to
-                 *    the comment above to determine which index of newStudentID to use.
-                 * 2. Create a new Student Object as well as Course Object
-                 * 2. Import into Database
-                 * 3. Perform matching in the MainActivity, not here
-                 */
-                Course newCourse = new Course(newStudentID[3], "Some Course Name", "Some Instructor");
-                ArrayList<String> programmingLang = new ArrayList(Arrays.asList(programmingLanguages));
-                newStudentLanguages = new ProgrammingLanguagesCriteria(programmingLang, 1);
-
-                ArrayList<String> previousCourses = new ArrayList<String>();
-                previousCourses.add(0, newStudentID[5]);
-                newStudentPreviousCourses = new CSCCoursesCriteria(previousCourses, 1);
-
-                ArrayList<String> electiveCourses = new ArrayList<String>();
-                electiveCourses.add(0, newStudentID[6]);
-                newStudentElectives = new ElectivesCriteria(electiveCourses, 1);
-
-                ArrayList<String> pastime = new ArrayList<String>();
-                pastime.add(0, newStudentID[7]);
-                newStudentHobbies = new HobbiesCriteria(pastime, 1);
-
-                newStudentCriteria.add(newStudentLanguages);
-                newStudentCriteria.add(newStudentPreviousCourses);
-                newStudentCriteria.add(newStudentElectives);
-                newStudentCriteria.add(newStudentHobbies);
-                
-                ScheduleCriteria sc = new ScheduleCriteria(schedule, 1);
-                newStudentCriteria.add(sc);
-
-                /**
-                 * The last argument should NOT be null; it is there to keep Gradle happy :P
-                 */
-                Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], newStudentCriteria);
-                newCourse.addStudent(newStudent);
-//                db.addStudent(newStudent);
-//                db.addCourse(newCourse);
-//                db.addToTaking(newStudentID[4], newStudentID[2]);
-                DbAdapter.addStudent(newStudent);
-                try{
-                    DbAdapter.addCourse(newCourse);
-                }catch(Exception e){
-
-                }
-                DbAdapter.enrolStudentInCourse(newStudentID[2], newStudentID[4]);
-
-                Intent mainIntent = new Intent(this, MainActivity.class);
+                Intent mainIntent = new Intent(this, RatingActivity.class);
                 mainIntent.putExtra("identity", newStudentID);
+                mainIntent.putExtra("schedule", schedule);
                 startActivity(mainIntent);
             case R.id.next:
                 if (daynum != 6) {

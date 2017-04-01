@@ -43,7 +43,7 @@ public class MessagesFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //System.out.println(swipedRight);
+
         newStudentID = getArguments().getStringArray("identity");
         uEmail = newStudentID[2];
 
