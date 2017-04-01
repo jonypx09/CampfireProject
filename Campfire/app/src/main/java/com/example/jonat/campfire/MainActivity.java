@@ -5,11 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -17,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuInflater;
 import android.view.View;
@@ -35,7 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,14 +41,12 @@ import java.util.Random;
 
 import backend.algorithms.Course;
 import backend.algorithms.Student;
-import backend.database.DatabaseAdapter;
 import backend.database.DbAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiscoverFragment.usersLoadedListener{
 
     private String[] newStudentID;
-    DatabaseAdapter db;
     NavigationView navigationView;
 
     static final String STATE_EMAIL = "email";
@@ -107,6 +102,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 uStudent = DbAdapter.getStudent(uEmail);
+                Log.d("######", uStudent.getFname() + "\n" + uStudent.getCriteria());
                 uName = uStudent.getFname() + " " + uStudent.getLname();
                 List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
                 currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));

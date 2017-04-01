@@ -1,14 +1,9 @@
 package backend.database;
 
-import android.location.Criteria;
-
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import backend.algorithms.Assignment;
-import backend.algorithms.AssignmentGroup;
 import backend.algorithms.Comparable;
 import backend.algorithms.Course;
 import backend.algorithms.Student;
@@ -32,6 +27,9 @@ public class DbAdapter {
                 return new ArrayList<Comparable>();
             } else {
                 comparables = (ArrayList<Comparable>) Serializer.deserialize(serialized_comparable);
+                if (comparables == null){
+                    return new ArrayList<Comparable>();
+                }
             }
             return comparables;
         } catch (Exception e){
@@ -358,6 +356,9 @@ public class DbAdapter {
         return course_codes;
     }
 
+    /* ---------- GROUP QUERIES ----------- */
+
+    //TODO
 
     /* ---------- CHAT QUERIES ---------- */
 
@@ -372,6 +373,23 @@ public class DbAdapter {
             throw new IllegalArgumentException();
         }
         return stu.getFname() + " " + stu.getLname().charAt(0) + ".";
+    }
+
+    public static boolean userInChat(String email, int chat_id){
+        List<String> args = new ArrayList<>();
+        args.add(email);
+        ResultDatabaseThread thread = new ResultDatabaseThread(
+                "SELECT * FROM chats WHERE chat_id = " + Integer.toString(chat_id) + " AND email = ?",
+                args
+        );
+        thread.execute();
+        try {
+            ResultSet rs = thread.get();
+            return rs.next();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static void newChat(String email_user1, String email_user2){
@@ -471,5 +489,42 @@ public class DbAdapter {
             e.printStackTrace();
         }
         return chats;
+    }
+
+    public static void addMessage(int chat_id, String sender_email, String msg_text){
+        // Check if the chat exists
+        if (!chatExists(chat_id)){
+            throw new IllegalArgumentException();
+        }
+        // Check if student exists in the chat
+        if (!userInChat(sender_email, chat_id)){
+            throw new IllegalArgumentException();
+        }
+        List<String> args = new ArrayList<>();
+        args.add(sender_email);
+        args.add(msg_text);
+        UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                "INSERT INTO chat_line VALUES(" + Integer.toString(chat_id) + ",?,?)",
+                args
+        );
+        thread.execute();
+    }
+
+    public static void addStudentToChat(int chat_id, String email){
+        // Check if the student exists
+        if (getStudent(email) == null){
+            throw new IllegalArgumentException();
+        }
+        // Check if chat exists
+        if (!chatExists(chat_id)){
+            throw new IllegalArgumentException();
+        }
+        List<String> args = new ArrayList<>();
+        args.add(email);
+        UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                "INSERT INTO chats VALUES (" + Integer.toString(chat_id) + ",?)",
+                args
+        );
+        thread.execute();
     }
 }

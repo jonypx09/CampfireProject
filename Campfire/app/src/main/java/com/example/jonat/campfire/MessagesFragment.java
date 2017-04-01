@@ -10,17 +10,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import backend.algorithms.Student;
 import backend.database.Chat;
-import backend.database.DatabaseAdapter;
-import backend.database.DbAdapter;
 import backend.database.Message;
 
 import static backend.database.DbAdapter.getAllChatsForUser;
-import static com.example.jonat.campfire.HomeFragment.swipedRight;
 
 /**
  * Created by jonat on 25-Feb-2017.
@@ -29,7 +24,6 @@ import static com.example.jonat.campfire.HomeFragment.swipedRight;
 public class MessagesFragment extends Fragment{
 
     private String[] newStudentID;
-    DatabaseAdapter db;
     private String uEmail;
     private ListView listView;
     private String messengers[];
@@ -94,9 +88,6 @@ public class MessagesFragment extends Fragment{
                 startActivity(intent);
             }
         });
-
-        //Connect to the database
-        db = new DatabaseAdapter(getActivity());
 
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Messages");

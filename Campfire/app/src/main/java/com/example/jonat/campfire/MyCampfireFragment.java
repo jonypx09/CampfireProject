@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -23,8 +22,6 @@ import backend.algorithms.CampfireGroup;
 import backend.algorithms.Comparable;
 import backend.algorithms.Course;
 import backend.algorithms.Student;
-import backend.database.DatabaseAdapter;
-import backend.database.DbAdapter;
 
 public class MyCampfireFragment extends Fragment {
 

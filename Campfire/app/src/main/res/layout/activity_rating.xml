@@ -2,93 +2,105 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:gravity="center_vertical">
+    android:background="@color/colorPrimaryDark"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/lblLanguages"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:paddingTop="15dp"
         android:text="Programming Languages"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white" />
 
     <RatingBar
         android:id="@+id/ratingBarLang"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:numStars="5"
-        android:stepSize="1.0"
-        android:rating="1.0"/>
+        android:rating="1.0"
+        android:stepSize="1.0" />
 
     <TextView
         android:id="@+id/lblPrevCs"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="serif"
+        android:gravity="center"
         android:text="Previous Computer Science Courses"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white" />
 
     <RatingBar
         android:id="@+id/ratingBarCs"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:numStars="5"
-        android:stepSize="1.0"
-        android:rating="1.0" />
+        android:rating="1.0"
+        android:stepSize="1.0" />
 
     <TextView
         android:id="@+id/lblElective"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="serif"
+        android:gravity="center"
         android:text="Previous Elective Course"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white" />
 
     <RatingBar
         android:id="@+id/ratingBarElec"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:numStars="5"
-        android:stepSize="1.0"
-        android:rating="1.0" />
+        android:rating="1.0"
+        android:stepSize="1.0" />
 
     <TextView
         android:id="@+id/lblHobby"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="serif"
+        android:gravity="center"
         android:text="Hobby"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white" />
 
     <RatingBar
         android:id="@+id/ratingBarHob"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:numStars="5"
-        android:stepSize="1.0"
-        android:rating="1.0" />
+        android:rating="1.0"
+        android:stepSize="1.0" />
 
     <TextView
         android:id="@+id/lblSchedule"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="serif"
+        android:gravity="center"
         android:text="Schedule"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/white" />
 
     <RatingBar
         android:id="@+id/ratingBarSched"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:numStars="5"
-        android:stepSize="1.0"
-        android:rating="1.0" />
+        android:rating="1.0"
+        android:stepSize="1.0" />
 
     <Button
         android:id="@+id/done"

@@ -1,6 +1,5 @@
 package com.example.jonat.campfire;
 
-import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,17 +7,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -31,8 +25,6 @@ import java.util.List;
 import backend.algorithms.Comparable;
 import backend.algorithms.Course;
 import backend.algorithms.Student;
-import backend.database.DatabaseAdapter;
-import backend.database.DbAdapter;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.jonat.campfire.MyCampfireFragment.campfireStudents;
