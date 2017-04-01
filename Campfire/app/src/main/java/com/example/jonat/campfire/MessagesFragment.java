@@ -58,10 +58,12 @@ public class MessagesFragment extends Fragment{
             if (c.getMessages().size() != 0) {
                 for (Message m : c.getMessages()) {
                     if (m.getSender_email() != uEmail) {
-                        messengers[i] = String.valueOf(m);
+                        //messengers[i] = String.valueOf(m.getSender_email());
+                        messengers[i] = String.valueOf(c.getChatID());
+                        break;
                     }
                 }
-                display[i] = String.valueOf(c.getMessages().get(0));
+                display[i] = String.valueOf(c.getMessages().get(c.getMessages().size() - 1).getText());
             } else {
                 display[i] = "";
                 messengers[i] = String.valueOf(c.getChatID());

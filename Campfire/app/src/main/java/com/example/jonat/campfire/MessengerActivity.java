@@ -1,5 +1,6 @@
 package com.example.jonat.campfire;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class MessengerActivity extends AppCompatActivity {
     boolean isMine = true;
     private List<Message> chatMessages;
     private ArrayAdapter<Message> adapter;
+    private Activity temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +52,12 @@ public class MessengerActivity extends AppCompatActivity {
         setTitle(String.valueOf(curChat.getChatID()));
 
         chatMessages = curChat.getMessages();
-        System.out.println(chatMessages);
 
         listView = (ListView) findViewById(R.id.list_msg);
         btnSend = (ImageView) findViewById(R.id.btn_chat_send);
         editText = (EditText) findViewById(R.id.msg_type);
 
+        temp = this;
         //set ListView adapter first
         adapter = new ChatAdapter(this, R.layout.in_message_bg, curChat.getMessages(), uEmail);
         listView.setAdapter(adapter);
@@ -71,7 +73,8 @@ public class MessengerActivity extends AppCompatActivity {
                     //TODO: need to be able to add messages to online database
                     Message m = new Message(uEmail, editText.getText().toString(), String.valueOf(new java.util.Date()));
                     curChat.addMessage(m);
-                    adapter.notifyDataSetChanged();
+                    adapter = new ChatAdapter(temp, R.layout.in_message_bg, curChat.getMessages(), uEmail);
+                    listView.setAdapter(adapter);
                     editText.setText("");
                 }
             }

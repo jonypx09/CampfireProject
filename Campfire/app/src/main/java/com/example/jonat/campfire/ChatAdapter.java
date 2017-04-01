@@ -30,10 +30,10 @@ public class ChatAdapter extends ArrayAdapter<Message> {
     private List<Message> messages;
     private String uEmail;
 
-    public ChatAdapter(Activity context, int resource, List<Message> objects, String uEmail) {
-        super(context, resource, objects);
+    public ChatAdapter(Activity context, int resource, List<Message> messages, String uEmail) {
+        super(context, resource, messages);
         this.activity = context;
-        this.messages = objects;
+        this.messages = messages;
         this.uEmail = uEmail;
     }
 
@@ -44,8 +44,12 @@ public class ChatAdapter extends ArrayAdapter<Message> {
 
         int layoutResource = 0; // determined by view type
         Message chatMessage = getItem(position);
-        int viewType = getItemViewType(position);
 
+        if (chatMessage.equals(messages.get(messages.size() - 1))) {
+            chatMessage = messages.get(messages.size() - 1);
+        }
+
+        int viewType = getItemViewType(position);
         if (chatMessage.getSender_email().equals(uEmail)) {
             layoutResource = R.layout.in_message_bg;
         } else {
