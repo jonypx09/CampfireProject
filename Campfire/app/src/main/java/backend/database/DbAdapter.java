@@ -2,6 +2,7 @@ package backend.database;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -90,6 +91,51 @@ public class DbAdapter {
         return 0;
     }
 
+    /**
+     * Add a match of students in the database.
+     * @param email of the student who accepted the other student
+     * @param course_name what course these two students are in
+     * @param email_matched the student that has been selected by the other
+     */
+    private static void addMatch(String email, String course_name, String email_matched){
+        // Make sure that students exists and that course exists
+        if (getStudent(email) == null || getCourse(course_name) == null ||
+                getStudent(email_matched) == null){
+            return;
+        }
+        List<String> args = new ArrayList<>();
+        args.add(email);
+        args.add(course_name);
+        args.add(email_matched);
+        UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                "INSERT INTO matched VALUES (?,?,?)",
+                args
+        );
+        thread.execute();
+    }
+
+    /**
+     * Add a students matched pairs into the database
+     * @param email of the student
+     * @param matches map of all the students matches
+     */
+    private static void addMatchedPairs(String email, Map<String, List<Student>> matches){
+        // Delete previous matches
+        List<String> args = new ArrayList<>();
+        args.add(email);
+        UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                "DELETE FROM matched WHERE email = ?",
+                args
+        );
+        thread.execute();
+        // Add all students matches in the database
+        for(String course_name : matches.keySet()){
+            for (Student s : matches.get(course_name)){
+                addMatch(email, course_name, s.getEmail());
+            }
+        }
+    }
+
     /* ---------- STUDENT QUERIES ---------- */
 
     /**
@@ -113,6 +159,9 @@ public class DbAdapter {
                 "INSERT INTO student VALUES (?, ?, ?, ?, ?, ?)", args
         );
         udb.execute();
+
+        // Add all of the students matches
+        addMatchedPairs(student.getEmail(), student.getMatchedStudents());
     }
 
     /**
@@ -138,6 +187,13 @@ public class DbAdapter {
                         rs.getString("pass"),
                         comparableDeserializer(rs.getString("comparable"))
                 );
+                student.setDescription(rs.getString("description"));
+
+                // Add all matches to this students matches
+                Map<String, ArrayList<Student>> matches = DbAdapter.getMatchedMap(email);
+                for (String course_name : matches.keySet()){
+                    student.getAvailablematches().put(course_name, matches.get(course_name));
+                }
             }
             return student;
         } catch (Exception e){
@@ -167,6 +223,12 @@ public class DbAdapter {
                         comparableDeserializer(rs.getString("comparable"))
                 );
                 student.setDescription(rs.getString("description"));
+
+                // Add all matches to this students matches
+                Map<String, ArrayList<Student>> matches = DbAdapter.getMatchedMap(student.getEmail());
+                for (String course_name : matches.keySet()){
+                    student.getAvailablematches().put(course_name, matches.get(course_name));
+                }
 
                 student_list.add(student);
             }
@@ -217,6 +279,43 @@ public class DbAdapter {
                 args
         );
         thread.execute();
+
+        // Update this students matched pairs
+        addMatchedPairs(student.getEmail(), student.getMatchedStudents());
+    }
+
+    /**
+     * Get a students matches.
+     * @param email of the student
+     * @return a Map of all the students matches
+     */
+    public static Map<String, ArrayList<Student>> getMatchedMap(String email){
+        Map<String, ArrayList<Student>> matches = new HashMap<>();
+        List<String> args = new ArrayList<>();
+        args.add(email);
+        ResultDatabaseThread thread = new ResultDatabaseThread(
+                "SELECT * FROM matched WHERE email = ?",
+                args
+        );
+        thread.execute();
+        try {
+            ResultSet rs = thread.get();
+            while (rs.next()){
+                String course_name = rs.getString("code");
+                String matched_with = rs.getString("matched_with");
+                if (matches.containsKey(course_name)){
+                    matches.get(course_name).add(getStudent(matched_with));
+                } else {
+                    ArrayList<Student> stu_list = new ArrayList<>();
+                    stu_list.add(getStudent(matched_with));
+                    matches.put(course_name, stu_list);
+                }
+            }
+            return matches;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return matches;
     }
 
     /* ---------- COURSE QUERIES ---------- */
@@ -227,13 +326,13 @@ public class DbAdapter {
      */
     public static void addCourse(Course course){
         // Check if the course already exists
-        if (getCourse(course.getCourseCode()) != null){
+        if (getCourse(course.getName()) != null){
             throw new IllegalArgumentException();
         }
 
         List<String> args = new ArrayList<String>();
-        args.add(course.getCourseCode());
         args.add(course.getName());
+        args.add(course.getDescription());
         args.add(course.getInstructor());
         UpdateDatabaseThread thread  = new UpdateDatabaseThread(
                 "INSERT INTO course VALUES (?,?,?)", args
@@ -242,7 +341,7 @@ public class DbAdapter {
 
         // Add all this courses students to be enrolled in this course
         for (Student stu : course.getStudents()){
-            enrolStudentInCourse(stu.getEmail(), course.getCourseCode());
+            enrolStudentInCourse(stu.getEmail(), course.getName());
         }
     }
 
@@ -269,7 +368,7 @@ public class DbAdapter {
                 );
 
                 // Get all the students enrolled in this course and add them to course
-                ArrayList<Student> stu_list = getAllStudentsInCourse(course.getCourseCode());
+                ArrayList<Student> stu_list = getAllStudentsInCourse(course.getName());
                 for (Student stu : stu_list){
                     course.addStudent(stu);
                 }
@@ -301,7 +400,7 @@ public class DbAdapter {
                 );
 
                 // Get all the students enrolled in this course and add them to course
-                ArrayList<Student> stu_list = getAllStudentsInCourse(course.getCourseCode());
+                ArrayList<Student> stu_list = getAllStudentsInCourse(course.getName());
                 for (Student stu : stu_list){
                     course.addStudent(stu);
                 }
@@ -532,6 +631,23 @@ public class DbAdapter {
         thread.execute();
     }
 
+    /**
+     * Remove a student from a group/
+     * @param email of the student to be removed
+     * @param group_id of the group to remove student from
+     */
+    public static void removeStudentFromGroup(String email, int group_id){
+        if (getStudent(email) == null ||getGroup(group_id) == null){
+            return;
+        }
+        List<String> args = new ArrayList<>();
+        args.add(email);
+        UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                "DELETE FROM group_membership WHERE email = ? AND group_id = " + Integer.toString(group_id),
+                args
+        );
+        thread.execute();
+    }
 
     /* ---------- CHAT QUERIES ---------- */
 
@@ -738,7 +854,7 @@ public class DbAdapter {
         thread.execute();
     }
 
-        /* ---------- PIN QUERIES ---------- */
+    /* ---------- PIN QUERIES ---------- */
 
     private static void insertPinCourse(String code, String pin){
         // Make sure that the course exists
@@ -782,7 +898,7 @@ public class DbAdapter {
         thread.execute();
 
         for (String pin : pins.keySet()){
-            insertPinCourse(pins.get(pin).getCourseCode(), pin);
+            insertPinCourse(pins.get(pin).getName(), pin);
         }
     }
 
@@ -854,3 +970,5 @@ public class DbAdapter {
         return pg;
     }
 }
+
+

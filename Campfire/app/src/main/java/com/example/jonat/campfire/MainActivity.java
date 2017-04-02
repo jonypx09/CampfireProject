@@ -42,7 +42,10 @@ import java.util.Random;
 import backend.algorithms.CampfireGroup;
 import backend.algorithms.Course;
 import backend.algorithms.Student;
+import backend.database.Chat;
 import backend.database.DbAdapter;
+
+import static backend.database.DbAdapter.getAllChatsForUser;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DiscoverFragment.usersLoadedListener{
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity
     private List<String> enrolledCourses;
 
     private List<CampfireGroup> currentGroups;
+    private List<Chat> chats;
 
     private Handler handler;
 
@@ -99,13 +103,57 @@ public class MainActivity extends AppCompatActivity
         handler = new Handler();
         final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setMessage("Please wait....");
-        progressDialog.setTitle("Retrieving Data");
+        progressDialog.setTitle("Retrieving User Data");
         progressDialog.show();
+
+        final ProgressDialog matchesDialog = new ProgressDialog(MainActivity.this);
+        matchesDialog.setMessage("Please wait....");
+        matchesDialog.setTitle("Loading Matches");
+
         new Thread(new Runnable() {
             @Override
             public void run() {
                 uStudent = DbAdapter.getStudent(uEmail);
                 uName = uStudent.getFname() + " " + uStudent.getLname();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        matchesDialog.show();
+                    }
+                });
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
+                ArrayList<String> courseCodesList = new ArrayList<String>();
+                ArrayList<String> courseNamesList = new ArrayList<String>();
+                ArrayList<String> courseInstructorList = new ArrayList<String>();
+                for (String code: enrolledCourses){
+                    Course current = DbAdapter.getCourse(code);
+                    courseCodesList.add(code);
+                    courseNamesList.add(current.getName());
+                    courseInstructorList.add(current.getInstructor());
+                }
+                courseCodes = new String[courseCodesList.size()];
+                courseCodes = courseCodesList.toArray(courseCodes);
+                courseNames = new String[courseNamesList.size()];
+                courseNames = courseNamesList.toArray(courseNames);
+                courseInstructors = new String[courseInstructorList.size()];
+                courseInstructors = courseInstructorList.toArray(courseInstructors);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                    }
+                });
+            }
+        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
                 List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
                 currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
 
@@ -126,33 +174,19 @@ public class MainActivity extends AppCompatActivity
                 classmatesNames = classmatesNamesList.toArray(classmatesNames);
                 classmatesEmails = new String[classmatesEmailsList.size()];
                 classmatesEmails = classmatesEmailsList.toArray(classmatesEmails);
-
-                ArrayList<String> courseCodesList = new ArrayList<String>();
-                ArrayList<String> courseNamesList = new ArrayList<String>();
-                ArrayList<String> courseInstructorList = new ArrayList<String>();
-                for (String code: enrolledCourses){
-                    Course current = DbAdapter.getCourse(code);
-                    courseCodesList.add(code);
-                    courseNamesList.add(current.getName());
-                    courseInstructorList.add(current.getInstructor());
-                }
-                courseCodes = new String[courseCodesList.size()];
-                courseCodes = courseCodesList.toArray(courseCodes);
-                courseNames = new String[courseNamesList.size()];
-                courseNames = courseNamesList.toArray(courseNames);
-                courseInstructors = new String[courseInstructorList.size()];
-                courseInstructors = courseInstructorList.toArray(courseInstructors);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
                         renderData(toolbar);
-                        progressDialog.dismiss();
+                        matchesDialog.dismiss();
                     }
                 });
             }
         }).start();
         getGroups(uEmail);
+        processChats(uEmail);
     }
+
 
     public void renderData(Toolbar toolbar){
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -171,7 +205,7 @@ public class MainActivity extends AppCompatActivity
         emailHeader.setText(uEmail);
         nameHeader.setText(uName);
 
-        courseHeader.setText("Current Course: " + currentCourse.getCourseCode());
+        courseHeader.setText("Current Course: " + currentCourse.getName());
 
         displaySelectedScreen(R.id.nav_home);
 
@@ -200,6 +234,25 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         }).start();
+    }
+
+    public void processChats(final String email){
+        handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                chats = getAllChatsForUser(uEmail);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public List<Chat> getChats(){
+        return this.chats;
     }
 
     public List<CampfireGroup> getCurrentGroups(){
@@ -322,7 +375,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_my_campfire:
                 fragment = new MyCampfireFragment();
-                bundle.putString("currentCourse", currentCourse.getCourseCode());
+                bundle.putString("currentCourse", currentCourse.getName());
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_add_box_white_48dp));
                 myCoursesIsOpen = false;
@@ -339,7 +392,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_home:
                 setTitle("Home");
                 fragment = new HomeFragment();
-                bundle.putString("currentCourse", currentCourse.getCourseCode());
+                bundle.putString("currentCourse", currentCourse.getName());
                 fragment.setArguments(bundle);
                 myCampfireIsOpen = false;
                 if (myCoursesIsOpen){
@@ -352,7 +405,7 @@ public class MainActivity extends AppCompatActivity
                 bundle.putStringArray("courseCodes", courseCodes);
                 bundle.putStringArray("courseNames", courseNames);
                 bundle.putStringArray("courseInstructors", courseInstructors);
-                bundle.putString("currentCourseCode", currentCourse.getCourseCode());
+                bundle.putString("currentCourseCode", currentCourse.getName());
                 fragment.setArguments(bundle);
                 mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_add_circle_white_48dp));
                 myCoursesIsOpen = true;
@@ -583,7 +636,7 @@ public class MainActivity extends AppCompatActivity
                         bundle.putStringArray("courseCodes", courseCodes);
                         bundle.putStringArray("courseNames", courseNames);
                         bundle.putStringArray("courseInstructors", courseInstructors);
-                        bundle.putString("currentCourseCode", currentCourse.getCourseCode());
+                        bundle.putString("currentCourseCode", currentCourse.getName());
                         Fragment fragment = null;
                         fragment = new MyCoursesFragment();
                         fragment.setArguments(bundle);
@@ -672,7 +725,7 @@ public class MainActivity extends AppCompatActivity
     public void refreshGroupList(){
         Bundle bundle = new Bundle();
         bundle.putStringArray("identity", newStudentID);
-        bundle.putString("currentCourse", currentCourse.getCourseCode());
+        bundle.putString("currentCourse", currentCourse.getName());
         Fragment fragment = null;
         fragment = new MyCampfireFragment();
         fragment.setArguments(bundle);
@@ -705,7 +758,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View headerView = navigationView.getHeaderView(0);
         TextView courseHeader = (TextView) headerView.findViewById(R.id.courseHeader);
-        courseHeader.setText("Current Course: " + currentCourse.getCourseCode());
+        courseHeader.setText("Current Course: " + currentCourse.getName());
         studentsInCourse = uStudent.getallOtherCourseStudents(currentCourse);
         ArrayList<String> classmatesNamesList = new ArrayList<String>();
         ArrayList<String> classmatesEmailsList = new ArrayList<String>();

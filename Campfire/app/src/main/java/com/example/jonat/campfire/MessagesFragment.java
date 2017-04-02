@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import backend.algorithms.Student;
 import backend.database.Chat;
 import backend.database.Message;
 
@@ -35,9 +36,8 @@ public class MessagesFragment extends Fragment{
     private List<Chat> chats;
 
     private String display[];
-
-
     private Integer imageid[];
+    private MainActivity main;
 
     @Nullable
     @Override
@@ -45,8 +45,9 @@ public class MessagesFragment extends Fragment{
 
         newStudentID = getArguments().getStringArray("identity");
         uEmail = newStudentID[2];
+        main = (MainActivity) getActivity();
 
-        chats = getAllChatsForUser(uEmail);
+        chats = main.getChats();
         messengers = new String[chats.size()];
         chat_id = new String[chats.size()];
         display = new String[chats.size()];
@@ -74,12 +75,13 @@ public class MessagesFragment extends Fragment{
 
                 int idx = 0;
                 for (String n: temp_names_list) {
+                    Student tempStudent = getStudent(n);
                     if (temp_names_list.size() == 1) {
-                       temp_names += getStudent(n).getFname();
+                       temp_names += tempStudent.getFname();
                     } else if (idx == temp_names_list.size() - 1) {
-                        temp_names += " " + getStudent(n).getFname();
+                        temp_names += " " + tempStudent.getFname();
                     } else {
-                       temp_names += " " + getStudent(n).getFname() + ",";
+                       temp_names += " " + tempStudent.getFname() + ",";
                     }
 
                     idx ++;
