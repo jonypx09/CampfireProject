@@ -131,7 +131,7 @@ public class MyCampfireFragment extends Fragment {
                                 })
                                 .setNegativeButton("Leave Group", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        confirmLeaveGroup(names[i]);
+                                        confirmLeaveGroup(names[i], groupIDs[i]);
                                     }
                                 })
                                 .setIcon(groupImageDark)
@@ -146,7 +146,7 @@ public class MyCampfireFragment extends Fragment {
                                 })
                                 .setNegativeButton("Leave Group", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        confirmLeaveGroup(names[i]);
+                                        confirmLeaveGroup(names[i], groupIDs[i]);
                                     }
                                 })
                                 .setIcon(groupImageDark)
@@ -196,7 +196,7 @@ public class MyCampfireFragment extends Fragment {
         }).start();
     }
 
-    public void confirmLeaveGroup(final String name){
+    public void confirmLeaveGroup(final String name, final int groupID){
         android.support.v7.app.AlertDialog terminateDialog = new android.support.v7.app.AlertDialog.Builder(getActivity()).create();
         terminateDialog.setMessage("Are you sure you want to leave this group?");
         terminateDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE, "No",
@@ -209,6 +209,7 @@ public class MyCampfireFragment extends Fragment {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         //TODO Update group via database
+                        DbAdapter.removeStudentFromGroup(name, groupID);
 //                        uStudent.leaveGroup(currentCourse, name);
 //                        DbAdapter.updateStudent(uStudent);
                     }

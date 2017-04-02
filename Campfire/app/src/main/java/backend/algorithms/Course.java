@@ -30,7 +30,7 @@ public class Course {
 	}
 
 	public String getDescription() {
-		return this.getDescription();
+		return this.description;
 	}
 
 	public String getInstructor() {
