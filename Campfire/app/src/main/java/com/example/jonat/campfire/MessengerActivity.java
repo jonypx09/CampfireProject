@@ -93,6 +93,7 @@ public class MessengerActivity extends AppCompatActivity {
             }
         });
 
+        
         // refresh the messages, pulling any new messages
         refresh_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
