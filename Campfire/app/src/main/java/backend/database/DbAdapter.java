@@ -3,9 +3,13 @@ package backend.database;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import backend.algorithms.CampfireGroup;
 import backend.algorithms.Comparable;
 import backend.algorithms.Course;
+import backend.algorithms.PinCourse;
+import backend.algorithms.PinGroup;
 import backend.algorithms.Student;
 
 /**
@@ -358,7 +362,176 @@ public class DbAdapter {
 
     /* ---------- GROUP QUERIES ----------- */
 
-    //TODO
+    /**
+     * Get a unique key to create a new group with.
+     * @return an int that is a unique key
+     */
+    public static int getUniqueGroupKey(){
+        ResultDatabaseThread thread = new ResultDatabaseThread(
+                "SELECT MAX(group_id) AS max from campfire_group",
+                null
+        );
+        thread.execute();
+        int unique_key = 1;
+        try {
+            ResultSet rs = thread.get();
+            if (rs.next()){
+                unique_key = rs.getInt("max") + 1;
+            }
+            return unique_key;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return unique_key;
+    }
+
+    /**
+     * Get all the students in a given group.
+     * @param group_id group_id you want students for
+     * @return a List of students in that group
+     */
+    public static ArrayList<Student> getAllStudentsInGroup(int group_id){
+        ArrayList<Student> stu_list = new ArrayList<Student>();
+        try {
+            ResultDatabaseThread thread = new ResultDatabaseThread(
+                    "SELECT * FROM group_membership WHERE group_id = " + Integer.toString(group_id),
+                    null
+            );
+            thread.execute();
+            ResultSet rs = thread.get();
+            while(rs.next()){
+                Student stu = getStudent(rs.getString("email"));
+                stu_list.add(stu);
+            }
+            return stu_list;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return stu_list;
+    }
+
+    /**
+     * Get a CampfireGroup.
+     * @param group_id id of the group wanted
+     * @return instance of that CampfireGroup
+     */
+    public static CampfireGroup getGroup(int group_id){
+        ResultDatabaseThread thread = new ResultDatabaseThread(
+                "SELECT * FROM campfire_group WHERE group_id = " + Integer.toString(group_id),
+                null
+        );
+        thread.execute();
+        try {
+            ResultSet rs = thread.get();
+            if (rs.next()){
+                ArrayList<Student> students = getAllStudentsInGroup(group_id);
+                CampfireGroup group = new CampfireGroup(
+                        rs.getString("name"),
+                        students,
+                        rs.getInt("size"),
+                        group_id
+                );
+                return group;
+            } else {
+                return null;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Add student to a group.
+     * @param email identifier of the student
+     * @param group_id id of the group
+     */
+    public static void addStudentToGroup(String email, int group_id){
+        // Check that the student exists
+        if (getStudent(email) == null){
+            throw new IllegalArgumentException();
+        }
+        // Check that the group exists
+        CampfireGroup group = getGroup(group_id);
+        if (group == null){
+            throw new IllegalArgumentException();
+        }
+        // Check if the group is full
+        if (getAllStudentsInGroup(group_id).size() >= group.getSize()){
+            throw new IllegalArgumentException();
+        }
+        List<String> args = new ArrayList<>();
+        args.add(email);
+        UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                "INSERT INTO group_membership VALUES (?," + Integer.toString(group_id) + ")",
+                args
+        );
+        thread.execute();
+    }
+
+    /**
+     * Add a new group to the database.
+     * @param group instance wanting to be stored in the database
+     */
+    public static void addGroup (CampfireGroup group){
+        // Group already exists
+        if (getGroup(group.getGroupID()) != null){
+            throw new IllegalArgumentException();
+        }
+
+        List<String> args = new ArrayList<>();
+        args.add(group.getName());
+        UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                "INSERT INTO campfire_group VALUES (" + Integer.toString(group.getGroupID()) + ",?," + Integer.toString(group.getSize()) + ")",
+                args
+        );
+        thread.execute();
+        // Add all the students to this group
+        for (Student s : group.getMembers()){
+            addStudentToGroup(s.getEmail(), group.getGroupID());
+        }
+    }
+
+    /**
+     * Get all the groups that a student is in.
+     * @param email email of the student
+     * @return a list of Campfire groups that this student is in
+     */
+    public static List<CampfireGroup> getAllStudentsGroups(String email){
+        List<CampfireGroup> groups = new ArrayList<>();
+
+        List<String> args = new ArrayList<>();
+        args.add(email);
+
+        ResultDatabaseThread thread = new ResultDatabaseThread(
+                "SELECT DISTINCT group_id FROM group_membership WHERE email = ?",
+                args
+        );
+        thread.execute();
+        try {
+            ResultSet rs = thread.get();
+            while (rs.next()) {
+                groups.add(getGroup(rs.getInt("group_id")));
+            }
+            return groups;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return groups;
+    }
+
+    /**
+     * Delete a specified group
+     * @param group_id id of the group wanted to be deleted
+     */
+    public static void deleteGroup (int group_id){
+        UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                "DELETE FROM campfire_group WHERE group_id = " + Integer.toString(group_id),
+                null
+        );
+        thread.execute();
+    }
+
 
     /* ---------- CHAT QUERIES ---------- */
 
@@ -375,6 +548,12 @@ public class DbAdapter {
         return stu.getFname() + " " + stu.getLname().charAt(0) + ".";
     }
 
+    /**
+     * Determine whether a user is in a chat or not.
+     * @param email identifier of the user
+     * @param chat_id id of the chat
+     * @return true if student is in this chat, false otherwise
+     */
     public static boolean userInChat(String email, int chat_id){
         List<String> args = new ArrayList<>();
         args.add(email);
@@ -392,6 +571,11 @@ public class DbAdapter {
         return false;
     }
 
+    /**
+     * Create a new chat between two students.
+     * @param email_user1
+     * @param email_user2
+     */
     public static void newChat(String email_user1, String email_user2){
         // Check that the two students exist
         if (getStudent(email_user1) == null || getStudent(email_user2) == null){
@@ -409,6 +593,11 @@ public class DbAdapter {
         thread.execute();
     }
 
+    /**
+     * Determines whether a chat exists or not
+     * @param chat_id id of the chat
+     * @return true if chat exists, false otherwise
+     */
     public static boolean chatExists(int chat_id){
         try {
             // Check if this chat exists
@@ -429,6 +618,11 @@ public class DbAdapter {
         return false;
     }
 
+    /**
+     * Get a chat object.
+     * @param chat_id id of the chat wanted
+     * @return chat instance specified by id
+     */
     public static Chat getChat(int chat_id){
         // Check if the chat exists or not
         if (!chatExists(chat_id)){
@@ -458,6 +652,11 @@ public class DbAdapter {
         return null;
     }
 
+    /**
+     * Get all the chat objects that a user is in.
+     * @param email identifier of the user
+     * @return list of all the chat objects this student is in
+     */
     public static List<Chat> getAllChatsForUser(String email){
         // Check if student exists
         if(getStudent(email) == null){
@@ -491,6 +690,12 @@ public class DbAdapter {
         return chats;
     }
 
+    /**
+     * Add a message to a chat.
+     * @param chat_id id of the chat
+     * @param sender_email email of the sender
+     * @param msg_text content of the message
+     */
     public static void addMessage(int chat_id, String sender_email, String msg_text){
         // Check if the chat exists
         if (!chatExists(chat_id)){
@@ -510,6 +715,11 @@ public class DbAdapter {
         thread.execute();
     }
 
+    /**
+     * Add a student to an existing chat
+     * @param chat_id id of the chat
+     * @param email of the user that is being added
+     */
     public static void addStudentToChat(int chat_id, String email){
         // Check if the student exists
         if (getStudent(email) == null){
@@ -526,5 +736,121 @@ public class DbAdapter {
                 args
         );
         thread.execute();
+    }
+
+        /* ---------- PIN QUERIES ---------- */
+
+    private static void insertPinCourse(String code, String pin){
+        // Make sure that the course exists
+        if (getCourse(code) != null) {
+            List<String> args = new ArrayList<>();
+            args.add(code);
+            args.add(pin);
+            UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                    "INSERT INTO course_pins VALUES (?,?)",
+                    args
+            );
+            thread.execute();
+        }
+    }
+
+    private static void insertPinGroup(int group_id, String pin){
+        // Make sure that the group exists
+        if (getGroup(group_id) != null) {
+            List<String> args = new ArrayList<>();
+            args.add(pin);
+            UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                    "INSERT INTO group_pins VALUES (" + Integer.toString(group_id) + ",?)",
+                    args
+            );
+            thread.execute();
+        }
+    }
+
+    /**
+     * Store PinCourse object in the database. Deletes previous one.
+     * @param pc PinCourse instance
+     */
+    public static void setPinCourse(PinCourse pc){
+
+        Map<String, Course> pins = pc.getCoursePins();
+
+        UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                "DELETE FROM course_pins",
+                null
+        );
+        thread.execute();
+
+        for (String pin : pins.keySet()){
+            insertPinCourse(pins.get(pin).getCourseCode(), pin);
+        }
+    }
+
+    /**
+     * Get PinCourse object stored in the database.
+     * @return PinCourse instance
+     */
+    public static PinCourse getPinCourse(){
+        PinCourse pc = new PinCourse();
+        Map<String, Course> pins = pc.getCoursePins();
+        // Get all the new pins to from db and store in PinCourse object
+        ResultDatabaseThread thread = new ResultDatabaseThread(
+                "SELECT * FROM course_pins",
+                null
+        );
+        thread.execute();
+        try {
+            ResultSet rs = thread.get();
+            while(rs.next()){
+                pins.put(rs.getString("pin"), getCourse(rs.getString("code")));
+            }
+            return pc;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return pc;
+    }
+
+    /**
+     * Store PinGroup object in the database. Deletes previous one.
+     * @param pg PinGroup instance
+     */
+    public static void setPinGroup(PinGroup pg){
+        Map<String, CampfireGroup> pins = pg.getGroupPins();
+
+        UpdateDatabaseThread thread = new UpdateDatabaseThread(
+                "DELETE FROM group_pins",
+                null
+        );
+        thread.execute();
+
+        for (String pin : pins.keySet()){
+            insertPinGroup(pins.get(pin).getGroupID(), pin);
+        }
+    }
+
+    /**
+     * Get PinGroup object stored in the database.
+     * @return PinGroup instance
+     */
+    public static PinGroup getPinGroup(){
+        PinGroup pg = new PinGroup();
+        Map<String, CampfireGroup> pins = pg.getGroupPins();
+        // Get all the new pins to from db and store in PinCourse object
+        ResultDatabaseThread thread = new ResultDatabaseThread(
+                "SELECT * FROM group_pins",
+                null
+        );
+        thread.execute();
+        try {
+            ResultSet rs = thread.get();
+            while(rs.next()){
+                pins.put(rs.getString("pin"), getGroup(rs.getInt("group_id")));
+            }
+            return pg;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return pg;
     }
 }
