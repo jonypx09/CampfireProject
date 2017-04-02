@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.Random;
 
+import backend.algorithms.CampfireGroup;
 import backend.algorithms.Course;
 import backend.algorithms.Student;
 import backend.database.DbAdapter;
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity
     private Course currentCourse;
     private List<String> enrolledCourses;
 
+    private List<CampfireGroup> currentGroups;
+
     private Handler handler;
 
     @Override
@@ -102,7 +105,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 uStudent = DbAdapter.getStudent(uEmail);
-                Log.d("######", uStudent.getFname() + "\n" + uStudent.getCriteria());
                 uName = uStudent.getFname() + " " + uStudent.getLname();
                 List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
                 currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
@@ -149,6 +151,7 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         }).start();
+        getGroups(uEmail);
     }
 
     public void renderData(Toolbar toolbar){
@@ -182,6 +185,37 @@ public class MainActivity extends AppCompatActivity
             }
         });
         navigationView.getMenu().getItem(0).setChecked(true);
+    }
+
+    public void getGroups(final String email){
+        handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                currentGroups = DbAdapter.getAllStudentsGroups(email);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public List<CampfireGroup> getCurrentGroups(){
+        return this.currentGroups;
+    }
+
+    public ArrayList<Student> getStudentsInCourse(){
+        return this.studentsInCourse;
+    }
+
+    public String[] getClassmatesNames(){
+        return this.classmatesNames;
+    }
+
+    public List<String> getCurrentCourses(){
+        return this.enrolledCourses;
     }
 
     @Override
@@ -593,22 +627,46 @@ public class MainActivity extends AppCompatActivity
                     public void onInput(MaterialDialog dialog, CharSequence input) {
                         String userInput = input.toString();
                         int size = Integer.parseInt(userInput);
+                        ArrayList<Student> members = new ArrayList<Student>();
+                        members.add(uStudent);
                         if (size != 0){
                             // TODO: Should generate actual distinct ID, instead of using rand.
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                uStudent.createGroup(currentCourse, groupName, size, ThreadLocalRandom.current().nextInt(0, 1000000000));
-                            }
-                            else {
-                                Random rand = new Random();
-                                uStudent.createGroup(currentCourse, groupName, size, rand.nextInt(1000000000));
-                            }
-                            DbAdapter.updateStudent(uStudent);
-                            refreshGroupList();
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                                uStudent.createGroup(currentCourse, groupName, size, ThreadLocalRandom.current().nextInt(0, 1000000000));
+//                            }
+//                            else {
+//                                Random rand = new Random();
+//                                uStudent.createGroup(currentCourse, groupName, size, rand.nextInt(1000000000));
+//                            }
+                            createGroup(groupName, members, size);
                         }else{
                             Toast.makeText(MainActivity.this, "Invalid Number", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).show();
+    }
+
+    public void createGroup(final String groupName, final ArrayList<Student> members, final int size){
+        handler = new Handler();
+        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setMessage("Please wait....");
+        progressDialog.setTitle("Creating Group");
+        progressDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                CampfireGroup newGroup = new CampfireGroup(groupName, members, size, DbAdapter.getUniqueGroupKey());
+                DbAdapter.addGroup(newGroup);
+                currentGroups = DbAdapter.getAllStudentsGroups(uStudent.getEmail());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        refreshGroupList();
+                    }
+                });
+            }
+        }).start();
     }
 
     public void refreshGroupList(){
@@ -621,6 +679,22 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.content_frame, fragment);
         ft.commit();
+    }
+
+    public void refreshGroupListMemberCount(final String email){
+        handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                currentGroups = DbAdapter.getAllStudentsGroups(email);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshGroupList();
+                    }
+                });
+            }
+        }).start();
     }
 
     public void updateCourse(String courseCode){
