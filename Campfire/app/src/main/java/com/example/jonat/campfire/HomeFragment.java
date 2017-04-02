@@ -96,10 +96,6 @@ public class HomeFragment extends Fragment {
        otherStudents = uStudent.getallOtherCourseStudents(currentCourse);
        uStudent.MatchWithClass(currentCourse, true);
        sortedStudents = uStudent.validSortedStudents(currentCourse);
-        System.out.println(sortedStudents);
-       for (Student s : sortedStudents) {
-           System.out.println(s.getFname());
-       }
        mSwipeView = (SwipePlaceHolderView) getActivity().findViewById(R.id.swipeView);
 
        mContext = getActivity().getApplicationContext();
@@ -132,7 +128,7 @@ public class HomeFragment extends Fragment {
        else {
            for (Student s : swipeOn) {
                if (!inCampfire(s) && !swipedYet(s) && !uStudent.getEmail().equals(s.getEmail())) {
-                   mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s, uEmail));
+                   mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s, uStudent, currentCourse));
                }
            }
        }
