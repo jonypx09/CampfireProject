@@ -65,7 +65,6 @@ public class TinderCard {
         if (!(student.equals(null))) {
             loadedStudents.add(student);
         }
-
     }
 
     @Resolve
@@ -95,8 +94,10 @@ public class TinderCard {
     @SwipeOut
     private void onSwipedOut() {
         Log.d("EVENT", "onSwipedOut");
+        System.out.println(loadedStudents);
         mSwipeView.addView(this);
         loadedStudents.remove(0);
+        loadedStudents.add(this.student);
     }
 
     @SwipeCancelState
@@ -108,7 +109,6 @@ public class TinderCard {
     private void onSwipeIn(){
         if (!swipedYet(this.student)) {
             swipedRight.add(this.student);
-
             newChat(uEmail,this.student.getEmail());
         }
         Log.d("EVENT", "onSwipedIn");
