@@ -2,6 +2,7 @@ package com.example.jonat.campfire;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ public class MyCampfireListAdapter extends ArrayAdapter<String> {
     private String[] desc;
     private Integer[] imageid;
     private Activity context;
+    private String[][] names2;
 
     public MyCampfireListAdapter(Activity context, String[] names, String[] desc, Integer[] imageid) {
         super(context, R.layout.my_campfire_list_item, names);
@@ -27,13 +29,13 @@ public class MyCampfireListAdapter extends ArrayAdapter<String> {
         this.imageid = imageid;
     }
 
+    @NonNull
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
         View listViewItem = inflater.inflate(R.layout.my_campfire_list_item, null);
         TextView textViewName = (TextView) listViewItem.findViewById(R.id.textViewName);
         TextView textViewDesc = (TextView) listViewItem.findViewById(R.id.textViewDesc);
         ImageView image = (ImageView) listViewItem.findViewById(R.id.imageView);
-
         textViewName.setText(names[position]);
         textViewDesc.setText(desc[position]);
         image.setImageResource(imageid[position]);
