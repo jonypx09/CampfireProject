@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.yarolegovich.lovelydialog.LovelyChoiceDialog;
 
 import org.w3c.dom.Text;
 
@@ -204,6 +205,11 @@ public class AdminActivity extends AppCompatActivity {
                                     confirmDeleteUser(names[i], description[i]);
                                 }
                             })
+                            .setNegativeButton("Assign to Group", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
                             .show();
                 }
             }
@@ -339,12 +345,67 @@ public class AdminActivity extends AppCompatActivity {
                         })
                         .setNeutralButton("Enroll a Student", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-
+                                displayStudentList(names[i]);
                             }
                         })
                         .show();
             }
         });
+    }
+
+    public void displayStudentList(final String code){
+        Course currentCourse = DbAdapter.getCourse(code);
+        ArrayList<Student> studentsInCourse = currentCourse.getStudents();
+        final ArrayList<Student> newAllStudents = new ArrayList<Student>();
+        for (Student s: allStudents){
+            Boolean exists = false;
+            for (Student t: studentsInCourse){
+                if (s.getEmail().equals(t.getEmail())){
+                    exists = true;
+                }
+            }
+            if (!exists){
+                newAllStudents.add(s);
+            }
+        }
+        String[] studentNames = new String[newAllStudents.size()];
+        for (int i = 0; i < studentNames.length; i++){
+            studentNames[i] = newAllStudents.get(i).getFname() + " " + newAllStudents.get(i).getLname();
+        }
+        new LovelyChoiceDialog(AdminActivity.this)
+                .setTopColorRes(R.color.colorPrimaryDark)
+                .setTitle("Choose a Student")
+                .setMessage("")
+                .setItems(studentNames, new LovelyChoiceDialog.OnItemSelectedListener<String>() {
+                    @Override
+                    public void onItemSelected(int position, String item) {
+                        enrollStudent(newAllStudents.get(position).getEmail(), code);
+                    }
+                })
+                .show();
+    }
+
+    public void enrollStudent(final String email, final String code){
+        handler = new Handler();
+        final ProgressDialog progressDialog = new ProgressDialog(AdminActivity.this);
+        progressDialog.setMessage("Please wait....");
+        progressDialog.setTitle("Enrolling Student");
+        progressDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DbAdapter.enrolStudentInCourse(email, code);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        Snackbar snackbar = Snackbar
+                                .make(view, "Success", Snackbar.LENGTH_SHORT);
+                        snackbar.show();
+                    }
+                });
+            }
+        }).start();
     }
     //-------------------------------- COURSE MANAGEMENT ---------------------------------------
 

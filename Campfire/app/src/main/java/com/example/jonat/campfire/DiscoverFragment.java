@@ -143,26 +143,26 @@ public class DiscoverFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                             }
                         })
-                        .setNeutralButton("Add to Campfire", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Should be if (!uStudent.getCampfire().contains(emails[i])) {
-                                if (!inCampfire(DbAdapter.getStudent(emails[i]))) {
-                                    // TODO: Doesn't save to database.
-//                                    uStudent.addToCampfire(db.getStudent(emails[i]));
-                                    campfireStudents.add(DbAdapter.getStudent(emails[i]));
-                                    Snackbar.make(getView(), "Successfully added " +
-                                            names[i].substring(0, names[i].indexOf(" ")) +
-                                            " to your Campfire", Snackbar.LENGTH_LONG)
-                                            .setAction("Action", null).show();
-                                }
-                                else {
-                                    Snackbar.make(getView(), "Already added " +
-                                            names[i].substring(0, names[i].indexOf(" ")) +
-                                            " to your Campfire", Snackbar.LENGTH_LONG)
-                                            .setAction("Action", null).show();
-                                }
-                            }
-                        })
+//                        .setNeutralButton("Add to Campfire", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                // Should be if (!uStudent.getCampfire().contains(emails[i])) {
+//                                if (!inCampfire(DbAdapter.getStudent(emails[i]))) {
+//                                    // TODO: Doesn't save to database.
+////                                    uStudent.addToCampfire(db.getStudent(emails[i]));
+//                                    campfireStudents.add(DbAdapter.getStudent(emails[i]));
+//                                    Snackbar.make(getView(), "Successfully added " +
+//                                            names[i].substring(0, names[i].indexOf(" ")) +
+//                                            " to your Campfire", Snackbar.LENGTH_LONG)
+//                                            .setAction("Action", null).show();
+//                                }
+//                                else {
+//                                    Snackbar.make(getView(), "Already added " +
+//                                            names[i].substring(0, names[i].indexOf(" ")) +
+//                                            " to your Campfire", Snackbar.LENGTH_LONG)
+//                                            .setAction("Action", null).show();
+//                                }
+//                            }
+//                        })
                         .setNegativeButton("View Profile", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent profileIntent = new Intent(getActivity(), ClassmatesProfileActivity.class);
