@@ -105,9 +105,12 @@ public class TinderCard {
     @SwipeOut
     private void onSwipedOut() {
         Log.d("EVENT", "onSwipedOut");
-        mSwipeView.addView(this);
         loadedStudents.remove(0);
-        loadedStudents.add(this.student);
+        if (loadedStudents.isEmpty()) {
+            Toast.makeText(this.activity, "You've Swiped on Everyone! All you can do now is wait!",
+                    Toast.LENGTH_LONG).show();
+        }
+        swipedRight.add(this.student);
     }
 
     @SwipeCancelState
@@ -119,7 +122,7 @@ public class TinderCard {
     private void onSwipeIn(){
         loadedStudents.remove(0);
         if (loadedStudents.isEmpty()) {
-            Toast.makeText(this.activity, "You've Swiped Right on Everyone! All you can do now is wait!",
+            Toast.makeText(this.activity, "You've Swiped on Everyone! All you can do now is wait!",
                     Toast.LENGTH_LONG).show();
         }
         if (!swipedYet(this.student)) {
