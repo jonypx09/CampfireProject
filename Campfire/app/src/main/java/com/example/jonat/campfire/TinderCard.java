@@ -22,6 +22,7 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOut;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -32,7 +33,7 @@ import backend.database.DbAdapter;
 
 import static backend.database.DbAdapter.newChat;
 import static com.example.jonat.campfire.HomeFragment.loadedStudents;
-import static com.example.jonat.campfire.HomeFragment.swipedRight;
+
 
 
 /**
@@ -63,8 +64,9 @@ public class TinderCard {
     private Student uStudent;
     private Handler handler;
     private FragmentActivity activity;
+    private HomeFragment home;
 
-    public TinderCard(Context context, SwipePlaceHolderView swipeView, Student student, Student uStudent, Course currCourse, FragmentActivity activity) {
+    public TinderCard(Context context, SwipePlaceHolderView swipeView, Student student, Student uStudent, Course currCourse, FragmentActivity activity, HomeFragment h) {
         this.mContext = context;
         this.mSwipeView = swipeView;
         this.student = student;
@@ -72,7 +74,7 @@ public class TinderCard {
         this.uStudent = uStudent;
         this.currCourse = currCourse;
         this.activity = activity;
-
+        this.home = h;
         if (!(student.equals(null))) {
             loadedStudents.add(student);
         }
@@ -110,7 +112,7 @@ public class TinderCard {
             Toast.makeText(this.activity, "You've Swiped on Everyone! All you can do now is wait!",
                     Toast.LENGTH_LONG).show();
         }
-        swipedRight.add(this.student);
+        this.home.addToSwiped(this.student, currCourse.getName());
     }
 
     @SwipeCancelState
@@ -125,7 +127,6 @@ public class TinderCard {
             Toast.makeText(this.activity, "You've Swiped on Everyone! All you can do now is wait!",
                     Toast.LENGTH_LONG).show();
         }
-        if (!swipedYet(this.student)) {
 //            List<Student> stuList;
 //            if (this.uStudent.getMatchedStudents().get(currCourse.getName()) == null) {
 //                stuList = new ArrayList<>();
@@ -183,9 +184,8 @@ public class TinderCard {
                     });
                 }
             }).start();
+            this.home.addToSwiped(this.student, currCourse.getName());
 
-            swipedRight.add(this.student);
-        }
         Log.d("EVENT", "onSwipedIn");
     }
 
@@ -199,13 +199,4 @@ public class TinderCard {
         Log.d("EVENT", "onSwipeOutState");
     }
 
-    //Helper for checking if swiped right yet.
-    private boolean swipedYet(Student s) {
-        for (Student stu : swipedRight) {
-            if (stu.getEmail().equals(s.getEmail())) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
