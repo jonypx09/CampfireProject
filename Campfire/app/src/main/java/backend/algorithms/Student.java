@@ -222,7 +222,7 @@ public class Student {
 			this.getMatchvalues().put(course.getName(), tmp);
 			this.getAvailablematches().put(course.getName(), this.getallOtherCourseStudents(course));
 		}
-		
+
 		/*
 		 * If flag is false then student has already calculated everyone
 		 * at least once -- only need to calculate score of sudents
@@ -231,11 +231,11 @@ public class Student {
 		 */
 		else {
 			for (Student s : this.getAvailablematches().get(course.getName())){
-				tmp.put(s, this.GenerateScore(s));	
+				tmp.put(s, this.GenerateScore(s));
 			}
 			this.getMatchvalues().put(course.getName(), tmp);
 		}
-		
+
 	}
 
 	

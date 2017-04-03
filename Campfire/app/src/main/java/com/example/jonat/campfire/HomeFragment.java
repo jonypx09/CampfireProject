@@ -46,6 +46,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<Student> otherStudents301;
     private ArrayList<Student> otherStudents;
     private ArrayList<Student> students301;
+    private List<Student> sortedStudents;
     private ArrayList<String> c1;
     private ArrayList<String> c2;
     public static List<Student> loadedStudents = new ArrayList<Student>();
@@ -65,6 +66,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
+        loadedStudents = new ArrayList<>();
         newStudentID = getArguments().getStringArray("identity");
         currentCourseCode = getArguments().getString("currentCourse");
         prefs = getContext().getSharedPreferences("come.example.jonat.campfire", MODE_PRIVATE);
@@ -92,7 +94,8 @@ public class HomeFragment extends Fragment {
        //TODO: Does not work, includes current student.
 //       otherStudents301 = uStudent.getallOtherCourseStudents(currentCourse);
        otherStudents = uStudent.getallOtherCourseStudents(currentCourse);
-
+       uStudent.MatchWithClass(currentCourse, true);
+       sortedStudents = uStudent.validSortedStudents(currentCourse);
        mSwipeView = (SwipePlaceHolderView) getActivity().findViewById(R.id.swipeView);
 
        mContext = getActivity().getApplicationContext();
@@ -118,14 +121,14 @@ public class HomeFragment extends Fragment {
        //     - otherStudents301 for all other students in csc301h1. (Currently unavailable)
        //     - students301 for all students in csc301h1.
 
-       ArrayList<Student> swipeOn = otherStudents;
+       List<Student> swipeOn = sortedStudents;
        if (swipeOn.isEmpty()) {
            Toast.makeText(getContext(), "No available matches.", Toast.LENGTH_LONG).show();
        }
        else {
            for (Student s : swipeOn) {
-               if (!inCampfire(s) && !swipedYet(s)) {
-                   mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s, uEmail));
+               if (!inCampfire(s) && !swipedYet(s) && !uStudent.getEmail().equals(s.getEmail())) {
+                   mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s, uStudent, currentCourse));
                }
            }
        }

@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import com.mindorks.placeholderview.annotations.Click;
@@ -22,8 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import backend.algorithms.Course;
 import backend.algorithms.Student;
-
+import backend.database.DbAdapter;
 
 
 import static backend.database.DbAdapter.newChat;
@@ -55,17 +57,20 @@ public class TinderCard {
     private SwipePlaceHolderView mSwipeView;
     private Student student;
     private String uEmail;
+    private Course currCourse;
+    private Student uStudent;
 
-    public TinderCard(Context context, SwipePlaceHolderView swipeView, Student student, String uEmail) {
+    public TinderCard(Context context, SwipePlaceHolderView swipeView, Student student, Student uStudent, Course currCourse) {
         this.mContext = context;
         this.mSwipeView = swipeView;
         this.student = student;
-        this.uEmail = uEmail;
+        this.uEmail = uStudent.getEmail();
+        this.uStudent = uStudent;
+        this.currCourse = currCourse;
 
         if (!(student.equals(null))) {
             loadedStudents.add(student);
         }
-
     }
 
     @Resolve
@@ -97,6 +102,7 @@ public class TinderCard {
         Log.d("EVENT", "onSwipedOut");
         mSwipeView.addView(this);
         loadedStudents.remove(0);
+        loadedStudents.add(this.student);
     }
 
     @SwipeCancelState
@@ -106,10 +112,28 @@ public class TinderCard {
 
     @SwipeIn
     private void onSwipeIn(){
+        loadedStudents.remove(0);
         if (!swipedYet(this.student)) {
+            List<Student> stuList;
+            if (this.uStudent.getMatchedStudents().get(currCourse.getName()) == null) {
+                stuList = new ArrayList<>();
+            }
+            else {
+                stuList = this.uStudent.getMatchedStudents().get(currCourse.getName());
+            }
+            stuList.add(this.student);
+            System.out.println("SWIPED RIGHT");
+            this.uStudent.getMatchedStudents().put(currCourse.getName(), stuList);
+            DbAdapter.updateStudent(this.uStudent);
+            System.out.println("uSTUDENT: " + this.uStudent.getMatchedStudents());
+            System.out.println("student: " + this.student.getMatchedStudents());
+            for (Student s : this.student.getMatchedStudents().get(this.currCourse.getName())) {
+                if (s.getEmail().equals(uEmail)) {
+                    System.out.println("NEW CHAT");
+                    newChat(uEmail,this.student.getEmail());
+                }
+            }
             swipedRight.add(this.student);
-
-            newChat(uEmail,this.student.getEmail());
         }
         Log.d("EVENT", "onSwipedIn");
     }
