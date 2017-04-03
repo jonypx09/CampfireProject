@@ -19,10 +19,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import backend.algorithms.Student;
 import backend.database.Chat;
 import backend.database.Message;
 
@@ -44,6 +46,8 @@ public class MessengerActivity extends AppCompatActivity {
     private String title;
     private Button refresh_btn;
     private Button messengers_btn;
+
+    private ArrayList<Student> allStudents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -36,8 +36,10 @@ public class MessagesFragment extends Fragment{
     private List<Chat> chats;
 
     private String display[];
+    private String emails[];
     private Integer imageid[];
     private MainActivity main;
+    private String[] temp_emails;
 
     @Nullable
     @Override
@@ -60,11 +62,18 @@ public class MessagesFragment extends Fragment{
                 chat_id[i] = String.valueOf(c.getChatID());
                 int j = 0;
                 List<String> temp_names_list = new ArrayList<>();
+                List<Student> temp_student_list = new ArrayList<Student>();
+                List<Student> allStudents = main.getAllStudents();
                 String temp_names = "";
                 for (Message m : c.getMessages()) {
                     // get all people in the specific chat, check duplicates
                     if (m.getSender_email() != uEmail) {
                         temp_names_list.add(m.getSender_email());
+                        for (Student s: allStudents){
+                            if (s.getEmail().equals(m.getSender_email())){
+                                temp_student_list.add(s);
+                            }
+                        }
                     }
                 }
                 // remove duplicates
@@ -73,15 +82,27 @@ public class MessagesFragment extends Fragment{
                 temp_names_list.clear();
                 temp_names_list.addAll(temp_names_set);
 
+                temp_emails = new String[temp_names_list.size()];
+
                 int idx = 0;
                 for (String n: temp_names_list) {
-                    Student tempStudent = getStudent(n);
+//                    Student tempStudent = getStudent(n);
+                    Student tempStudent = null;
+                    for (Student s: temp_student_list){
+                        if (s.getEmail().equals(n)){
+                            tempStudent = s;
+                        }
+                    }
+                    temp_emails[idx] = tempStudent.getEmail();
                     if (temp_names_list.size() == 1) {
                        temp_names += tempStudent.getFname();
+//                        temp_names += tempStudent.getEmail();
                     } else if (idx == temp_names_list.size() - 1) {
                         temp_names += " " + tempStudent.getFname();
+//                        temp_names += " " + tempStudent.getEmail();
                     } else {
                        temp_names += " " + tempStudent.getFname() + ",";
+//                        temp_names += " " + tempStudent.getEmail() + ",";
                     }
 
                     idx ++;
@@ -106,7 +127,7 @@ public class MessagesFragment extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        MyCampfireListAdapter customList = new MyCampfireListAdapter(getActivity(), messengers, display, imageid);
+        MyCampfireListAdapter customList = new MyCampfireListAdapter(getActivity(), messengers, temp_emails, display, imageid);
 
         listView = (ListView) getView().findViewById(R.id.listOfMessages);
         listView.setAdapter(customList);

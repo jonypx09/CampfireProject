@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity
     private boolean myCampfireIsOpen = false;
 
     private ArrayList<Student> studentsInCourse;
+    private List<Student> allStudents;
     private Course currentCourse;
     private List<String> enrolledCourses;
 
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Campfire");
+        fetchAllStudents();
 
         /**
          * 1. Connect to the Database
@@ -232,6 +234,21 @@ public class MainActivity extends AppCompatActivity
         new Thread(new Runnable() {
             @Override
             public void run() {
+                allStudents = DbAdapter.getAllStudents();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                    }
+                });
+            }
+        }).start();
+    }
+
+    public void fetchAllStudents(){
+        handler = new Handler();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
                 chats = getAllChatsForUser(uEmail);
                 handler.post(new Runnable() {
                     @Override
@@ -260,6 +277,10 @@ public class MainActivity extends AppCompatActivity
 
     public List<String> getCurrentCourses(){
         return this.enrolledCourses;
+    }
+
+    public List<Student> getAllStudents(){
+        return this.allStudents;
     }
 
     @Override
