@@ -20,7 +20,10 @@ import backend.database.Chat;
 import backend.database.Message;
 
 import static backend.database.DbAdapter.getAllChatsForUser;
+import static backend.database.DbAdapter.getAllStudents;
+import static backend.database.DbAdapter.getAllStudentsInChat;
 import static backend.database.DbAdapter.getStudent;
+import static backend.database.DbAdapter.userInChat;
 
 /**
  * Created by jonat on 25-Feb-2017.
@@ -34,7 +37,6 @@ public class MessagesFragment extends Fragment{
     private String messengers[];
     private String chat_id[];
     private List<Chat> chats;
-
     private String display[];
     private Integer imageid[];
     private MainActivity main;
@@ -53,48 +55,40 @@ public class MessagesFragment extends Fragment{
         display = new String[chats.size()];
         imageid = new Integer[chats.size()];
 
-        //TODO: need to get messenger name from the chat even if there exists no messages
         int i = 0;
         for (Chat c : chats) {
-            if (c.getMessages().size() != 0) {
-                chat_id[i] = String.valueOf(c.getChatID());
-                int j = 0;
-                List<String> temp_names_list = new ArrayList<>();
-                String temp_names = "";
-                for (Message m : c.getMessages()) {
-                    // get all people in the specific chat, check duplicates
-                    if (m.getSender_email() != uEmail) {
-                        temp_names_list.add(m.getSender_email());
-                    }
-                }
-                // remove duplicates
-                Set<String> temp_names_set = new HashSet<>();
-                temp_names_set.addAll(temp_names_list);
-                temp_names_list.clear();
-                temp_names_list.addAll(temp_names_set);
 
-                int idx = 0;
-                for (String n: temp_names_list) {
-                    Student tempStudent = getStudent(n);
-                    if (temp_names_list.size() == 1) {
-                       temp_names += tempStudent.getFname();
-                    } else if (idx == temp_names_list.size() - 1) {
-                        temp_names += " " + tempStudent.getFname();
-                    } else {
-                       temp_names += " " + tempStudent.getFname() + ",";
-                    }
+            chat_id[i] = String.valueOf(c.getChatID());
 
-                    idx ++;
+            // temps for the name display
+            List<String> temp_names_list = getAllStudentsInChat(Integer.parseInt(chat_id[i]));
+            String temp_names = "";
+
+            temp_names_list.remove(uEmail);
+
+            int idx = 0;
+            for (String n: temp_names_list) {
+                Student tempStudent = getStudent(n);
+                if (temp_names_list.size() == 1) {
+                    temp_names += tempStudent.getFname();
+                } else if (idx == temp_names_list.size() - 1) {
+                    temp_names += " " + tempStudent.getFname();
+                } else {
+                    temp_names += " " + tempStudent.getFname() + ",";
                 }
-                messengers[i] = temp_names;
+
+                idx ++;
+            }
+            messengers[i] = temp_names;
+
+            if (c.getMessages().size() > 0) {
+                // set display of the last message in the chat
                 display[i] = String.valueOf(c.getMessages().get(c.getMessages().size() - 1).getText());
             } else {
-                //TODO
+                // set display to blank
                 display[i] = "";
-
-                // get messengers even if there exists no messages in the chat
-                //messengers[i] = String.valueOf(c.getChatID());
             }
+
             imageid[i] = R.drawable.person_icon;
             i++;
         }
@@ -105,6 +99,7 @@ public class MessagesFragment extends Fragment{
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
         MyCampfireListAdapter customList = new MyCampfireListAdapter(getActivity(), messengers, display, imageid);
 
@@ -128,3 +123,4 @@ public class MessagesFragment extends Fragment{
         getActivity().setTitle("Messages");
     }
 }
+

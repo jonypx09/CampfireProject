@@ -44,6 +44,7 @@ public class MessengerActivity extends AppCompatActivity {
     private String title;
     private Button refresh_btn;
     private Button messengers_btn;
+    private int chat_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,8 @@ public class MessengerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
         title = intent.getExtras().getString("messengers");
-        curChat = getChat(Integer.parseInt(intent.getExtras().getString("chat_id")));
+        chat_id = Integer.parseInt(intent.getExtras().getString("chat_id"));
+        curChat = getChat(chat_id);
         uEmail = newStudentID[2];
 
         setTitle(title);
@@ -94,6 +96,8 @@ public class MessengerActivity extends AppCompatActivity {
         // refresh the messages, pulling any new messages
         refresh_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                curChat = getChat(chat_id);
+                chatMessages = curChat.getMessages();
                 adapter = new ChatAdapter(temp, R.layout.in_message_bg, curChat.getMessages(), uEmail);
                 listView.setAdapter(adapter);
             }
