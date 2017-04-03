@@ -2,6 +2,7 @@ package com.example.jonat.campfire;
 
 import android.content.Context;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -61,14 +62,16 @@ public class TinderCard {
     private Course currCourse;
     private Student uStudent;
     private Handler handler;
+    private FragmentActivity activity;
 
-    public TinderCard(Context context, SwipePlaceHolderView swipeView, Student student, Student uStudent, Course currCourse) {
+    public TinderCard(Context context, SwipePlaceHolderView swipeView, Student student, Student uStudent, Course currCourse, FragmentActivity activity) {
         this.mContext = context;
         this.mSwipeView = swipeView;
         this.student = student;
         this.uEmail = uStudent.getEmail();
         this.uStudent = uStudent;
         this.currCourse = currCourse;
+        this.activity = activity;
 
         if (!(student.equals(null))) {
             loadedStudents.add(student);
@@ -115,6 +118,10 @@ public class TinderCard {
     @SwipeIn
     private void onSwipeIn(){
         loadedStudents.remove(0);
+        if (loadedStudents.isEmpty()) {
+            Toast.makeText(this.activity, "You've Swiped Right on Everyone! All you can do now is wait!",
+                    Toast.LENGTH_LONG).show();
+        }
         if (!swipedYet(this.student)) {
 //            List<Student> stuList;
 //            if (this.uStudent.getMatchedStudents().get(currCourse.getName()) == null) {
@@ -131,6 +138,7 @@ public class TinderCard {
             final Student tempStu = this.uStudent;
             final Student tempCurStu = this.student;
             final Course tempCourse = this.currCourse;
+            final FragmentActivity tempAct = this.activity;
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -141,6 +149,8 @@ public class TinderCard {
                         if (s.getEmail().equals(tempCurStu.getEmail())) {
                             System.out.println("NEW CHAT");
                             newChat(tempCurStu.getEmail(), tempStu.getEmail());
+                            Toast.makeText(tempAct, "You matched with "+ tempCurStu.getFname() + " ! Head to Messages to build your Dream Team!",
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                     System.out.println("Done swipe thread");
