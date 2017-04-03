@@ -38,7 +38,9 @@ public class MyCampfireListAdapter extends ArrayAdapter<String> {
         ImageView image = (ImageView) listViewItem.findViewById(R.id.imageView);
         textViewName.setText(names[position]);
         textViewDesc.setText(desc[position]);
-        image.setImageResource(imageid[position]);
+        if (imageid[position] != null) {
+            image.setImageResource(imageid[position]);
+        }
 
         return listViewItem;
     }

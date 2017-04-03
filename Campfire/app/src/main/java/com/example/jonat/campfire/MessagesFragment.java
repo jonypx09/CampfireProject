@@ -50,48 +50,61 @@ public class MessagesFragment extends Fragment{
         main = (MainActivity) getActivity();
 
         chats = main.getChats();
-        messengers = new String[chats.size()];
-        chat_id = new String[chats.size()];
-        display = new String[chats.size()];
-        imageid = new Integer[chats.size()];
 
-        int i = 0;
-        for (Chat c : chats) {
+        if (chats != null) {
+            messengers = new String[chats.size()];
+            chat_id = new String[chats.size()];
+            display = new String[chats.size()];
+            imageid = new Integer[chats.size()];
 
-            chat_id[i] = String.valueOf(c.getChatID());
+            int i = 0;
+            for (Chat c : chats) {
 
-            // temps for the name display
-            List<String> temp_names_list = getAllStudentsInChat(Integer.parseInt(chat_id[i]));
-            String temp_names = "";
+                chat_id[i] = String.valueOf(c.getChatID());
 
-            temp_names_list.remove(uEmail);
+                // temps for the name display
+                List<String> temp_names_list = getAllStudentsInChat(Integer.parseInt(chat_id[i]));
+                String temp_names = "";
 
-            int idx = 0;
-            for (String n: temp_names_list) {
-                Student tempStudent = getStudent(n);
-                if (temp_names_list.size() == 1) {
-                    temp_names += tempStudent.getFname();
-                } else if (idx == temp_names_list.size() - 1) {
-                    temp_names += " " + tempStudent.getFname();
+                temp_names_list.remove(uEmail);
+
+                int idx = 0;
+                for (String n: temp_names_list) {
+                    Student tempStudent = getStudent(n);
+                    if (temp_names_list.size() == 1) {
+                        temp_names += tempStudent.getFname();
+                    } else if (idx == temp_names_list.size() - 1) {
+                        temp_names += " " + tempStudent.getFname();
+                    } else {
+                        temp_names += " " + tempStudent.getFname() + ",";
+                    }
+
+                    idx ++;
+                }
+                messengers[i] = temp_names;
+
+                if (c.getMessages().size() > 0) {
+                    // set display of the last message in the chat
+                    display[i] = String.valueOf(c.getMessages().get(c.getMessages().size() - 1).getText());
                 } else {
-                    temp_names += " " + tempStudent.getFname() + ",";
+                    // set display to blank
+                    display[i] = "";
                 }
 
-                idx ++;
+                imageid[i] = R.drawable.person_icon;
+                i++;
             }
-            messengers[i] = temp_names;
-
-            if (c.getMessages().size() > 0) {
-                // set display of the last message in the chat
-                display[i] = String.valueOf(c.getMessages().get(c.getMessages().size() - 1).getText());
-            } else {
-                // set display to blank
-                display[i] = "";
-            }
-
-            imageid[i] = R.drawable.person_icon;
-            i++;
+        } else {
+            messengers = new String[1];
+            chat_id = new String[1];
+            display = new String[1];
+            imageid = new Integer[1];
+            messengers[0] = "";
+            display[0] = "";
+            chat_id[0] = "";
+            imageid[0] = null;
         }
+
         //returning our layout file
         return inflater.inflate(R.layout.fragment_messages, container, false);
     }
