@@ -99,10 +99,10 @@ public class DbAdapter {
      */
     public static void addMatch(String email, String course_name, String email_matched){
         // Make sure that students exists and that course exists
-//        if (getStudent(email) == null || getCourse(course_name) == null ||
-//                getStudent(email_matched) == null){
-//            return;
-//        }
+        if (getStudent(email) == null || getCourse(course_name) == null ||
+                getStudent(email_matched) == null){
+            return;
+        }
         List<String> args = new ArrayList<>();
         args.add(email);
         args.add(course_name);
@@ -911,24 +911,6 @@ public class DbAdapter {
     }
 
     /* ---------- PIN QUERIES ---------- */
-=======
-                        "SELECT * FROM chats WHERE chat_id = " + Integer.toString(chat_id),
-                        null
-                        );
-        thread.execute();
-        try {
-                ResultSet rs = thread.get();
-                while(rs.next()){
-                        stu_emails.add(rs.getString("email"));
-                    }
-                return stu_emails;
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        return stu_emails;
-    }
-
-        /* ---------- PIN QUERIES ---------- */
 
     private static void insertPinCourse(String code, String pin){
         // Make sure that the course exists
