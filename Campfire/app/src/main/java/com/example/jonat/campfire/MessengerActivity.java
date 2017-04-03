@@ -25,6 +25,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import backend.database.Chat;
+import backend.database.DbAdapter;
 import backend.database.Message;
 
 import static backend.database.DbAdapter.addMessage;
@@ -46,6 +47,7 @@ public class MessengerActivity extends AppCompatActivity {
     private Button refresh_btn;
     private Button messengers_btn;
     private int chat_id;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,28 +71,35 @@ public class MessengerActivity extends AppCompatActivity {
 
         temp = this;
 
-        Thread t = new Thread() {
+        // initial set of messages
+        curChat = getChat(chat_id);
+        chatMessages = curChat.getMessages();
+
+        //set ListView adapter first
+        adapter = new ChatAdapter(temp, R.layout.in_message_bg, curChat.getMessages(), uEmail);
+        listView.setAdapter(adapter);
+
+        //auto refresh
+
+        handler = new Handler();
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(5000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                curChat = getChat(chat_id);
-                                chatMessages = curChat.getMessages();
+                while (true) {
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            curChat = getChat(chat_id);
+                            chatMessages = curChat.getMessages();
 
-                                //set ListView adapter first
-                                adapter = new ChatAdapter(temp, R.layout.in_message_bg, curChat.getMessages(), uEmail);
-                                listView.setAdapter(adapter);
-                            }
-                        });
-                    }
-                } catch (InterruptedException e) {
+                            //set ListView adapter first
+                            adapter = new ChatAdapter(temp, R.layout.in_message_bg, curChat.getMessages(), uEmail);
+                            listView.setAdapter(adapter);
+                        }
+                    }, 5000);
                 }
             }
-        };
+        }).start();
 
         //event for button SEND
         btnSend.setOnClickListener(new View.OnClickListener() {

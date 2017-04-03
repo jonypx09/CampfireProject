@@ -50,6 +50,7 @@ public class MessagesFragment extends Fragment{
         main = (MainActivity) getActivity();
 
         chats = main.getChats();
+        //chats = getAllChatsForUser(uEmail);
 
         if (chats != null) {
             messengers = new String[chats.size()];
