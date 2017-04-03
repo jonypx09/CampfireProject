@@ -97,12 +97,12 @@ public class DbAdapter {
      * @param course_name what course these two students are in
      * @param email_matched the student that has been selected by the other
      */
-    private static void addMatch(String email, String course_name, String email_matched){
+    public static void addMatch(String email, String course_name, String email_matched){
         // Make sure that students exists and that course exists
-        if (getStudent(email) == null || getCourse(course_name) == null ||
-                getStudent(email_matched) == null){
-            return;
-        }
+//        if (getStudent(email) == null || getCourse(course_name) == null ||
+//                getStudent(email_matched) == null){
+//            return;
+//        }
         List<String> args = new ArrayList<>();
         args.add(email);
         args.add(course_name);
@@ -304,10 +304,10 @@ public class DbAdapter {
                 String course_name = rs.getString("code");
                 String matched_with = rs.getString("matched_with");
                 if (matches.containsKey(course_name)){
-                    matches.get(course_name).add(getStudent(matched_with));
+                    matches.get(course_name).add(getStudentLite(matched_with));
                 } else {
                     ArrayList<Student> stu_list = new ArrayList<>();
-                    stu_list.add(getStudent(matched_with));
+                    stu_list.add(getStudentLite(matched_with));
                     matches.put(course_name, stu_list);
                 }
             }

@@ -1,6 +1,7 @@
 package com.example.jonat.campfire;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -59,6 +60,7 @@ public class TinderCard {
     private String uEmail;
     private Course currCourse;
     private Student uStudent;
+    private Handler handler;
 
     public TinderCard(Context context, SwipePlaceHolderView swipeView, Student student, Student uStudent, Course currCourse) {
         this.mContext = context;
@@ -114,25 +116,36 @@ public class TinderCard {
     private void onSwipeIn(){
         loadedStudents.remove(0);
         if (!swipedYet(this.student)) {
-            List<Student> stuList;
-            if (this.uStudent.getMatchedStudents().get(currCourse.getName()) == null) {
-                stuList = new ArrayList<>();
-            }
-            else {
-                stuList = this.uStudent.getMatchedStudents().get(currCourse.getName());
-            }
-            stuList.add(this.student);
+//            List<Student> stuList;
+//            if (this.uStudent.getMatchedStudents().get(currCourse.getName()) == null) {
+//                stuList = new ArrayList<>();
+//            }
+//            else {
+//                stuList = this.uStudent.getMatchedStudents().get(currCourse.getName());
+//            }
+//            stuList.add(this.student);
             System.out.println("SWIPED RIGHT");
-            this.uStudent.getMatchedStudents().put(currCourse.getName(), stuList);
-            DbAdapter.updateStudent(this.uStudent);
-            System.out.println("uSTUDENT: " + this.uStudent.getMatchedStudents());
-            System.out.println("student: " + this.student.getMatchedStudents());
-            for (Student s : this.student.getMatchedStudents().get(this.currCourse.getName())) {
-                if (s.getEmail().equals(uEmail)) {
-                    System.out.println("NEW CHAT");
-                    newChat(uEmail,this.student.getEmail());
+//            this.uStudent.getMatchedStudents().put(currCourse.getName(), stuList);
+
+            handler = new Handler();
+            final Student tempStu = this.uStudent;
+            final Student tempCurStu = this.student;
+            final Course tempCourse = this.currCourse;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+//                    DbAdapter.updateStudent(tempStu);
+                    DbAdapter.addMatch(tempStu.getEmail(), tempCourse.getName(),tempCurStu.getEmail());
+                    for (Student s : DbAdapter.getMatchedMap(tempStu.getEmail()).get(tempCourse.getName())) {
+                        System.out.println(s.getEmail() + " : " + uEmail);
+                        if (s.getEmail().equals(tempCurStu.getEmail())) {
+                            System.out.println("NEW CHAT");
+                            newChat(tempCurStu.getEmail(), tempStu.getEmail());
+                        }
+                    }
+                    System.out.println("Done swipe thread");
                 }
-            }
+            }).start();
             swipedRight.add(this.student);
         }
         Log.d("EVENT", "onSwipedIn");
