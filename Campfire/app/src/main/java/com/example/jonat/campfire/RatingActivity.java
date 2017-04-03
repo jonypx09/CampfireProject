@@ -154,7 +154,7 @@ public class RatingActivity extends AppCompatActivity {
                  * 2. Import into Database
                  * 3. Perform matching in the MainActivity, not here
                  */
-                Course newCourse = new Course(newStudentID[3], "Some Course Name", "Some Instructor");
+                Course newCourse = new Course(newStudentID[4], "Some Course Name", "Some Instructor");
                 ArrayList<String> programmingLang = new ArrayList(Arrays.asList(programmingLanguages));
                 newStudentLanguages = new ProgrammingLanguagesCriteria(programmingLang, critLang);
 
@@ -183,9 +183,6 @@ public class RatingActivity extends AppCompatActivity {
                  */
                 Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], newStudentCriteria);
                 newCourse.addStudent(newStudent);
-//                db.addStudent(newStudent);
-//                db.addCourse(newCourse);
-//                db.addToTaking(newStudentID[4], newStudentID[2]);
                 handler = new Handler();
                 final ProgressDialog progressDialog = new ProgressDialog(RatingActivity.this);
                 progressDialog.setMessage("Please wait....");

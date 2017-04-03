@@ -43,9 +43,6 @@ public class MessagesFragment extends Fragment{
     private MainActivity main;
     private String[] temp_emails;
 
-    private String emails[];
-    private String[] temp_emails;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

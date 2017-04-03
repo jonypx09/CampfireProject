@@ -55,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
                 "Notifications"
         };
         String[] miscOptions = new String[] {
-                "Version\n0.9 (Beta)",
+                "Version\n1.0 (Stable)",
                 "What's new",
                 "Rate this app",
                 "View help",
@@ -144,10 +144,10 @@ public class SettingsActivity extends AppCompatActivity {
     public void parseSelection(ListView menuOptions, int index){
         if (menuOptions.equals(settingsListview)){
             if (index == 0){
-                Snackbar snackbar = Snackbar.make(mainLayout, "Personalize Not Ready!", Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(mainLayout, "Personalize Disabled", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }else{
-                Snackbar snackbar = Snackbar.make(mainLayout, "Notifications Not Ready!", Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(mainLayout, "Notifications Disabled", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         }else{
@@ -213,8 +213,11 @@ public class SettingsActivity extends AppCompatActivity {
                 .setTopColorRes(R.color.colorPrimary)
                 .setButtonsColorRes(R.color.colorPrimaryDark)
                 .setIcon(R.drawable.ic_developer_board_white_48dp)
-                .setTitle("Changelog (03-21-2017): \n-Added Messenger\n-Bug Fixes")
-                .setMessage("< Beta build >")
+                .setTitle("Changelog (03-04-2017):\n")
+                .setMessage("-Added Messenger\n" +
+                        "-Bug Fixes\n" +
+                        "-Fixed an issue with signup\n" +
+                        "-Performance improvements to login\n")
                 .setPositiveButton("Close", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
