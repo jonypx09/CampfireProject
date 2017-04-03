@@ -25,6 +25,7 @@ import java.util.List;
 import backend.algorithms.Comparable;
 import backend.algorithms.Course;
 import backend.algorithms.Student;
+import backend.database.DbAdapter;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.example.jonat.campfire.MyCampfireFragment.campfireStudents;
@@ -56,6 +57,7 @@ public class HomeFragment extends Fragment {
     Course currentCourse;
     String currentCourseCode;
     private String uEmail;
+    private List<Student> matchedAlready;
 
     SharedPreferences prefs = null;
 
@@ -71,6 +73,7 @@ public class HomeFragment extends Fragment {
         currentCourseCode = getArguments().getString("currentCourse");
         prefs = getContext().getSharedPreferences("come.example.jonat.campfire", MODE_PRIVATE);
         uEmail = newStudentID[2];
+        matchedAlready = DbAdapter.getMatchedMap(uEmail).get(currentCourseCode);
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -122,11 +125,9 @@ public class HomeFragment extends Fragment {
        //     - students301 for all students in csc301h1.
 
        List<Student> swipeOn = sortedStudents;
-       if (swipeOn.isEmpty()) {
-           if (loadedStudents.isEmpty()) {
-               Toast.makeText(getActivity(), "You've Swiped Right on Everyone! All you can do now is wait!",
-                       Toast.LENGTH_LONG).show();
-           }
+       if ((swipeOn.isEmpty() && loadedStudents.isEmpty()) || (swipeOn.size() == matchedAlready.size())) {
+           Toast.makeText(getActivity(), "You've Swiped Right on Everyone! All you can do now is wait!",
+                   Toast.LENGTH_LONG).show();
        }
        else {
            for (Student s : swipeOn) {
@@ -184,6 +185,11 @@ public class HomeFragment extends Fragment {
     //Helper for checking if swiped right yet.
     private boolean swipedYet(Student s) {
         for (Student stu : swipedRight) {
+            if (stu.getEmail().equals(s.getEmail())) {
+                return true;
+            }
+        }
+        for (Student stu : matchedAlready) {
             if (stu.getEmail().equals(s.getEmail())) {
                 return true;
             }

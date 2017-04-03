@@ -910,24 +910,6 @@ public class DbAdapter {
         return stu_emails;
     }
 
-    /* ---------- PIN QUERIES ---------- */
-=======
-                        "SELECT * FROM chats WHERE chat_id = " + Integer.toString(chat_id),
-                        null
-                        );
-        thread.execute();
-        try {
-                ResultSet rs = thread.get();
-                while(rs.next()){
-                        stu_emails.add(rs.getString("email"));
-                    }
-                return stu_emails;
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        return stu_emails;
-    }
-
         /* ---------- PIN QUERIES ---------- */
 
     private static void insertPinCourse(String code, String pin){
