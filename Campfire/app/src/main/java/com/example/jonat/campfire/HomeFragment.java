@@ -125,9 +125,15 @@ public class HomeFragment extends Fragment {
        //     - students301 for all students in csc301h1.
 
        List<Student> swipeOn = sortedStudents;
-       if ((swipeOn.isEmpty() && loadedStudents.isEmpty()) || (swipeOn.size() == matchedAlready.size())) {
+       if ((swipeOn.isEmpty() && loadedStudents.isEmpty())) {
            Toast.makeText(getActivity(), "You've Swiped Right on Everyone! All you can do now is wait!",
                    Toast.LENGTH_LONG).show();
+       }
+       else if (matchedAlready != null) {
+           if (swipeOn.size() == matchedAlready.size()) {
+               Toast.makeText(getActivity(), "You've Swiped Right on Everyone! All you can do now is wait!",
+                       Toast.LENGTH_LONG).show();
+           }
        }
        else {
            for (Student s : swipeOn) {
@@ -189,9 +195,11 @@ public class HomeFragment extends Fragment {
                 return true;
             }
         }
-        for (Student stu : matchedAlready) {
-            if (stu.getEmail().equals(s.getEmail())) {
-                return true;
+        if (matchedAlready != null) {
+            for (Student stu : matchedAlready) {
+                if (stu.getEmail().equals(s.getEmail())) {
+                    return true;
+                }
             }
         }
         return false;
