@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
                 uStudent = DbAdapter.getStudentLite(uEmail);
                 uName = uStudent.getFname() + " " + uStudent.getLname();
                 List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-                currentCourse = DbAdapter.getCourseLite(enrolledCourses.get(0));
+                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
 
                 currentStudentID[0] = uStudent.getFname();
                 currentStudentID[1] = uStudent.getLname();
@@ -149,12 +149,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void run() {
                 List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-                currentCourse = DbAdapter.getCourseLite(enrolledCourses.get(0));
+                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
                 ArrayList<String> courseCodesList = new ArrayList<String>();
                 ArrayList<String> courseNamesList = new ArrayList<String>();
                 ArrayList<String> courseInstructorList = new ArrayList<String>();
                 for (String code: enrolledCourses){
-                    Course current = DbAdapter.getCourseLite(code);
+                    Course current = DbAdapter.getCourse(code);
                     courseCodesList.add(code);
                     courseNamesList.add(current.getDescription());
                     courseInstructorList.add(current.getInstructor());
