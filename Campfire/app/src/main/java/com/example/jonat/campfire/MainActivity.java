@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity
     private List<Student> allStudents;
     private Course currentCourse;
     private List<String> enrolledCourses;
+    private List<Course> allCourses;
 
     private List<CampfireGroup> currentGroups;
     private List<Chat> chats;
@@ -93,6 +94,18 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         setTitle("Campfire");
         fetchAllStudents();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                allCourses = DbAdapter.getAllCourses();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                    }
+                });
+            }
+        }).start();
 
         /**
          * 1. Connect to the Database
@@ -140,38 +153,9 @@ public class MainActivity extends AppCompatActivity
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-//                        renderData(toolbar);
-                        progressDialog.dismiss();
-                        matchesDialog.show();
-                    }
-                });
-            }
-        }).start();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
-                ArrayList<String> courseCodesList = new ArrayList<String>();
-                ArrayList<String> courseNamesList = new ArrayList<String>();
-                ArrayList<String> courseInstructorList = new ArrayList<String>();
-                for (String code: enrolledCourses){
-                    Course current = DbAdapter.getCourse(code);
-                    courseCodesList.add(code);
-                    courseNamesList.add(current.getDescription());
-                    courseInstructorList.add(current.getInstructor());
-                }
-                courseCodes = new String[courseCodesList.size()];
-                courseCodes = courseCodesList.toArray(courseCodes);
-                courseNames = new String[courseNamesList.size()];
-                courseNames = courseNamesList.toArray(courseNames);
-                courseInstructors = new String[courseInstructorList.size()];
-                courseInstructors = courseInstructorList.toArray(courseInstructors);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
                         renderData(toolbar);
-                        matchesDialog.dismiss();
+                        progressDialog.dismiss();
+//                        matchesDialog.show();
                     }
                 });
             }
@@ -212,6 +196,39 @@ public class MainActivity extends AppCompatActivity
             }
         });
         navigationView.getMenu().getItem(0).setChecked(true);
+
+        Menu menuNav = navigationView.getMenu();
+        final MenuItem nav_courses = menuNav.findItem(R.id.nav_my_courses);
+        nav_courses.setEnabled(false);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
+                ArrayList<String> courseCodesList = new ArrayList<String>();
+                ArrayList<String> courseNamesList = new ArrayList<String>();
+                ArrayList<String> courseInstructorList = new ArrayList<String>();
+                for (String code: enrolledCourses){
+                    Course current = DbAdapter.getCourse(code);
+                    courseCodesList.add(code);
+                    courseNamesList.add(current.getDescription());
+                    courseInstructorList.add(current.getInstructor());
+                }
+                courseCodes = new String[courseCodesList.size()];
+                courseCodes = courseCodesList.toArray(courseCodes);
+                courseNames = new String[courseNamesList.size()];
+                courseNames = courseNamesList.toArray(courseNames);
+                courseInstructors = new String[courseInstructorList.size()];
+                courseInstructors = courseInstructorList.toArray(courseInstructors);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        nav_courses.setEnabled(true);
+                    }
+                });
+            }
+        }).start();
     }
 
     public void getGroups(final String email){
