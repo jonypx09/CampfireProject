@@ -862,6 +862,7 @@ public class DbAdapter {
     public static List<String> getAllStudentsInChat(int chat_id){
         List<String> stu_emails = new ArrayList<>();
         ResultDatabaseThread thread = new ResultDatabaseThread(
+<<<<<<< HEAD
                 "SELECT * FROM chats WHERE chat_id = " + Integer.toString(chat_id),
                 null
         );
@@ -879,6 +880,25 @@ public class DbAdapter {
     }
 
     /* ---------- PIN QUERIES ---------- */
+=======
+                        "SELECT * FROM chats WHERE chat_id = " + Integer.toString(chat_id),
+                        null
+                        );
+        thread.execute();
+        try {
+                ResultSet rs = thread.get();
+                while(rs.next()){
+                        stu_emails.add(rs.getString("email"));
+                    }
+                return stu_emails;
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        return stu_emails;
+    }
+
+        /* ---------- PIN QUERIES ---------- */
+>>>>>>> New database function to get users in chat, integrated it with the front end
 
     private static void insertPinCourse(String code, String pin){
         // Make sure that the course exists
