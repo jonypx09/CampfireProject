@@ -38,8 +38,10 @@ public class MessagesFragment extends Fragment{
     private String chat_id[];
     private List<Chat> chats;
     private String display[];
+    private String emails[];
     private Integer imageid[];
     private MainActivity main;
+    private String[] temp_emails;
 
     private String emails[];
     private String[] temp_emails;
@@ -56,7 +58,7 @@ public class MessagesFragment extends Fragment{
         //chats = getAllChatsForUser(uEmail);
 
         if (chats != null) {
-            messengers = new String[chats.size()];
+           messengers = new String[chats.size()];
             chat_id = new String[chats.size()];
             display = new String[chats.size()];
             imageid = new Integer[chats.size()];
@@ -130,7 +132,6 @@ public class MessagesFragment extends Fragment{
 
         super.onViewCreated(view, savedInstanceState);
 
-        //MyCampfireListAdapter customList = new MyCampfireListAdapter(getActivity(), messengers, display, imageid);
         MyCampfireListAdapter customList = new MyCampfireListAdapter(getActivity(), messengers, temp_emails, display, imageid);
 
         listView = (ListView) getView().findViewById(R.id.listOfMessages);

@@ -123,12 +123,15 @@ public class HomeFragment extends Fragment {
 
        List<Student> swipeOn = sortedStudents;
        if (swipeOn.isEmpty()) {
-           Toast.makeText(getContext(), "No available matches.", Toast.LENGTH_LONG).show();
+           if (loadedStudents.isEmpty()) {
+               Toast.makeText(getActivity(), "You've Swiped Right on Everyone! All you can do now is wait!",
+                       Toast.LENGTH_LONG).show();
+           }
        }
        else {
            for (Student s : swipeOn) {
                if (!inCampfire(s) && !swipedYet(s) && !uStudent.getEmail().equals(s.getEmail())) {
-                   mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s, uStudent, currentCourse));
+                   mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s, uStudent, currentCourse, getActivity()));
                }
            }
        }

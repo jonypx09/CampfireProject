@@ -156,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                allStudents = DbAdapter.getAllStudentsLite();
+                allStudents = DbAdapter.getAllStudents();
                 handler.post(new Runnable() {
                     @Override
                     public void run() {

@@ -20,6 +20,7 @@ public class MyCampfireListAdapter extends ArrayAdapter<String> {
     private Integer[] imageid;
     private Activity context;
     private String[][] names2;
+    private String[] emails;
 
     public MyCampfireListAdapter(Activity context, String[] names, String[] desc, Integer[] imageid) {
         super(context, R.layout.my_campfire_list_item, names);
@@ -27,6 +28,15 @@ public class MyCampfireListAdapter extends ArrayAdapter<String> {
         this.names = names;
         this.desc = desc;
         this.imageid = imageid;
+    }
+
+    public MyCampfireListAdapter(Activity context, String[] names, String[] emails, String[] desc, Integer[] imageid) {
+        super(context, R.layout.my_campfire_list_item, names);
+        this.context = context;
+        this.names = names;
+        this.desc = desc;
+        this.imageid = imageid;
+        this.emails = emails;
     }
 
     @NonNull
