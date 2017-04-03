@@ -139,23 +139,48 @@ public class TinderCard {
             final Student tempCurStu = this.student;
             final Course tempCourse = this.currCourse;
             final FragmentActivity tempAct = this.activity;
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+////                    DbAdapter.updateStudent(tempStu);
+//                    DbAdapter.addMatch(tempStu.getEmail(), tempCourse.getName(),tempCurStu.getEmail());
+//                    for (Student s : DbAdapter.getMatchedMap(tempStu.getEmail()).get(tempCourse.getName())) {
+//                        System.out.println(s.getEmail() + " : " + uEmail);
+//                        if (s.getEmail().equals(tempCurStu.getEmail())) {
+//                            System.out.println("NEW CHAT");
+//                            newChat(tempCurStu.getEmail(), tempStu.getEmail());
+//                            Toast.makeText(tempAct, "You matched with "+ tempCurStu.getFname() + " ! Head to Messages to build your Dream Team!",
+//                                    Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//                    System.out.println("Done swipe thread");
+//                }
+//            }).start();
+
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-//                    DbAdapter.updateStudent(tempStu);
                     DbAdapter.addMatch(tempStu.getEmail(), tempCourse.getName(),tempCurStu.getEmail());
-                    for (Student s : DbAdapter.getMatchedMap(tempStu.getEmail()).get(tempCourse.getName())) {
-                        System.out.println(s.getEmail() + " : " + uEmail);
-                        if (s.getEmail().equals(tempCurStu.getEmail())) {
-                            System.out.println("NEW CHAT");
-                            newChat(tempCurStu.getEmail(), tempStu.getEmail());
-                            Toast.makeText(tempAct, "You matched with "+ tempCurStu.getFname() + " ! Head to Messages to build your Dream Team!",
-                                    Toast.LENGTH_LONG).show();
+                    final List<Student> potentialMatches = DbAdapter.getMatchedMap(tempStu.getEmail()).get(tempCourse.getName());
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (Student s : potentialMatches) {
+                                System.out.println(s.getEmail() + " : " + uEmail);
+                                if (s.getEmail().equals(tempCurStu.getEmail())) {
+                                    System.out.println("NEW CHAT");
+                                    newChat(tempCurStu.getEmail(), tempStu.getEmail());
+                                    Toast.makeText(tempAct, "You matched with "+ tempCurStu.getFname() + " ! Head to Messages to build your Dream Team!",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            }
+                            System.out.println("Done swipe thread");
                         }
-                    }
-                    System.out.println("Done swipe thread");
+                    });
                 }
             }).start();
+
             swipedRight.add(this.student);
         }
         Log.d("EVENT", "onSwipedIn");
