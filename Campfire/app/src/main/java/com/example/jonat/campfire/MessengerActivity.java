@@ -2,6 +2,7 @@ package com.example.jonat.campfire;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -41,11 +42,17 @@ public class MessengerActivity extends AppCompatActivity {
     private EditText editText;
     boolean isMine = true;
     private List<Message> chatMessages;
+    private List<Message> tempMessages;
     private ArrayAdapter<Message> adapter;
     private Activity temp;
     private String title;
-    private Button refresh_btn;
+    //private Button refresh_btn;
     private Button messengers_btn;
+    private Handler handler;
+
+    private int chat_id;
+
+    private ArrayList<Student> allStudents;
 
     private ArrayList<Student> allStudents;
 
@@ -57,24 +64,71 @@ public class MessengerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
         title = intent.getExtras().getString("messengers");
-        curChat = getChat(Integer.parseInt(intent.getExtras().getString("chat_id")));
+        chat_id = Integer.parseInt(intent.getExtras().getString("chat_id"));
         uEmail = newStudentID[2];
 
         setTitle(title);
 
-        chatMessages = curChat.getMessages();
-
         listView = (ListView) findViewById(R.id.list_msg);
         btnSend = (ImageView) findViewById(R.id.btn_chat_send);
-        refresh_btn = (Button) findViewById(R.id.refresh_btn);
+        //refresh_btn = (Button) findViewById(R.id.refresh_btn);
         messengers_btn = (Button) findViewById(R.id.messengers_btn);
         editText = (EditText) findViewById(R.id.msg_type);
 
         temp = this;
         //set ListView adapter first
-        adapter = new ChatAdapter(this, R.layout.in_message_bg, curChat.getMessages(), uEmail);
+        // initial set of messages
+        curChat = getChat(chat_id);
+        chatMessages = curChat.getMessages();
+
+        //set ListView adapter first
+        adapter = new ChatAdapter(temp, R.layout.in_message_bg, curChat.getMessages(), uEmail);
         listView.setAdapter(adapter);
 
+        //auto refresh
+
+//        handler = new Handler();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//
+//                    tempMessages = chatMessages;
+//                    curChat = getChat(chat_id);
+//                    chatMessages = curChat.getMessages();
+//                    System.out.println(!(chatMessages.equals(tempMessages)));
+//                    // check if changes have occured
+//                    if (!(chatMessages.equals(tempMessages))) {
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                                //set ListView adapter first
+//                                adapter = new ChatAdapter(temp, R.layout.in_message_bg, chatMessages, uEmail);
+//                                listView.setAdapter(adapter);
+//                            }
+//                        }, 5000);
+//                    }
+//                }
+//            }
+//        }).start();
+
+        final Handler handler = new Handler();
+
+        Runnable refresh = new Runnable() {
+            @Override
+            public void run() {
+
+                curChat = getChat(chat_id);
+                chatMessages = curChat.getMessages();
+                adapter = new ChatAdapter(temp, R.layout.in_message_bg, chatMessages, uEmail);
+                listView.setAdapter(adapter);
+
+                handler.postDelayed(this, 10 * 1000);
+            }
+        };
+
+        handler.postDelayed(refresh, 10 * 1000);
 
         //event for button SEND
         btnSend.setOnClickListener(new View.OnClickListener() {
@@ -95,13 +149,14 @@ public class MessengerActivity extends AppCompatActivity {
             }
         });
 
+        // now uses auto-refresh
         // refresh the messages, pulling any new messages
-        refresh_btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                adapter = new ChatAdapter(temp, R.layout.in_message_bg, curChat.getMessages(), uEmail);
-                listView.setAdapter(adapter);
-            }
-        });
+//        refresh_btn.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                adapter = new ChatAdapter(temp, R.layout.in_message_bg, curChat.getMessages(), uEmail);
+//                listView.setAdapter(adapter);
+//            }
+//        });
 
         messengers_btn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -122,3 +177,5 @@ public class MessengerActivity extends AppCompatActivity {
         return false;
     }
 }
+
+
