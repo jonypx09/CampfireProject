@@ -41,6 +41,9 @@ public class MessagesFragment extends Fragment{
     private Integer imageid[];
     private MainActivity main;
 
+    private String emails[];
+    private String[] temp_emails;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,13 +68,24 @@ public class MessagesFragment extends Fragment{
 
                 // temps for the name display
                 List<String> temp_names_list = getAllStudentsInChat(Integer.parseInt(chat_id[i]));
+                List<Student> temp_student_list = main.getAllStudents();
+                temp_emails = new String[temp_names_list.size()];
                 String temp_names = "";
 
                 temp_names_list.remove(uEmail);
 
                 int idx = 0;
                 for (String n: temp_names_list) {
-                    Student tempStudent = getStudent(n);
+
+                    Student tempStudent = null;
+
+                    for (Student s: temp_student_list){
+                        if (s.getEmail().equals(n)){
+                            tempStudent = s;
+                         }
+                    }
+                    temp_emails[idx] = tempStudent.getEmail();
+
                     if (temp_names_list.size() == 1) {
                         temp_names += tempStudent.getFname();
                     } else if (idx == temp_names_list.size() - 1) {
@@ -115,7 +129,9 @@ public class MessagesFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         super.onViewCreated(view, savedInstanceState);
-        MyCampfireListAdapter customList = new MyCampfireListAdapter(getActivity(), messengers, display, imageid);
+
+        //MyCampfireListAdapter customList = new MyCampfireListAdapter(getActivity(), messengers, display, imageid);
+        MyCampfireListAdapter customList = new MyCampfireListAdapter(getActivity(), messengers, temp_emails, display, imageid);
 
         listView = (ListView) getView().findViewById(R.id.listOfMessages);
         listView.setAdapter(customList);
