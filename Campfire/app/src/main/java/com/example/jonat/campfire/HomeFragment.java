@@ -20,7 +20,10 @@ import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import backend.algorithms.Comparable;
 import backend.algorithms.Course;
@@ -62,7 +65,7 @@ public class HomeFragment extends Fragment {
     SharedPreferences prefs = null;
 
     //TODO: Make this work with database, instead of local.
-    public static ArrayList<Student> swipedRight = new ArrayList<Student>();
+    public Map<String, List<Student>> swipedRight = new HashMap<>();
 
     @Nullable
     @Override
@@ -126,22 +129,29 @@ public class HomeFragment extends Fragment {
 
        List<Student> swipeOn = sortedStudents;
        if ((swipeOn.isEmpty() && loadedStudents.isEmpty())) {
+           System.out.println("empty");
            Toast.makeText(getActivity(), "You've Swiped Right on Everyone! All you can do now is wait!",
                    Toast.LENGTH_LONG).show();
        }
        else if (matchedAlready != null) {
            if (swipeOn.size() == matchedAlready.size()) {
+               System.out.println("same size");
                Toast.makeText(getActivity(), "You've Swiped Right on Everyone! All you can do now is wait!",
                        Toast.LENGTH_LONG).show();
            }
-       }
-       else {
-           for (Student s : swipeOn) {
-               if (!inCampfire(s) && !swipedYet(s) && !uStudent.getEmail().equals(s.getEmail())) {
-                   mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s, uStudent, currentCourse, getActivity()));
+           else {
+               System.out.println("else");
+               System.out.println(swipeOn);
+               for (Student s : swipeOn) {
+                   System.out.println(s.getFname());
+                   System.out.println(inCampfire(s) + " " + swipedYet(s, currentCourseCode) + " " + uStudent.getEmail().equals(s.getEmail()));
+                   if (!inCampfire(s) && !swipedYet(s, currentCourseCode) && !uStudent.getEmail().equals(s.getEmail())) {
+                       mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s, uStudent, currentCourse, getActivity(), this));
+                   }
                }
            }
        }
+
        getActivity().findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -191,10 +201,14 @@ public class HomeFragment extends Fragment {
     }
 
     //Helper for checking if swiped right yet.
-    private boolean swipedYet(Student s) {
-        for (Student stu : swipedRight) {
-            if (stu.getEmail().equals(s.getEmail())) {
-                return true;
+    private boolean swipedYet(Student s, String c) {
+        if (swipedRight != null) {
+            if (swipedRight.get(c) != null) {
+                for (Student stu : swipedRight.get(c)) {
+                    if (stu.getEmail().equals(s.getEmail())) {
+                        return true;
+                    }
+                }
             }
         }
         if (matchedAlready != null) {
@@ -205,5 +219,16 @@ public class HomeFragment extends Fragment {
             }
         }
         return false;
+    }
+
+    public void addToSwiped(Student s, String c) {
+        if (swipedRight.containsKey(c)) {
+            swipedRight.get(c).add(s);
+        }
+        else {
+            List<Student> ls = new LinkedList<>();
+            ls.add(s);
+            swipedRight.put(c, ls);
+        }
     }
 }
