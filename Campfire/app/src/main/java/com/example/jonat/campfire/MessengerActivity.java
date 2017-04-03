@@ -2,6 +2,7 @@ package com.example.jonat.campfire;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -60,8 +61,6 @@ public class MessengerActivity extends AppCompatActivity {
 
         setTitle(title);
 
-        chatMessages = curChat.getMessages();
-
         listView = (ListView) findViewById(R.id.list_msg);
         btnSend = (ImageView) findViewById(R.id.btn_chat_send);
         refresh_btn = (Button) findViewById(R.id.refresh_btn);
@@ -69,10 +68,29 @@ public class MessengerActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.msg_type);
 
         temp = this;
-        //set ListView adapter first
-        adapter = new ChatAdapter(this, R.layout.in_message_bg, curChat.getMessages(), uEmail);
-        listView.setAdapter(adapter);
 
+        Thread t = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(5000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                curChat = getChat(chat_id);
+                                chatMessages = curChat.getMessages();
+
+                                //set ListView adapter first
+                                adapter = new ChatAdapter(temp, R.layout.in_message_bg, curChat.getMessages(), uEmail);
+                                listView.setAdapter(adapter);
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
 
         //event for button SEND
         btnSend.setOnClickListener(new View.OnClickListener() {
@@ -122,4 +140,5 @@ public class MessengerActivity extends AppCompatActivity {
         }
         return false;
     }
+
 }
