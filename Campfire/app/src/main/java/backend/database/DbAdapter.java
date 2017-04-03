@@ -99,10 +99,10 @@ public class DbAdapter {
      */
     public static void addMatch(String email, String course_name, String email_matched){
         // Make sure that students exists and that course exists
-        if (getStudent(email) == null || getCourse(course_name) == null ||
-                getStudent(email_matched) == null){
-            return;
-        }
+//        if (getStudent(email) == null || getCourse(course_name) == null ||
+//                getStudent(email_matched) == null){
+//            return;
+//        }
         List<String> args = new ArrayList<>();
         args.add(email);
         args.add(course_name);
@@ -910,7 +910,7 @@ public class DbAdapter {
         return stu_emails;
     }
 
-    /* ---------- PIN QUERIES ---------- */
+        /* ---------- PIN QUERIES ---------- */
 
     private static void insertPinCourse(String code, String pin){
         // Make sure that the course exists
