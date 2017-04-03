@@ -325,7 +325,7 @@ public class AdminActivity extends AppCompatActivity {
         images = new Integer[listSize];
 
         for (int i = 0; i < allCourses.size(); i++){
-            names[i] = allCourses.get(i).getCourseCode();
+            names[i] = allCourses.get(i).getName();
             description[i] = allCourses.get(i).getName() + "\n\nInstructor: " + allCourses.get(i).getInstructor();
             images[i] = courseImage;
         }

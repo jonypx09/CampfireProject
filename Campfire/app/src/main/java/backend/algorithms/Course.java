@@ -9,28 +9,28 @@ import java.util.ArrayList;
  */
 public class Course {
 	
-	// Course code is unique
-	private String courseCode;
+
 	// Full name of the course
 	private String name;
+	private String description;
 	private String instructor;
 	
 	//All the students in this course.
 	private ArrayList<Student> Students = new ArrayList<Student>();
 	
-	public Course(String courseCode, String name, String instructor) {
+	public Course(String name, String description, String instructor) {
 		super();
-		this.courseCode = courseCode;
 		this.name = name;
+		this.description = description;
 		this.instructor = instructor;
-	}
-
-	public String getCourseCode() {
-		return courseCode;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public String getDescription() {
+		return this.description;
 	}
 
 	public String getInstructor() {
