@@ -113,25 +113,11 @@ public class MainActivity extends AppCompatActivity
         new Thread(new Runnable() {
             @Override
             public void run() {
-                uStudent = DbAdapter.getStudent(uEmail);
+                uStudent = DbAdapter.getStudentLite(uEmail);
                 uName = uStudent.getFname() + " " + uStudent.getLname();
                 List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
-                ArrayList<String> courseCodesList = new ArrayList<String>();
-                ArrayList<String> courseNamesList = new ArrayList<String>();
-                ArrayList<String> courseInstructorList = new ArrayList<String>();
-                for (String code: enrolledCourses){
-                    Course current = DbAdapter.getCourse(code);
-                    courseCodesList.add(code);
-                    courseNamesList.add(current.getDescription());
-                    courseInstructorList.add(current.getInstructor());
-                }
-                courseCodes = new String[courseCodesList.size()];
-                courseCodes = courseCodesList.toArray(courseCodes);
-                courseNames = new String[courseNamesList.size()];
-                courseNames = courseNamesList.toArray(courseNames);
-                courseInstructors = new String[courseInstructorList.size()];
-                courseInstructors = courseInstructorList.toArray(courseInstructors);
+                currentCourse = DbAdapter.getCourseLite(enrolledCourses.get(0));
+
                 currentStudentID[0] = uStudent.getFname();
                 currentStudentID[1] = uStudent.getLname();
                 currentStudentID[2] = uStudent.getEmail();
@@ -152,72 +138,42 @@ public class MainActivity extends AppCompatActivity
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        renderData(toolbar);
+//                        renderData(toolbar);
                         progressDialog.dismiss();
-//                        matchesDialog.show();
+                        matchesDialog.show();
                     }
                 });
             }
         }).start();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-//                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
-//                ArrayList<String> courseCodesList = new ArrayList<String>();
-//                ArrayList<String> courseNamesList = new ArrayList<String>();
-//                ArrayList<String> courseInstructorList = new ArrayList<String>();
-//                for (String code: enrolledCourses){
-//                    Course current = DbAdapter.getCourse(code);
-//                    courseCodesList.add(code);
-//                    courseNamesList.add(current.getDescription());
-//                    courseInstructorList.add(current.getInstructor());
-//                }
-//                courseCodes = new String[courseCodesList.size()];
-//                courseCodes = courseCodesList.toArray(courseCodes);
-//                courseNames = new String[courseNamesList.size()];
-//                courseNames = courseNamesList.toArray(courseNames);
-//                courseInstructors = new String[courseInstructorList.size()];
-//                courseInstructors = courseInstructorList.toArray(courseInstructors);
-//                handler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                    }
-//                });
-//            }
-//        }).start();
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-//                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
-//
-//                currentStudentID[0] = uStudent.getFname();
-//                currentStudentID[1] = uStudent.getLname();
-//                currentStudentID[2] = uStudent.getEmail();
-//                currentStudentID[3] = uStudent.getPass();
-//
-//                //Defaults to first course
-//                studentsInCourse = uStudent.getallOtherCourseStudents(currentCourse);
-//                ArrayList<String> classmatesNamesList = new ArrayList<String>();
-//                ArrayList<String> classmatesEmailsList = new ArrayList<String>();
-//                for (Student s: studentsInCourse){
-//                    classmatesNamesList.add(s.getFname() + " " + s.getLname());
-//                    classmatesEmailsList.add(s.getEmail());
-//                }
-//                classmatesNames = new String[classmatesNamesList.size()];
-//                classmatesNames = classmatesNamesList.toArray(classmatesNames);
-//                classmatesEmails = new String[classmatesEmailsList.size()];
-//                classmatesEmails = classmatesEmailsList.toArray(classmatesEmails);
-//                handler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        renderData(toolbar);
-//                        matchesDialog.dismiss();
-//                    }
-//                });
-//            }
-//        }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+                currentCourse = DbAdapter.getCourseLite(enrolledCourses.get(0));
+                ArrayList<String> courseCodesList = new ArrayList<String>();
+                ArrayList<String> courseNamesList = new ArrayList<String>();
+                ArrayList<String> courseInstructorList = new ArrayList<String>();
+                for (String code: enrolledCourses){
+                    Course current = DbAdapter.getCourseLite(code);
+                    courseCodesList.add(code);
+                    courseNamesList.add(current.getDescription());
+                    courseInstructorList.add(current.getInstructor());
+                }
+                courseCodes = new String[courseCodesList.size()];
+                courseCodes = courseCodesList.toArray(courseCodes);
+                courseNames = new String[courseNamesList.size()];
+                courseNames = courseNamesList.toArray(courseNames);
+                courseInstructors = new String[courseInstructorList.size()];
+                courseInstructors = courseInstructorList.toArray(courseInstructors);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        renderData(toolbar);
+                        matchesDialog.dismiss();
+                    }
+                });
+            }
+        }).start();
         getGroups(uEmail);
         processChats(uEmail);
     }

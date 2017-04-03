@@ -55,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
                 "Notifications"
         };
         String[] miscOptions = new String[] {
-                "Version\n0.8 (Alpha)",
+                "Version\n0.9 (Beta)",
                 "What's new",
                 "Rate this app",
                 "View help",
@@ -213,8 +213,8 @@ public class SettingsActivity extends AppCompatActivity {
                 .setTopColorRes(R.color.colorPrimary)
                 .setButtonsColorRes(R.color.colorPrimaryDark)
                 .setIcon(R.drawable.ic_developer_board_white_48dp)
-                .setTitle("Changelog (03-21-2017):")
-                .setMessage("< Alpha build >")
+                .setTitle("Changelog (03-21-2017): \n-Added Messenger\n-Bug Fixes")
+                .setMessage("< Beta build >")
                 .setPositiveButton("Close", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

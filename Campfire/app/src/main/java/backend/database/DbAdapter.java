@@ -969,6 +969,134 @@ public class DbAdapter {
         }
         return pg;
     }
+
+
+
+
+    //PERFORMANCE FUNCTIONS
+    /**
+     * Get all the student object in the database (faster load times)
+     * @return a list of all the students in the database
+     */
+    public static List<Student> getAllStudentsLite(){
+        ArrayList<Student> student_list = new ArrayList<Student>();
+        try {
+            ResultDatabaseThread thread = new ResultDatabaseThread("SELECT * FROM student", null);
+            thread.execute();
+
+            ResultSet rs = thread.get();
+            while (rs.next()){
+
+                Student student = new Student(
+                        rs.getString("fname"),
+                        rs.getString("lname"),
+                        rs.getString("email"),
+                        rs.getString("pass"),
+                        comparableDeserializer(rs.getString("comparable"))
+                );
+                student.setDescription(rs.getString("description"));
+                student_list.add(student);
+            }
+            return student_list;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return student_list;
+    }
+
+    /**
+     * Get a student instance from the database.
+     * @param email of the student you want to get from the database
+     * @return Student object of that student
+     */
+    public static Student getStudentLite(String email){
+        try {
+            ArrayList<String> args = new ArrayList<String>();
+            args.add(email);
+            ResultDatabaseThread thread = new ResultDatabaseThread("SELECT * FROM student WHERE email = ?", args);
+            thread.execute();
+
+            ResultSet rs = thread.get();
+            Student student = null;
+            if (rs.next()){
+
+                student = new Student(
+                        rs.getString("fname"),
+                        rs.getString("lname"),
+                        rs.getString("email"),
+                        rs.getString("pass"),
+                        comparableDeserializer(rs.getString("comparable"))
+                );
+                student.setDescription(rs.getString("description"));
+            }
+            return student;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Get all the students in a specified course.
+     * @param code course code of the course
+     * @return an ArrayList of Student in that course
+     */
+    private static ArrayList<Student> getAllStudentsInCourseLite(String code){
+        ArrayList<Student> stu_list = new ArrayList<Student>();
+        try {
+            List<String> args = new ArrayList<String>();
+            args.add(code);
+            ResultDatabaseThread thread = new ResultDatabaseThread(
+                    "SELECT * FROM taking WHERE code = ?", args
+            );
+            thread.execute();
+            ResultSet rs = thread.get();
+            while(rs.next()){
+                Student stu = getStudentLite(rs.getString("email"));
+                stu_list.add(stu);
+            }
+            return stu_list;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return stu_list;
+    }
+
+    /**
+     * Get a course object from the database.
+     * @param code identifier of the course wanted
+     * @return Course object of the course that is wanted
+     */
+    public static Course getCourseLite(String code){
+        try {
+            List<String> args = new ArrayList<String>();
+            args.add(code);
+
+            ResultDatabaseThread thread = new ResultDatabaseThread(
+                    "SELECT * FROM course WHERE code = ?", args
+            );
+            thread.execute();
+            ResultSet rs = thread.get();
+            if (rs.next()){
+                Course course = new Course(
+                        rs.getString("code"),
+                        rs.getString("name"),
+                        rs.getString("instructor")
+                );
+
+                // Get all the students enrolled in this course and add them to course
+                ArrayList<Student> stu_list = getAllStudentsInCourseLite(course.getName());
+                for (Student stu : stu_list){
+                    course.addStudent(stu);
+                }
+
+                return course;
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
 
 

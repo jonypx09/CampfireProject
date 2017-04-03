@@ -43,17 +43,18 @@
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/forgotPasswordTextview"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="11dp"
         android:width="200dp"
         android:background="@android:color/holo_blue_dark"
+        android:enabled="false"
         android:onClick="checkFields"
         android:text="Log In"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="11dp"
-        android:layout_above="@+id/forgotPasswordTextview"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:textColor="@android:color/black" />
 
     <EditText
         android:id="@+id/confirmPassTextField"
