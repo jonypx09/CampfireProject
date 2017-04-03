@@ -208,12 +208,31 @@ public class MyCampfireFragment extends Fragment {
         terminateDialog.setButton(android.support.v7.app.AlertDialog.BUTTON_NEGATIVE, "Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        //TODO Update group via database
-                        DbAdapter.removeStudentFromGroup(name, groupID);
-//                        uStudent.leaveGroup(currentCourse, name);
-//                        DbAdapter.updateStudent(uStudent);
+                        leaveGroup(name, groupID);
                     }
                 });
         terminateDialog.show();
+    }
+
+    public void leaveGroup(String name, final int groupID){
+        handler = new Handler();
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please wait....");
+        progressDialog.setTitle("Leaving " + name);
+        progressDialog.show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DbAdapter.removeStudentFromGroup(uEmail, groupID);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(), "Success!", Toast.LENGTH_LONG).show();
+                        main.refreshGroupListMemberCount(uEmail);
+                    }
+                });
+            }
+        }).start();
     }
 }
