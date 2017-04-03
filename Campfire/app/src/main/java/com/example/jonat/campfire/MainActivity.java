@@ -251,7 +251,11 @@ public class MainActivity extends AppCompatActivity
         new Thread(new Runnable() {
             @Override
             public void run() {
-                allStudents = DbAdapter.getAllStudents();
+                try {
+                    chats = getAllChatsForUser(uEmail);
+                }catch (Exception e){
+                    chats = new ArrayList<Chat>();
+                }
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -266,7 +270,7 @@ public class MainActivity extends AppCompatActivity
         new Thread(new Runnable() {
             @Override
             public void run() {
-                chats = getAllChatsForUser(uEmail);
+                allStudents = DbAdapter.getAllStudents();
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
