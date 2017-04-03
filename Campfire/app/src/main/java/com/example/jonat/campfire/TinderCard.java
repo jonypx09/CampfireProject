@@ -124,8 +124,7 @@ public class TinderCard {
         if (loadedStudents.isEmpty()) {
             Toast.makeText(this.activity, "You've Swiped on Everyone! All you can do now is wait!",
                     Toast.LENGTH_LONG).show();
-        }
-        if (!swipedYet(this.student)) {
+        }whi
 //            List<Student> stuList;
 //            if (this.uStudent.getMatchedStudents().get(currCourse.getName()) == null) {
 //                stuList = new ArrayList<>();
@@ -185,7 +184,6 @@ public class TinderCard {
             }).start();
 
             swipedRight.add(this.student);
-        }
         Log.d("EVENT", "onSwipedIn");
     }
 
@@ -199,13 +197,4 @@ public class TinderCard {
         Log.d("EVENT", "onSwipeOutState");
     }
 
-    //Helper for checking if swiped right yet.
-    private boolean swipedYet(Student s) {
-        for (Student stu : swipedRight) {
-            if (stu.getEmail().equals(s.getEmail())) {
-                return true;
-            }
-        }
-        return false;
-    }
 }

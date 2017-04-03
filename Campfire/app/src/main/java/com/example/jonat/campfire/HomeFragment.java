@@ -159,9 +159,11 @@ public class HomeFragment extends Fragment {
        getActivity().findViewById(R.id.infoBtn).setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               Intent profileIntent = new Intent(getActivity(), ClassmatesProfileActivity.class);
-               profileIntent.putExtra("studentEmail", loadedStudents.get(0).getEmail());
-               startActivity(profileIntent);
+               if (loadedStudents != null && loadedStudents.size() > 0) {
+                   Intent profileIntent = new Intent(getActivity(), ClassmatesProfileActivity.class);
+                   profileIntent.putExtra("studentEmail", loadedStudents.get(0).getEmail());
+                   startActivity(profileIntent);
+               }
            }
        });
 
