@@ -120,11 +120,6 @@ public class MainActivity extends AppCompatActivity
         progressDialog.setMessage("Please wait....");
         progressDialog.setTitle("Retrieving User Data");
         progressDialog.show();
-
-        final ProgressDialog matchesDialog = new ProgressDialog(MainActivity.this);
-        matchesDialog.setMessage("Please wait....");
-        matchesDialog.setTitle("Loading Matches");
-
         new Thread(new Runnable() {
             @Override
             public void run() {
