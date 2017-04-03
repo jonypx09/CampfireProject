@@ -151,6 +151,17 @@ public class HomeFragment extends Fragment {
                }
            }
        }
+       else {
+           System.out.println("else");
+           System.out.println(swipeOn);
+           for (Student s : swipeOn) {
+               System.out.println(s.getFname());
+               System.out.println(inCampfire(s) + " " + swipedYet(s, currentCourseCode) + " " + uStudent.getEmail().equals(s.getEmail()));
+               if (!inCampfire(s) && !swipedYet(s, currentCourseCode) && !uStudent.getEmail().equals(s.getEmail())) {
+                   mSwipeView.addView(new TinderCard(getContext(), mSwipeView, s, uStudent, currentCourse, getActivity(), this));
+               }
+           }
+       }
 
        getActivity().findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
            @Override
@@ -206,6 +217,7 @@ public class HomeFragment extends Fragment {
             if (swipedRight.get(c) != null) {
                 for (Student stu : swipedRight.get(c)) {
                     if (stu.getEmail().equals(s.getEmail())) {
+                        System.out.println("In SwipedRight");
                         return true;
                     }
                 }
@@ -214,6 +226,7 @@ public class HomeFragment extends Fragment {
         if (matchedAlready != null) {
             for (Student stu : matchedAlready) {
                 if (stu.getEmail().equals(s.getEmail())) {
+                    System.out.println("In matched");
                     return true;
                 }
             }
