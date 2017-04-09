@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jonat.campfire.MyCoursesFragment">
+    tools:context="com.uoft.jonathan.campfire.ca.uoft.jonat.campfire.MyCoursesFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

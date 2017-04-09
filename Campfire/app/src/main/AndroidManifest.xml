@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.jonat.campfire">
+    package="com.uoft.jonathan.campfire">
 
     <uses-sdk
         android:minSdkVersion="13"
@@ -26,7 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashActivity"
+            android:name="com.uoft.jonathan.campfire.SplashActivity"
             android:navigationBarColor="@color/colorPrimaryDark"
             android:screenOrientation="portrait"
             android:statusBarColor="@color/colorPrimaryDark"
@@ -38,60 +38,60 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PromoActivity"
+            android:name="com.uoft.jonathan.campfire.PromoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LoginActivity"
-            android:parentActivityName=".PromoActivity"
+            android:name="com.uoft.jonathan.campfire.LoginActivity"
+            android:parentActivityName="com.uoft.jonathan.campfire.PromoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".SignUpActivity"
-            android:parentActivityName=".PromoActivity"
+            android:name="com.uoft.jonathan.campfire.SignUpActivity"
+            android:parentActivityName="com.uoft.jonathan.campfire.PromoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.uoft.jonathan.campfire.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".HelpActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name="com.uoft.jonathan.campfire.HelpActivity"
+            android:parentActivityName="com.uoft.jonathan.campfire.MainActivity" />
         <activity
-            android:name=".PersonalizeActivity"
-            android:parentActivityName=".SignUpActivity"
+            android:name="com.uoft.jonathan.campfire.PersonalizeActivity"
+            android:parentActivityName="com.uoft.jonathan.campfire.SignUpActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MessengerActivity"
-            android:parentActivityName=".MainActivity"
+            android:name="com.uoft.jonathan.campfire.MessengerActivity"
+            android:parentActivityName="com.uoft.jonathan.campfire.MainActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".SettingsActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name="com.uoft.jonathan.campfire.SettingsActivity"
+            android:parentActivityName="com.uoft.jonathan.campfire.MainActivity" />
         <activity
-            android:name=".MyProfileActivity"
+            android:name="com.uoft.jonathan.campfire.MyProfileActivity"
             android:label="@string/title_activity_my_profile"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.uoft.jonathan.campfire.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ScheduleActivity"
-            android:parentActivityName=".PersonalizeActivity" />
+            android:name="com.uoft.jonathan.campfire.ScheduleActivity"
+            android:parentActivityName="com.uoft.jonathan.campfire.PersonalizeActivity" />
         <activity
-            android:name=".ChangePasswordActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name="com.uoft.jonathan.campfire.ChangePasswordActivity"
+            android:parentActivityName="com.uoft.jonathan.campfire.MainActivity" />
         <activity
-            android:name=".AccountRecoveryActivity"
-            android:parentActivityName=".LoginActivity" />
+            android:name="com.uoft.jonathan.campfire.AccountRecoveryActivity"
+            android:parentActivityName="com.uoft.jonathan.campfire.LoginActivity" />
         <activity
-            android:name=".ClassmatesProfileActivity"
+            android:name="com.uoft.jonathan.campfire.ClassmatesProfileActivity"
             android:label="@string/title_activity_my_profile"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.uoft.jonathan.campfire.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AdminActivity"
+            android:name="com.uoft.jonathan.campfire.AdminActivity"
             android:label="@string/title_activity_admin" />
-        <activity android:name=".RatingActivity" />
-        <activity android:name=".MessageFragmentAdapter"></activity>
+        <activity android:name="com.uoft.jonathan.campfire.RatingActivity" />
+        <activity android:name="com.uoft.jonathan.campfire.MessageFragmentAdapter"></activity>
     </application>
 
 </manifest>

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.jonat.campfire.AdminActivity">
+    tools:context="com.uoft.jonathan.campfire.ca.uoft.jonat.campfire.AdminActivity">
 
     <FrameLayout
         android:id="@+id/content"

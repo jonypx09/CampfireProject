@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:fitsSystemWindows="true"
-    tools:context="com.example.jonat.campfire.MyProfileActivity">
+    tools:context="com.uoft.jonathan.campfire.ca.uoft.jonat.campfire.MyProfileActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"

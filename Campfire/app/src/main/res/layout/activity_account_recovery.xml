@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:paddingLeft="5dp"
-    tools:context="com.example.jonat.campfire.AccountRecoveryActivity">
+    tools:context="com.uoft.jonathan.campfire.ca.uoft.jonat.campfire.AccountRecoveryActivity">
 
     <TextView
         android:id="@+id/emailPrompt"

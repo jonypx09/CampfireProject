@@ -10,7 +10,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="8dp"
     android:paddingTop="10dp"
-    tools:context="com.example.jonat.campfire.SignUpActivity">
+    tools:context="com.uoft.jonathan.campfire.ca.uoft.jonat.campfire.SignUpActivity">
 
     <TextView
         android:id="@+id/fNamePrompt"
