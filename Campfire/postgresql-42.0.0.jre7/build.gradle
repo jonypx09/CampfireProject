@@ -1,2 +1,6 @@
 configurations.maybeCreate("default")
 artifacts.add("default", file('postgresql-42.0.0.jre7.jar'))
+dependencies {
+    compile 'com.google.firebase:firebase-auth:10.0.1'
+}
+apply plugin: 'com.google.gms.google-services'

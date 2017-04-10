@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "575259328701-iqu03lor9925mb8dcpbpe8q4o2sf4onj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uoft.jonathan.campfire",
+            "certificate_hash": "a865cd14c5557e73476428c65bdd86aa1e83f33b"
+          }
+        },
+        {
           "client_id": "575259328701-3l1spkqhr15amogm8dqpqsji4i1sstd0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
