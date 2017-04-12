@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -31,6 +32,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +89,11 @@ public class MainActivity extends AppCompatActivity
 
     private Handler handler;
 
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseDatabase database;
+    private FirebaseUser currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,19 +102,21 @@ public class MainActivity extends AppCompatActivity
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("Campfire");
-        fetchAllStudents();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                allCourses = DbAdapter.getAllCourses();
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                    }
-                });
-            }
-        }).start();
+
+//        fetchAllStudents();
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                allCourses = DbAdapter.getAllCourses();
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                    }
+//                });
+//            }
+//        }).start();
 
         /**
          * 1. Connect to the Database
@@ -110,49 +125,118 @@ public class MainActivity extends AppCompatActivity
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
         uEmail = newStudentID[2];
+        final String currentCourse = newStudentID[4];
 
-        handler = new Handler();
-        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.setMessage("Please wait....");
-        progressDialog.setTitle("Retrieving User Data");
-        progressDialog.show();
-        new Thread(new Runnable() {
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        mAuth.signOut();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void run() {
-                uStudent = DbAdapter.getStudentLite(uEmail);
-                uName = uStudent.getFname() + " " + uStudent.getLname();
-                List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser newUser = firebaseAuth.getCurrentUser();
+                if (newUser != null) {
+                    // User is signed in
 
-                currentStudentID[0] = uStudent.getFname();
-                currentStudentID[1] = uStudent.getLname();
-                currentStudentID[2] = uStudent.getEmail();
-                currentStudentID[3] = uStudent.getPass();
+                    String name = newUser.getDisplayName();
+                    String email = newUser.getEmail();
+                    String uid = newUser.getUid();
 
-                //Defaults to first course
-                studentsInCourse = uStudent.getallOtherCourseStudents(currentCourse);
-                ArrayList<String> classmatesNamesList = new ArrayList<String>();
-                ArrayList<String> classmatesEmailsList = new ArrayList<String>();
-                for (Student s: studentsInCourse){
-                    classmatesNamesList.add(s.getFname() + " " + s.getLname());
-                    classmatesEmailsList.add(s.getEmail());
+                    DatabaseReference myRef = database.getReference("Users/" + uid + "/Email");
+                    myRef.setValue(email);
+
+                    myRef = database.getReference("Users/" + uid + "/Name");
+                    myRef.setValue(newStudentID[0] + " " + newStudentID[1]);
+
+                    myRef = database.getReference("Users/" + uid + "/Previous CS Courses");
+                    myRef.setValue(newStudentID[5]);
+
+                    myRef = database.getReference("Users/" + uid + "/Previous Elective Courses");
+                    myRef.setValue(newStudentID[6]);
+
+                    myRef = database.getReference("Users/" + uid + "/Hobbies");
+                    myRef.setValue(newStudentID[7]);
+
+
+
+                    myRef = database.getReference("Taking/" + uid + "/" + currentCourse);
+                    myRef.setValue(currentCourse);
+
+                } else {
+                    // User is signed out
                 }
-                classmatesNames = new String[classmatesNamesList.size()];
-                classmatesNames = classmatesNamesList.toArray(classmatesNames);
-                classmatesEmails = new String[classmatesEmailsList.size()];
-                classmatesEmails = classmatesEmailsList.toArray(classmatesEmails);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        renderData(toolbar);
-                        progressDialog.dismiss();
-//                        matchesDialog.show();
-                    }
-                });
+                // ...
             }
-        }).start();
-        getGroups(uEmail);
-        processChats(uEmail);
+        };
+
+//        signIn(newStudentID[2], newStudentID[3]);
+//        currentUser = mAuth.getCurrentUser();
+
+//        String uid = mAuth.getCurrentUser().getUid();
+//        System.out.println("\n\n\n\nXXXXXXXXXXXXXXXXX " + uid + "\n\n\n\n");
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("Taking/" + uid);
+//        myRef.setValue(newStudentID[4]);
+//        myRef.push();
+
+//        if (currentUser != null) {
+//            // Name, email address
+//            String name = currentUser.getDisplayName();
+//            String email = currentUser.getEmail();
+//
+//            // The user's ID, unique to the Firebase project. Do NOT use this value to
+//            // authenticate with your backend server, if you have one. Use
+//            // FirebaseUser.getToken() instead.
+//            String uid = currentUser.getUid();
+//
+//            System.out.println("\n\n\n\nXXXXXXXXXXXXXXXXX " + uid + "\n\n\n\n");
+//
+//            FirebaseDatabase database = FirebaseDatabase.getInstance();
+//            DatabaseReference myRef = database.getReference("Taking/" + uid);
+//            myRef.setValue(newStudentID[4]);
+//            myRef.push();
+//        }
+//        handler = new Handler();
+//        final ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+//        progressDialog.setMessage("Please wait....");
+//        progressDialog.setTitle("Retrieving User Data");
+//        progressDialog.show();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                uStudent = DbAdapter.getStudentLite(uEmail);
+//                uName = uStudent.getFname() + " " + uStudent.getLname();
+//                List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+//                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
+//
+//                currentStudentID[0] = uStudent.getFname();
+//                currentStudentID[1] = uStudent.getLname();
+//                currentStudentID[2] = uStudent.getEmail();
+//                currentStudentID[3] = uStudent.getPass();
+//
+//                //Defaults to first course
+//                studentsInCourse = uStudent.getallOtherCourseStudents(currentCourse);
+//                ArrayList<String> classmatesNamesList = new ArrayList<String>();
+//                ArrayList<String> classmatesEmailsList = new ArrayList<String>();
+//                for (Student s: studentsInCourse){
+//                    classmatesNamesList.add(s.getFname() + " " + s.getLname());
+//                    classmatesEmailsList.add(s.getEmail());
+//                }
+//                classmatesNames = new String[classmatesNamesList.size()];
+//                classmatesNames = classmatesNamesList.toArray(classmatesNames);
+//                classmatesEmails = new String[classmatesEmailsList.size()];
+//                classmatesEmails = classmatesEmailsList.toArray(classmatesEmails);
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        renderData(toolbar);
+//                        progressDialog.dismiss();
+////                        matchesDialog.show();
+//                    }
+//                });
+//            }
+//        }).start();
+//        getGroups(uEmail);
+//        processChats(uEmail);
     }
 
 
@@ -483,6 +567,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void logout(){
+
+        FirebaseAuth.getInstance().signOut();
+
         //Pressing the back button on the Android device will log the user off
         Toast.makeText(getApplicationContext(), "You have logged out!", Toast.LENGTH_SHORT).show();
         Intent promoIntent = new Intent(this, PromoActivity.class);
@@ -794,5 +881,47 @@ public class MainActivity extends AppCompatActivity
         classmatesNames = classmatesNamesList.toArray(classmatesNames);
         classmatesEmails = new String[classmatesEmailsList.size()];
         classmatesEmails = classmatesEmailsList.toArray(classmatesEmails);
+    }
+
+
+
+
+
+
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null){
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+
+    public void signIn(String email, String password){
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+//                            Log.w(TAG, "signInWithEmail:failed", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication Failed",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
     }
 }

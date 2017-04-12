@@ -37,6 +37,10 @@ public class Student {
 	private HashMap<String, HashMap<Assignment, AssignmentGroup>> groupsForAssignment = new HashMap<>();
 	private HashMap<String, HashMap<Assignment, ArrayList<Student>>> savedAvailableMatches = new HashMap<>();
 	private HashMap<String, Assignment> curAssignmentForCourse = new HashMap<>();
+
+	public Student(){
+		//Required for storage in Firebase
+	}
 	
 	public Student(String fname, String lname, String email, String pass, ArrayList<Comparable> criteria) {
 		this.fname = fname;

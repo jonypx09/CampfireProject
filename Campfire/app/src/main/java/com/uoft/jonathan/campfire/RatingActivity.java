@@ -4,11 +4,22 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,12 +59,41 @@ public class RatingActivity extends AppCompatActivity {
 
     private Handler handler;
 
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseDatabase database;
+    private FirebaseUser currentUser;
+    private String currentUserID;
+    private Student newStudent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
         setContentView(R.layout.activity_rating);
         setTitle("Select Matching Criteria");
+
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        mAuth.signOut();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser newUser = firebaseAuth.getCurrentUser();
+                if (newUser != null) {
+                    // User is signed in
+                    String name = newUser.getDisplayName();
+                    String email = newUser.getEmail();
+                    String uid = newUser.getUid();
+                    DatabaseReference myRef = database.getReference("Users/" + uid);
+                    myRef.setValue(newStudent);
+                } else {
+                    // User is signed out
+                }
+                // ...
+            }
+        };
 
         Intent intent = getIntent();
         newStudentID = intent.getExtras().getStringArray("identity");
@@ -70,6 +110,20 @@ public class RatingActivity extends AppCompatActivity {
 
         addListenerOnRatingBar();
         addListenerOnButton();
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
     public void addListenerOnRatingBar() {
@@ -177,40 +231,72 @@ public class RatingActivity extends AppCompatActivity {
                 /**
                  * The last argument should NOT be null; it is there to keep Gradle happy :P
                  */
-                Student newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], newStudentCriteria);
-                newCourse.addStudent(newStudent);
-                handler = new Handler();
-                final ProgressDialog progressDialog = new ProgressDialog(RatingActivity.this);
-                progressDialog.setMessage("Please wait....");
-                progressDialog.setTitle("Creating User");
-                progressDialog.show();
-                final Student newStudentCopy = newStudent;
-                final Course newCourseCopy = newCourse;
-                final View vCopy = v;
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        DbAdapter.addStudent(newStudentCopy);
-                        try{
-                            DbAdapter.addCourse(newCourseCopy);
-                        }catch(Exception e){
+                newStudent = new Student(newStudentID[0], newStudentID[1], newStudentID[2], newStudentID[3], newStudentCriteria);
 
-                        }
-                        DbAdapter.enrolStudentInCourse(newStudentID[2], newStudentID[4]);
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressDialog.dismiss();
-                                Intent mainIntent = new Intent(vCopy.getContext(), MainActivity.class);
-                                mainIntent.putExtra("identity", newStudentID);
-                                startActivity(mainIntent);
-                            }
-                        });
-                    }
-                }).start();
+                newCourse.addStudent(newStudent);
+
+                createAccount(newStudentID[2], newStudentID[3]);
+                Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+                mainIntent.putExtra("identity", newStudentID);
+                startActivity(mainIntent);
+
+//                handler = new Handler();
+//                final ProgressDialog progressDialog = new ProgressDialog(RatingActivity.this);
+//                progressDialog.setMessage("Please wait....");
+//                progressDialog.setTitle("Creating User");
+//                progressDialog.show();
+//                final Student newStudentCopy = newStudent;
+//                final Course newCourseCopy = newCourse;
+//                final View vCopy = v;
+//                new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+////                        mAuth = FirebaseAuth.getInstance();
+//                        createAccount(newStudentID[2], newStudentID[3]);
+//
+////                        DbAdapter.addStudent(newStudentCopy);
+//                        try{
+////                            DbAdapter.addCourse(newCourseCopy);
+//                        }catch(Exception e){
+//
+//                        }
+////                        DbAdapter.enrolStudentInCourse(newStudentID[2], newStudentID[4]);
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                progressDialog.dismiss();
+//                                Intent mainIntent = new Intent(vCopy.getContext(), MainActivity.class);
+//                                mainIntent.putExtra("identity", newStudentID);
+//                                mainIntent.putExtra("currentCourse", newStudentID[4]);
+//                                startActivity(mainIntent);
+//                            }
+//                        });
+//                    }
+//                }).start();
+
+
+
             }
 
         });
 
+    }
+
+    public void createAccount(String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(RatingActivity.this, "Authentication Failed",
+
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }
