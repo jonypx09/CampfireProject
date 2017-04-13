@@ -41,6 +41,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import backend.algorithms.CampfireGroup;
@@ -93,6 +95,10 @@ public class MainActivity extends AppCompatActivity
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase database;
     private FirebaseUser currentUser;
+    private String[] programmingLanguages;
+    private HashMap<String, ArrayList<String>> schedule = new HashMap<>();
+
+    private String loggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,50 +129,89 @@ public class MainActivity extends AppCompatActivity
          * 2. Begin matching and display results in the form of cards
          */
         Intent intent = getIntent();
-        newStudentID = intent.getExtras().getStringArray("identity");
-        uEmail = newStudentID[2];
-        final String currentCourse = newStudentID[4];
-
+        loggedIn = intent.getExtras().getString("loggedIn");
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         mAuth.signOut();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser newUser = firebaseAuth.getCurrentUser();
-                if (newUser != null) {
-                    // User is signed in
 
-                    String name = newUser.getDisplayName();
-                    String email = newUser.getEmail();
-                    String uid = newUser.getUid();
+        if (loggedIn.equals("0")){
+            newStudentID = intent.getExtras().getStringArray("identity");
+            programmingLanguages = intent.getExtras().getStringArray("programmingLanguages");
+            schedule = (HashMap<String,ArrayList<String>>) intent.getSerializableExtra("schedule");
+            uEmail = newStudentID[2];
+            final String currentCourse = newStudentID[4];
 
-                    DatabaseReference myRef = database.getReference("Users/" + uid + "/Email");
-                    myRef.setValue(email);
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser newUser = firebaseAuth.getCurrentUser();
+                    if (newUser != null) {
+                        // User is signed in
 
-                    myRef = database.getReference("Users/" + uid + "/Name");
-                    myRef.setValue(newStudentID[0] + " " + newStudentID[1]);
+                        String name = newUser.getDisplayName();
+                        String email = newUser.getEmail();
+                        String uid = newUser.getUid();
 
-                    myRef = database.getReference("Users/" + uid + "/Previous CS Courses");
-                    myRef.setValue(newStudentID[5]);
+                        DatabaseReference myRef = database.getReference("Users/" + uid + "/Email");
+                        myRef.setValue(email);
 
-                    myRef = database.getReference("Users/" + uid + "/Previous Elective Courses");
-                    myRef.setValue(newStudentID[6]);
+                        myRef = database.getReference("Users/" + uid + "/Name");
+                        myRef.setValue(newStudentID[0] + " " + newStudentID[1]);
 
-                    myRef = database.getReference("Users/" + uid + "/Hobbies");
-                    myRef.setValue(newStudentID[7]);
+                        myRef = database.getReference("Users/" + uid + "/Previous CS Courses");
+                        ArrayList<String> csCourses = new ArrayList<String>();
+                        csCourses.add(newStudentID[5]);
+                        myRef.setValue(csCourses);
+
+                        myRef = database.getReference("Users/" + uid + "/Previous Elective Courses");
+                        ArrayList<String> electives = new ArrayList<String>();
+                        electives.add(newStudentID[6]);
+                        myRef.setValue(electives);
+
+                        myRef = database.getReference("Users/" + uid + "/Hobbies");
+                        ArrayList<String> hobbies = new ArrayList<String>();
+                        hobbies.add(newStudentID[7]);
+                        myRef.setValue(hobbies);
+
+                        myRef = database.getReference("Users/" + uid + "/Programming Languages");
+                        ArrayList<String> programmingLang = new ArrayList(Arrays.asList(programmingLanguages));
+                        myRef.setValue(programmingLang);
+
+                        for (String day: schedule.keySet()){
+                            if (schedule.get(day).size() > 0){
+                                myRef = database.getReference("Users/" + uid + "/Schedule/" + day);
+                                myRef.setValue(schedule.get(day));
+                            }
+                        }
 
 
 
-                    myRef = database.getReference("Taking/" + uid + "/" + currentCourse);
-                    myRef.setValue(currentCourse);
+                        myRef = database.getReference("Taking/" + uid);
+                        ArrayList<String> taking = new ArrayList<String>();
+                        taking.add(currentCourse);
+                        myRef.setValue(taking);
 
-                } else {
-                    // User is signed out
+                    } else {
+                        // User is signed out
+                    }
+                    // ...
                 }
-                // ...
-            }
-        };
+            };
+        }else{
+            mAuthListener = new FirebaseAuth.AuthStateListener() {
+                @Override
+                public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                    FirebaseUser newUser = firebaseAuth.getCurrentUser();
+                    if (newUser != null) {
+                        // User is signed in
+
+                    } else {
+                        // User is signed out
+                    }
+                    // ...
+                }
+            };
+        }
 
 //        signIn(newStudentID[2], newStudentID[3]);
 //        currentUser = mAuth.getCurrentUser();

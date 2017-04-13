@@ -237,7 +237,10 @@ public class RatingActivity extends AppCompatActivity {
 
                 createAccount(newStudentID[2], newStudentID[3]);
                 Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+                mainIntent.putExtra("loggedIn", "0");
                 mainIntent.putExtra("identity", newStudentID);
+                mainIntent.putExtra("programmingLanguages", programmingLanguages);
+                mainIntent.putExtra("schedule", schedule);
                 startActivity(mainIntent);
 
 //                handler = new Handler();
