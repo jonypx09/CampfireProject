@@ -37,9 +37,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -97,6 +101,7 @@ public class MainActivity extends AppCompatActivity
     private FirebaseUser currentUser;
     private String[] programmingLanguages;
     private HashMap<String, ArrayList<String>> schedule = new HashMap<>();
+    private ArrayList<String> coursesTaking = new ArrayList<String>();
 
     private String loggedIn;
 
@@ -130,6 +135,9 @@ public class MainActivity extends AppCompatActivity
          */
         Intent intent = getIntent();
         loggedIn = intent.getExtras().getString("loggedIn");
+        String userEmail = intent.getExtras().getString("email");
+        String userPassword = intent.getExtras().getString("password");
+
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         mAuth.signOut();
@@ -185,11 +193,13 @@ public class MainActivity extends AppCompatActivity
                         }
 
 
-
                         myRef = database.getReference("Taking/" + uid);
                         ArrayList<String> taking = new ArrayList<String>();
                         taking.add(currentCourse);
                         myRef.setValue(taking);
+
+                        myRef = database.getReference("Courses/" + currentCourse + "/Users/" + uid);
+                        myRef.setValue(uEmail);
 
                     } else {
                         // User is signed out
@@ -204,13 +214,65 @@ public class MainActivity extends AppCompatActivity
                     FirebaseUser newUser = firebaseAuth.getCurrentUser();
                     if (newUser != null) {
                         // User is signed in
+                        String userID = newUser.getUid();
+                        DatabaseReference userRef = database.getReference("Users/" + userID);
+                        DatabaseReference takingRef = database.getReference("Taking/" + userID);
+                        userRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                int i = 0;
+                                ArrayList<String> hobbies;
+                                ArrayList<String> prevCSCourses;
+                                ArrayList<String> prevElectives;
+                                ArrayList<String> programmingLanguages;
 
+                                for (DataSnapshot child: dataSnapshot.getChildren()){
+                                    if (i == 0) {
+                                        uEmail = child.getValue(String.class);
+                                    }else if (i == 1){
+
+                                    }else if (i == 2){
+                                        uName = child.getValue(String.class);
+                                    }else if (i == 3){
+//                                        prevCSCourses = child.getValue(ArrayList.class);
+                                    }else if (i == 4){
+//                                        prevElectives = child.getValue(ArrayList.class);
+                                    }else if (i == 5){
+//                                        programmingLanguages = child.getValue(ArrayList.class);
+                                    }else{
+
+                                    }
+                                    i++;
+                                }
+                                System.out.println("Number of Children: " + Long.toString(dataSnapshot.getChildrenCount()));
+                                renderData(toolbar);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                        takingRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot child: dataSnapshot.getChildren()){
+                                    coursesTaking.add(child.getValue(String.class));
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     } else {
                         // User is signed out
                     }
                     // ...
                 }
             };
+            signIn(userEmail, userPassword);
         }
 
 //        signIn(newStudentID[2], newStudentID[3]);
@@ -302,9 +364,10 @@ public class MainActivity extends AppCompatActivity
         emailHeader.setText(uEmail);
         nameHeader.setText(uName);
 
-        courseHeader.setText("Current Course: " + currentCourse.getName());
+//        courseHeader.setText("Current Course: " + currentCourse.getName());
+        courseHeader.setText("Current Course: " + coursesTaking.get(0));
 
-        displaySelectedScreen(R.id.nav_home);
+//        displaySelectedScreen(R.id.nav_home);
 
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -317,38 +380,38 @@ public class MainActivity extends AppCompatActivity
         });
         navigationView.getMenu().getItem(0).setChecked(true);
 
-        Menu menuNav = navigationView.getMenu();
-        final MenuItem nav_courses = menuNav.findItem(R.id.nav_my_courses);
-        nav_courses.setEnabled(false);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
-                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
-                ArrayList<String> courseCodesList = new ArrayList<String>();
-                ArrayList<String> courseNamesList = new ArrayList<String>();
-                ArrayList<String> courseInstructorList = new ArrayList<String>();
-                for (String code: enrolledCourses){
-                    Course current = DbAdapter.getCourse(code);
-                    courseCodesList.add(code);
-                    courseNamesList.add(current.getDescription());
-                    courseInstructorList.add(current.getInstructor());
-                }
-                courseCodes = new String[courseCodesList.size()];
-                courseCodes = courseCodesList.toArray(courseCodes);
-                courseNames = new String[courseNamesList.size()];
-                courseNames = courseNamesList.toArray(courseNames);
-                courseInstructors = new String[courseInstructorList.size()];
-                courseInstructors = courseInstructorList.toArray(courseInstructors);
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        nav_courses.setEnabled(true);
-                    }
-                });
-            }
-        }).start();
+//        Menu menuNav = navigationView.getMenu();
+//        final MenuItem nav_courses = menuNav.findItem(R.id.nav_my_courses);
+//        nav_courses.setEnabled(false);
+//
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                List<String> enrolledCourses = DbAdapter.allStudentsCourses(uEmail);
+//                currentCourse = DbAdapter.getCourse(enrolledCourses.get(0));
+//                ArrayList<String> courseCodesList = new ArrayList<String>();
+//                ArrayList<String> courseNamesList = new ArrayList<String>();
+//                ArrayList<String> courseInstructorList = new ArrayList<String>();
+//                for (String code: enrolledCourses){
+//                    Course current = DbAdapter.getCourse(code);
+//                    courseCodesList.add(code);
+//                    courseNamesList.add(current.getDescription());
+//                    courseInstructorList.add(current.getInstructor());
+//                }
+//                courseCodes = new String[courseCodesList.size()];
+//                courseCodes = courseCodesList.toArray(courseCodes);
+//                courseNames = new String[courseNamesList.size()];
+//                courseNames = courseNamesList.toArray(courseNames);
+//                courseInstructors = new String[courseInstructorList.size()];
+//                courseInstructors = courseInstructorList.toArray(courseInstructors);
+//                handler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        nav_courses.setEnabled(true);
+//                    }
+//                });
+//            }
+//        }).start();
     }
 
     public void getGroups(final String email){
