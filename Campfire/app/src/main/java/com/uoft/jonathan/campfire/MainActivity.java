@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity
     private String[] programmingLanguages;
     private HashMap<String, ArrayList<String>> schedule = new HashMap<>();
     private ArrayList<String> coursesTaking = new ArrayList<String>();
+    private String currentUserID;
 
     private String loggedIn;
 
@@ -158,47 +159,47 @@ public class MainActivity extends AppCompatActivity
 
                         String name = newUser.getDisplayName();
                         String email = newUser.getEmail();
-                        String uid = newUser.getUid();
+                        currentUserID = newUser.getUid();
 
-                        DatabaseReference myRef = database.getReference("Users/" + uid + "/Email");
+                        DatabaseReference myRef = database.getReference("Users/" + currentUserID + "/Email");
                         myRef.setValue(email);
 
-                        myRef = database.getReference("Users/" + uid + "/Name");
+                        myRef = database.getReference("Users/" + currentUserID + "/Name");
                         myRef.setValue(newStudentID[0] + " " + newStudentID[1]);
 
-                        myRef = database.getReference("Users/" + uid + "/Previous CS Courses");
+                        myRef = database.getReference("Users/" + currentUserID + "/Previous CS Courses");
                         ArrayList<String> csCourses = new ArrayList<String>();
                         csCourses.add(newStudentID[5]);
                         myRef.setValue(csCourses);
 
-                        myRef = database.getReference("Users/" + uid + "/Previous Elective Courses");
+                        myRef = database.getReference("Users/" + currentUserID + "/Previous Elective Courses");
                         ArrayList<String> electives = new ArrayList<String>();
                         electives.add(newStudentID[6]);
                         myRef.setValue(electives);
 
-                        myRef = database.getReference("Users/" + uid + "/Hobbies");
+                        myRef = database.getReference("Users/" + currentUserID + "/Hobbies");
                         ArrayList<String> hobbies = new ArrayList<String>();
                         hobbies.add(newStudentID[7]);
                         myRef.setValue(hobbies);
 
-                        myRef = database.getReference("Users/" + uid + "/Programming Languages");
+                        myRef = database.getReference("Users/" + currentUserID + "/Programming Languages");
                         ArrayList<String> programmingLang = new ArrayList(Arrays.asList(programmingLanguages));
                         myRef.setValue(programmingLang);
 
                         for (String day: schedule.keySet()){
                             if (schedule.get(day).size() > 0){
-                                myRef = database.getReference("Users/" + uid + "/Schedule/" + day);
+                                myRef = database.getReference("Users/" + currentUserID + "/Schedule/" + day);
                                 myRef.setValue(schedule.get(day));
                             }
                         }
 
 
-                        myRef = database.getReference("Taking/" + uid);
+                        myRef = database.getReference("Taking/" + currentUserID);
                         ArrayList<String> taking = new ArrayList<String>();
                         taking.add(currentCourse);
                         myRef.setValue(taking);
 
-                        myRef = database.getReference("Courses/" + currentCourse + "/Users/" + uid);
+                        myRef = database.getReference("Courses/" + currentCourse + "/Users/" + currentUserID);
                         myRef.setValue(uEmail);
 
                     } else {
@@ -208,15 +209,16 @@ public class MainActivity extends AppCompatActivity
                 }
             };
         }else{
+            newStudentID = new String[3];
             mAuthListener = new FirebaseAuth.AuthStateListener() {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     FirebaseUser newUser = firebaseAuth.getCurrentUser();
                     if (newUser != null) {
                         // User is signed in
-                        String userID = newUser.getUid();
-                        DatabaseReference userRef = database.getReference("Users/" + userID);
-                        DatabaseReference takingRef = database.getReference("Taking/" + userID);
+                        currentUserID = newUser.getUid();
+                        DatabaseReference userRef = database.getReference("Users/" + currentUserID);
+                        DatabaseReference takingRef = database.getReference("Taking/" + currentUserID);
                         userRef.addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -229,10 +231,13 @@ public class MainActivity extends AppCompatActivity
                                 for (DataSnapshot child: dataSnapshot.getChildren()){
                                     if (i == 0) {
                                         uEmail = child.getValue(String.class);
+                                        newStudentID[2] = uEmail;
                                     }else if (i == 1){
 
                                     }else if (i == 2){
                                         uName = child.getValue(String.class);
+                                        newStudentID[0] = uName.substring(0, uName.indexOf(" "));
+                                        newStudentID[1] = uName.substring(uName.indexOf(" ") + 1, uName.length());
                                     }else if (i == 3){
 //                                        prevCSCourses = child.getValue(ArrayList.class);
                                     }else if (i == 4){
@@ -245,7 +250,6 @@ public class MainActivity extends AppCompatActivity
                                     i++;
                                 }
                                 System.out.println("Number of Children: " + Long.toString(dataSnapshot.getChildrenCount()));
-                                renderData(toolbar);
                             }
 
                             @Override
@@ -259,6 +263,7 @@ public class MainActivity extends AppCompatActivity
                                 for (DataSnapshot child: dataSnapshot.getChildren()){
                                     coursesTaking.add(child.getValue(String.class));
                                 }
+                                renderData(toolbar);
                             }
 
                             @Override
@@ -367,7 +372,7 @@ public class MainActivity extends AppCompatActivity
 //        courseHeader.setText("Current Course: " + currentCourse.getName());
         courseHeader.setText("Current Course: " + coursesTaking.get(0));
 
-//        displaySelectedScreen(R.id.nav_home);
+        displaySelectedScreen(R.id.nav_home);
 
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -608,8 +613,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_home:
                 setTitle("Home");
                 fragment = new HomeFragment();
-                bundle.putString("currentCourse", currentCourse.getName());
-                fragment.setArguments(bundle);
+                //bundle.putString("currentCourse", currentCourse.getName());
+                //fragment.setArguments(bundle);
                 myCampfireIsOpen = false;
                 if (myCoursesIsOpen){
                     mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search_white_48dp));

@@ -39,7 +39,7 @@ public class Student {
 	private HashMap<String, Assignment> curAssignmentForCourse = new HashMap<>();
 
 	public Student(){
-		//Required for storage in Firebase
+		//Required for storage in Firebase (Does not work yet)
 	}
 	
 	public Student(String fname, String lname, String email, String pass, ArrayList<Comparable> criteria) {
