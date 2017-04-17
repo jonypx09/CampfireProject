@@ -230,21 +230,27 @@ public class MainActivity extends AppCompatActivity
 
                                 for (DataSnapshot child: dataSnapshot.getChildren()){
                                     if (i == 0) {
-                                        uEmail = child.getValue(String.class);
-                                        newStudentID[2] = uEmail;
+
                                     }else if (i == 1){
 
                                     }else if (i == 2){
+                                        uEmail = child.getValue(String.class);
+                                        newStudentID[2] = uEmail;
+                                    }else if (i == 3){
+
+                                    }else if (i == 4){
+
+                                    }else if (i == 5){
                                         uName = child.getValue(String.class);
                                         newStudentID[0] = uName.substring(0, uName.indexOf(" "));
                                         newStudentID[1] = uName.substring(uName.indexOf(" ") + 1, uName.length());
-                                    }else if (i == 3){
+                                    }else if (i == 6){
 //                                        prevCSCourses = child.getValue(ArrayList.class);
-                                    }else if (i == 4){
+                                    }else if (i == 7){
 //                                        prevElectives = child.getValue(ArrayList.class);
-                                    }else if (i == 5){
+                                    }else if (i == 8){
 //                                        programmingLanguages = child.getValue(ArrayList.class);
-                                    }else{
+                                    }else if (i == 9){
 
                                     }
                                     i++;
@@ -372,7 +378,7 @@ public class MainActivity extends AppCompatActivity
 //        courseHeader.setText("Current Course: " + currentCourse.getName());
         courseHeader.setText("Current Course: " + coursesTaking.get(0));
 
-        displaySelectedScreen(R.id.nav_home);
+//        displaySelectedScreen(R.id.nav_home);
 
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
