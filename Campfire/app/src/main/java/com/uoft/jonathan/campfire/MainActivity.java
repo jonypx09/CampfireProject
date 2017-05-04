@@ -386,6 +386,7 @@ public class MainActivity extends AppCompatActivity
                 Intent myProfileIntent;
                 myProfileIntent = new Intent(MainActivity.this, MyProfileActivity.class);
                 myProfileIntent.putExtra("userEmail", uEmail);
+                myProfileIntent.putExtra("currentUserID", currentUserID);
                 startActivity(myProfileIntent);
             }
         });

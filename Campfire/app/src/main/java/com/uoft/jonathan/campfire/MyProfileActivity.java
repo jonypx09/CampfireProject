@@ -14,6 +14,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
 import java.util.ArrayList;
@@ -60,6 +63,12 @@ public class MyProfileActivity extends AppCompatActivity {
     private Integer clockImage = R.drawable.ic_access_time_black_48dp;
     private Integer saveImage = R.drawable.ic_save_white_48dp;
     private Integer editImage = R.drawable.ic_edit_white_48dp;
+
+    private String currentUserID;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseDatabase database;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +127,10 @@ public class MyProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         uEmail = intent.getExtras().getString("userEmail");
+        currentUserID = intent.getExtras().getString("currentUserID");
+        mAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+
 //        myStudent = DbAdapter.getStudent(uEmail);
 //        setTitle(myStudent.getFname() + " " + myStudent.getLname());
 
