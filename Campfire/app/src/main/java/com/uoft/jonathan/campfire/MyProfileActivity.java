@@ -118,8 +118,8 @@ public class MyProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         uEmail = intent.getExtras().getString("userEmail");
-        myStudent = DbAdapter.getStudent(uEmail);
-        setTitle(myStudent.getFname() + " " + myStudent.getLname());
+//        myStudent = DbAdapter.getStudent(uEmail);
+//        setTitle(myStudent.getFname() + " " + myStudent.getLname());
 
         View view = findViewById(R.id.userInfo);
         TextView userEmail = (TextView) view.findViewById(R.id.emailTextview);
@@ -132,127 +132,127 @@ public class MyProfileActivity extends AppCompatActivity {
         javascriptCheckbox = (CheckBox) findViewById(R.id.javascriptCheckboxP);
         sqlCheckbox = (CheckBox) findViewById(R.id.sqlCheckboxP);
 
-        sundayCheckbox = (CheckBox) findViewById(R.id.sundayCheckbox);
-        sundayCheckbox.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                sundayCheckbox.setChecked(true);
-                openSundaySchedule();
-            }
-        });
-        mondayCheckbox = (CheckBox) findViewById(R.id.mondayCheckbox);
-        mondayCheckbox.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                mondayCheckbox.setChecked(true);
-                openMondaySchedule();
-            }
-        });
-        tuesdayCheckbox = (CheckBox) findViewById(R.id.tuesdayCheckbox);
-        tuesdayCheckbox.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                tuesdayCheckbox.setChecked(true);
-                openTuesdaySchedule();
-            }
-        });
-        wednesdayCheckbox = (CheckBox) findViewById(R.id.wednesdayCheckbox);
-        wednesdayCheckbox.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                wednesdayCheckbox.setChecked(true);
-                openWednesdaySchedule();
-            }
-        });
-        thursdayCheckbox = (CheckBox) findViewById((R.id.thursdayCheckbox));
-        thursdayCheckbox.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                thursdayCheckbox.setChecked(true);
-                openThursdaySchedule();
-            }
-        });
-        fridayCheckbox = (CheckBox) findViewById((R.id.fridayCheckbox));
-        fridayCheckbox.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                fridayCheckbox.setChecked(true);
-                openFridaySchedule();
-            }
-        });
-        saturdayCheckbox = (CheckBox) findViewById(R.id.saturdayCheckbox);
-        saturdayCheckbox.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                saturdayCheckbox.setChecked(true);
-                openSaturdaySchedule();
-            }
-        });
-
-        previousCSCourse = (TextView) findViewById(R.id.previousCourseTextview);
-        previousElective = (TextView) findViewById(R.id.electiveCourseTextview);
-        hobbyTextview = (TextView) findViewById(R.id.hobbiesTextview);
-
-        programmingLanguages = myStudent.getProgramming();
-        previousCSCourses = myStudent.getCSCCourses();
-        previousElectiveCourses = myStudent.getElectives();
-        hobbiesList = myStudent.getHobbies();
-        schedule = myStudent.getCalendar();
-
-        if (programmingLanguages != null){
-            for (String language : programmingLanguages) {
-                if (language == null){
-                    break;
-                }else if (language.equals("Python")){
-                    pythonCheckbox.setChecked(true);
-                }else if (language.equals("Java")){
-                    javaCheckbox.setChecked(true);
-                }else if (language.equals("C")){
-                    cCheckbox.setChecked(true);
-                }else if (language.equals("HTML")){
-                    htmlCheckbox.setChecked(true);
-                }else if (language.equals("Javascript")){
-                    javascriptCheckbox.setChecked(true);
-                }else {
-                    sqlCheckbox.setChecked(true);
-                }
-            }
-        }
-        if (previousCSCourses != null){
-            updateCSCCourses();
-        }
-        if (previousElectiveCourses != null){
-            updateElectiveCourses();
-        }
-        if (hobbiesList != null){
-            updateHobbies();
-        }
-        if (schedule != null){
-            for (String day : schedule.keySet()){
-                if (day.equals("Sunday") && schedule.get(day).size() != 0){
-                    sundayCheckbox.setChecked(true);
-                    sundayCheckbox.setEnabled(true);
-                    sundayCheckbox.setText("Sunday (Tap to open details)");
-                }else if (day.equals("Monday") && schedule.get(day).size() != 0){
-                    mondayCheckbox.setChecked(true);
-                    mondayCheckbox.setEnabled(true);
-                    mondayCheckbox.setText("Monday (Tap to open details)");
-                }else if (day.equals("Tuesday") && schedule.get(day).size() != 0){
-                    tuesdayCheckbox.setChecked(true);
-                    tuesdayCheckbox.setEnabled(true);
-                    tuesdayCheckbox.setText("Tuesday (Tap to open details)");
-                }else if (day.equals("Wednesday") && schedule.get(day).size() != 0){
-                    wednesdayCheckbox.setChecked(true);
-                    wednesdayCheckbox.setEnabled(true);
-                    wednesdayCheckbox.setText("Wednesday (Tap to open details)");
-                }else if (day.equals("Thursday") && schedule.get(day).size() != 0){
-                    thursdayCheckbox.setChecked(true);
-                    thursdayCheckbox.setEnabled(true);
-                    thursdayCheckbox.setText("Thursday (Tap to open details)");
-                }else if (day.equals("Friday") && schedule.get(day).size() != 0){
-                    fridayCheckbox.setChecked(true);
-                    fridayCheckbox.setEnabled(true);
-                    fridayCheckbox.setText("Friday (Tap to open details)");
-                }else if (day.equals("Saturday") && schedule.get(day).size() != 0){
-                    saturdayCheckbox.setChecked(true);
-                    saturdayCheckbox.setEnabled(true);
-                    saturdayCheckbox.setText("Saturday (Tap to open details)");
-                }
-            }
-        }
+//        sundayCheckbox = (CheckBox) findViewById(R.id.sundayCheckbox);
+//        sundayCheckbox.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                sundayCheckbox.setChecked(true);
+//                openSundaySchedule();
+//            }
+//        });
+//        mondayCheckbox = (CheckBox) findViewById(R.id.mondayCheckbox);
+//        mondayCheckbox.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                mondayCheckbox.setChecked(true);
+//                openMondaySchedule();
+//            }
+//        });
+//        tuesdayCheckbox = (CheckBox) findViewById(R.id.tuesdayCheckbox);
+//        tuesdayCheckbox.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                tuesdayCheckbox.setChecked(true);
+//                openTuesdaySchedule();
+//            }
+//        });
+//        wednesdayCheckbox = (CheckBox) findViewById(R.id.wednesdayCheckbox);
+//        wednesdayCheckbox.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                wednesdayCheckbox.setChecked(true);
+//                openWednesdaySchedule();
+//            }
+//        });
+//        thursdayCheckbox = (CheckBox) findViewById((R.id.thursdayCheckbox));
+//        thursdayCheckbox.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                thursdayCheckbox.setChecked(true);
+//                openThursdaySchedule();
+//            }
+//        });
+//        fridayCheckbox = (CheckBox) findViewById((R.id.fridayCheckbox));
+//        fridayCheckbox.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                fridayCheckbox.setChecked(true);
+//                openFridaySchedule();
+//            }
+//        });
+//        saturdayCheckbox = (CheckBox) findViewById(R.id.saturdayCheckbox);
+//        saturdayCheckbox.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                saturdayCheckbox.setChecked(true);
+//                openSaturdaySchedule();
+//            }
+//        });
+//
+//        previousCSCourse = (TextView) findViewById(R.id.previousCourseTextview);
+//        previousElective = (TextView) findViewById(R.id.electiveCourseTextview);
+//        hobbyTextview = (TextView) findViewById(R.id.hobbiesTextview);
+//
+//        programmingLanguages = myStudent.getProgramming();
+//        previousCSCourses = myStudent.getCSCCourses();
+//        previousElectiveCourses = myStudent.getElectives();
+//        hobbiesList = myStudent.getHobbies();
+//        schedule = myStudent.getCalendar();
+//
+//        if (programmingLanguages != null){
+//            for (String language : programmingLanguages) {
+//                if (language == null){
+//                    break;
+//                }else if (language.equals("Python")){
+//                    pythonCheckbox.setChecked(true);
+//                }else if (language.equals("Java")){
+//                    javaCheckbox.setChecked(true);
+//                }else if (language.equals("C")){
+//                    cCheckbox.setChecked(true);
+//                }else if (language.equals("HTML")){
+//                    htmlCheckbox.setChecked(true);
+//                }else if (language.equals("Javascript")){
+//                    javascriptCheckbox.setChecked(true);
+//                }else {
+//                    sqlCheckbox.setChecked(true);
+//                }
+//            }
+//        }
+//        if (previousCSCourses != null){
+//            updateCSCCourses();
+//        }
+//        if (previousElectiveCourses != null){
+//            updateElectiveCourses();
+//        }
+//        if (hobbiesList != null){
+//            updateHobbies();
+//        }
+//        if (schedule != null){
+//            for (String day : schedule.keySet()){
+//                if (day.equals("Sunday") && schedule.get(day).size() != 0){
+//                    sundayCheckbox.setChecked(true);
+//                    sundayCheckbox.setEnabled(true);
+//                    sundayCheckbox.setText("Sunday (Tap to open details)");
+//                }else if (day.equals("Monday") && schedule.get(day).size() != 0){
+//                    mondayCheckbox.setChecked(true);
+//                    mondayCheckbox.setEnabled(true);
+//                    mondayCheckbox.setText("Monday (Tap to open details)");
+//                }else if (day.equals("Tuesday") && schedule.get(day).size() != 0){
+//                    tuesdayCheckbox.setChecked(true);
+//                    tuesdayCheckbox.setEnabled(true);
+//                    tuesdayCheckbox.setText("Tuesday (Tap to open details)");
+//                }else if (day.equals("Wednesday") && schedule.get(day).size() != 0){
+//                    wednesdayCheckbox.setChecked(true);
+//                    wednesdayCheckbox.setEnabled(true);
+//                    wednesdayCheckbox.setText("Wednesday (Tap to open details)");
+//                }else if (day.equals("Thursday") && schedule.get(day).size() != 0){
+//                    thursdayCheckbox.setChecked(true);
+//                    thursdayCheckbox.setEnabled(true);
+//                    thursdayCheckbox.setText("Thursday (Tap to open details)");
+//                }else if (day.equals("Friday") && schedule.get(day).size() != 0){
+//                    fridayCheckbox.setChecked(true);
+//                    fridayCheckbox.setEnabled(true);
+//                    fridayCheckbox.setText("Friday (Tap to open details)");
+//                }else if (day.equals("Saturday") && schedule.get(day).size() != 0){
+//                    saturdayCheckbox.setChecked(true);
+//                    saturdayCheckbox.setEnabled(true);
+//                    saturdayCheckbox.setText("Saturday (Tap to open details)");
+//                }
+//            }
+//        }
 
     }
 
