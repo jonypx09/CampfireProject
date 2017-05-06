@@ -103,6 +103,8 @@ public class MainActivity extends AppCompatActivity
     private HashMap<String, ArrayList<String>> schedule = new HashMap<>();
     private ArrayList<String> coursesTaking = new ArrayList<String>();
     private String currentUserID;
+    private String currentUserEmail;
+    private String currentUserPassword;
 
     private String loggedIn;
 
@@ -136,14 +138,14 @@ public class MainActivity extends AppCompatActivity
          */
         Intent intent = getIntent();
         loggedIn = intent.getExtras().getString("loggedIn");
-        String userEmail = intent.getExtras().getString("email");
-        String userPassword = intent.getExtras().getString("password");
+        currentUserEmail = intent.getExtras().getString("email");
+        currentUserPassword = intent.getExtras().getString("password");
 
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         mAuth.signOut();
 
-        if (loggedIn.equals("0")){
+        if (loggedIn.equals("0")){ //Signing in for the first time
             newStudentID = intent.getExtras().getStringArray("identity");
             programmingLanguages = intent.getExtras().getStringArray("programmingLanguages");
             schedule = (HashMap<String,ArrayList<String>>) intent.getSerializableExtra("schedule");
@@ -208,7 +210,7 @@ public class MainActivity extends AppCompatActivity
                     // ...
                 }
             };
-        }else{
+        }else{  //Signing with an existing user
             newStudentID = new String[3];
             mAuthListener = new FirebaseAuth.AuthStateListener() {
                 @Override
@@ -283,7 +285,7 @@ public class MainActivity extends AppCompatActivity
                     // ...
                 }
             };
-            signIn(userEmail, userPassword);
+            signIn(currentUserEmail, currentUserPassword);
         }
 
 //        signIn(newStudentID[2], newStudentID[3]);
@@ -387,6 +389,7 @@ public class MainActivity extends AppCompatActivity
                 myProfileIntent = new Intent(MainActivity.this, MyProfileActivity.class);
                 myProfileIntent.putExtra("userEmail", uEmail);
                 myProfileIntent.putExtra("currentUserID", currentUserID);
+                myProfileIntent.putExtra("currentUserPassword", currentUserPassword);
                 startActivity(myProfileIntent);
             }
         });

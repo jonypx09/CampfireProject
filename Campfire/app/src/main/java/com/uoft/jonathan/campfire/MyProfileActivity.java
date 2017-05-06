@@ -3,6 +3,7 @@ package com.uoft.jonathan.campfire;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -14,9 +15,16 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.yarolegovich.lovelydialog.LovelyTextInputDialog;
 
 import java.util.ArrayList;
@@ -28,7 +36,10 @@ import backend.database.DbAdapter;
 public class MyProfileActivity extends AppCompatActivity {
 
     private Student myStudent;
+
     private String uEmail;
+    private String currentUserPassword;
+
     private ArrayList<String> programmingLanguages;
     private ArrayList<String> previousCSCourses;
     private ArrayList<String> previousElectiveCourses;
@@ -69,6 +80,9 @@ public class MyProfileActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseDatabase database;
     private FirebaseUser currentUser;
+
+    private String[] newStudentID = new String[3];
+    private ArrayList<String> coursesTaking = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,11 +142,97 @@ public class MyProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         uEmail = intent.getExtras().getString("userEmail");
         currentUserID = intent.getExtras().getString("currentUserID");
+        currentUserPassword = intent.getExtras().getString("currentUserPassword");
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+        mAuth.signOut();
 
 //        myStudent = DbAdapter.getStudent(uEmail);
 //        setTitle(myStudent.getFname() + " " + myStudent.getLname());
+
+
+
+
+
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser newUser = firebaseAuth.getCurrentUser();
+                if (newUser != null) {
+                    // User is signed in
+                    currentUserID = newUser.getUid();
+                    DatabaseReference userRef = database.getReference("Users/" + currentUserID);
+                    DatabaseReference takingRef = database.getReference("Taking/" + currentUserID);
+                    userRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            int i = 0;
+                            ArrayList<String> hobbies;
+                            ArrayList<String> prevCSCourses;
+                            ArrayList<String> prevElectives;
+                            ArrayList<String> programmingLanguages;
+                            String uName = null;
+
+                            for (DataSnapshot child: dataSnapshot.getChildren()){
+                                if (i == 0) {
+
+                                }else if (i == 1){
+
+                                }else if (i == 2){
+                                    uEmail = child.getValue(String.class);
+                                    newStudentID[2] = uEmail;
+                                }else if (i == 3){
+
+                                }else if (i == 4){
+
+                                }else if (i == 5){
+                                    uName = child.getValue(String.class);
+                                    newStudentID[0] = uName.substring(0, uName.indexOf(" "));
+                                    newStudentID[1] = uName.substring(uName.indexOf(" ") + 1, uName.length());
+                                }else if (i == 6){
+//                                        prevCSCourses = child.getValue(ArrayList.class);
+                                }else if (i == 7){
+//                                        prevElectives = child.getValue(ArrayList.class);
+                                }else if (i == 8){
+//                                        programmingLanguages = child.getValue(ArrayList.class);
+                                }else if (i == 9){
+
+                                }
+                                i++;
+                            }
+                            System.out.println("Number of Children: " + Long.toString(dataSnapshot.getChildrenCount()));
+                        }
+
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                    setTitle(newStudentID[0]);
+
+                    takingRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot child: dataSnapshot.getChildren()){
+                                coursesTaking.add(child.getValue(String.class));
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                } else {
+                    // User is signed out
+                }
+                // ...
+            }
+        };
+        signIn(uEmail, currentUserPassword);
+
 
         View view = findViewById(R.id.userInfo);
         TextView userEmail = (TextView) view.findViewById(R.id.emailTextview);
@@ -144,6 +244,23 @@ public class MyProfileActivity extends AppCompatActivity {
         htmlCheckbox = (CheckBox) findViewById(R.id.htmlCheckboxP);
         javascriptCheckbox = (CheckBox) findViewById(R.id.javascriptCheckboxP);
         sqlCheckbox = (CheckBox) findViewById(R.id.sqlCheckboxP);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //        sundayCheckbox = (CheckBox) findViewById(R.id.sundayCheckbox);
 //        sundayCheckbox.setOnClickListener(new View.OnClickListener() {
@@ -490,5 +607,24 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         }
         hobbyTextview.setText(headerO + hobbies);
+    }
+
+    public void signIn(String email, String password){
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+//                            Log.w(TAG, "signInWithEmail:failed", task.getException());
+                            Toast.makeText(MyProfileActivity.this, "Authentication Failed",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
     }
 }
