@@ -145,25 +145,23 @@ public class MyProfileActivity extends AppCompatActivity {
         currentUserPassword = intent.getExtras().getString("currentUserPassword");
         mAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
+
+
         mAuth.signOut();
-
-//        myStudent = DbAdapter.getStudent(uEmail);
-//        setTitle(myStudent.getFname() + " " + myStudent.getLname());
-
-
-
 
 
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+
                 FirebaseUser newUser = firebaseAuth.getCurrentUser();
                 if (newUser != null) {
                     // User is signed in
                     currentUserID = newUser.getUid();
                     DatabaseReference userRef = database.getReference("Users/" + currentUserID);
                     DatabaseReference takingRef = database.getReference("Taking/" + currentUserID);
+
                     userRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -191,18 +189,20 @@ public class MyProfileActivity extends AppCompatActivity {
                                     newStudentID[0] = uName.substring(0, uName.indexOf(" "));
                                     newStudentID[1] = uName.substring(uName.indexOf(" ") + 1, uName.length());
                                 }else if (i == 6){
-//                                        prevCSCourses = child.getValue(ArrayList.class);
+//                                    prevCSCourses = child.getValue(ArrayList.class);
                                 }else if (i == 7){
-//                                        prevElectives = child.getValue(ArrayList.class);
+//                                    prevElectives = child.getValue(ArrayList.class);
                                 }else if (i == 8){
-//                                        programmingLanguages = child.getValue(ArrayList.class);
+//                                    programmingLanguages = child.getValue(ArrayList.class);
                                 }else if (i == 9){
 
                                 }
                                 i++;
                             }
                             System.out.println("Number of Children: " + Long.toString(dataSnapshot.getChildrenCount()));
+
                         }
+
 
 
                         @Override
@@ -210,7 +210,6 @@ public class MyProfileActivity extends AppCompatActivity {
 
                         }
                     });
-                    setTitle(newStudentID[0]);
 
                     takingRef.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -385,6 +384,7 @@ public class MyProfileActivity extends AppCompatActivity {
 //        }
 
     }
+
 
     public void openSundaySchedule(){
         if (sundayCheckbox.isChecked()){
@@ -607,6 +607,21 @@ public class MyProfileActivity extends AppCompatActivity {
             }
         }
         hobbyTextview.setText(headerO + hobbies);
+    }
+
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null){
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
     public void signIn(String email, String password){

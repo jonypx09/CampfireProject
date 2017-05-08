@@ -385,6 +385,7 @@ public class MainActivity extends AppCompatActivity
         headerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mAuth.signOut();
                 Intent myProfileIntent;
                 myProfileIntent = new Intent(MainActivity.this, MyProfileActivity.class);
                 myProfileIntent.putExtra("userEmail", uEmail);
